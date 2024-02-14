@@ -28,7 +28,7 @@ public class UserProducer {
     
 
     public void sendMessage(UserEvent event,String topicName){
-        LOGGER.info(String.format("User Event => %s", event.toString()));
+        LOGGER.info(String.format("Sending User Event => %s", event.toString()));
         //create a message 
         Message<UserEvent> message = MessageBuilder
             .withPayload(event)

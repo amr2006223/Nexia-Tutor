@@ -1,13 +1,9 @@
 package com.nexia.nexia.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import com.nexia.nexia.models.DyslexiaType;
 import com.nexia.nexia.models.Game;
-import com.nexia.nexia.models.Keyword;
-import com.nexia.nexia.models.Lesson;
 import com.nexia.nexia.models.LessonJson;
 import com.nexia.nexia.models.User;
 import com.nexia.nexia.repositories.DyslexiaTypeRepository;
@@ -19,11 +15,6 @@ public class GameService {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private KeywordService keywordService;
-
-    @Autowired
-    private LessonsService lessonsService;
     @Autowired
     private LessonJsonService lessonJsonService;
     @Autowired
@@ -64,8 +55,7 @@ public class GameService {
 
     }
 
-    // TODO: get all games for specific dyslexia type
-    List<Game> getGamesForDyslexiaType(Long dyslexiaTypeId) {
+    List<Game> getGamesForDyslexiaType(String dyslexiaTypeId) {
         DyslexiaType dyslexiaType = dyslexiaTypeRepository.findById(dyslexiaTypeId).orElse(null);
         if (dyslexiaType == null) {
             return null;
@@ -74,7 +64,6 @@ public class GameService {
         }
 
     }
-    // * * JPQL Object java:
     // TODO: select all from Table game where DeslexiaTypeID=x
 
 }
