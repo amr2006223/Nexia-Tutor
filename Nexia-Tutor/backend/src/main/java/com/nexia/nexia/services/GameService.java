@@ -31,7 +31,7 @@ public class GameService {
     @Autowired
     private DyslexiaTypeRepository dyslexiaTypeRepository;
 
-    public Map<String, Object> getGamesForLesson(String LessonName, Long userId) {
+    public Map<String, Object> getGamesForLesson(String LessonName, String userId) {
         // 0.get user
         User user = userService.getUserById(userId);
         // get lesson and get all keywords

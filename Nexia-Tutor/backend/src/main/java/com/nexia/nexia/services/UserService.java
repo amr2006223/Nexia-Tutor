@@ -30,16 +30,17 @@ public class UserService {
     private UserProducer userProducer;
 
     // TODO: get user by userID
-    public User getUserById(Long userId) {
+    public User getUserById(String userId) {
         return userRepository.findById(userId).orElse(null);
     }
-    public User addUser(UserDTO user){
+
+    public User addUser(UserDTO user) {
         // add user to database
         List<DyslexiaType> types = new ArrayList<>();
         Date date = null;
         String id = "203";
-        User addedUser =  new User(id, user.getUsername(),"asdasd",date,"asdf",true,types);
-        //userRepository.save(user);
+        User addedUser = new User(id, user.getUsername(), "asdasd", date, "asdf", true, types);
+        // userRepository.save(user);
         UserEvent userEvent = new UserEvent();
         userEvent.setStatus("Pending");
         userEvent.setMessage("user status is pending");
@@ -47,9 +48,9 @@ public class UserService {
 
         NewTopic topic = TopicBuilder.name("new-topic").build();
         // userProducer.changeTopic(topic);
-        userProducer.sendMessage(userEvent,"new-topic");
+        userProducer.sendMessage(userEvent, "new-topic");
         userProducer.sendMessage(userEvent, "user-data");
-        
+
         System.err.println(user.toString());
         return addedUser;
     }

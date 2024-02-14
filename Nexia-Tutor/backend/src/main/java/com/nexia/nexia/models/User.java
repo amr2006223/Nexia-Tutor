@@ -1,7 +1,18 @@
 package com.nexia.nexia.models;
+
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+import org.apache.kafka.common.protocol.types.Field.Array;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,27 +22,29 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 
 @Entity
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUID.Generator")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
     @Column(unique = true)
     private String username;
-
+    // @JsonIgnore
     private String password;
     private Date birthDate;
     private String nationality;
     private boolean gender;
+    private String role;
 
     @ManyToMany(targetEntity = DyslexiaType.class)
     @JoinTable(name = "user_dyslexia_types", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "dyslexia_type_id"))
     private List<DyslexiaType> dyslexia_types;
-    
-    public User(){}
+
+    public User() {
+    }
 
     public User(String id, String username, String password, Date birthDate, String nationality, boolean gender,
-            List<DyslexiaType> dyslexia_types) {
+            List<DyslexiaType> dyslexia_types, String role) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -39,6 +52,7 @@ public class User {
         this.nationality = nationality;
         this.gender = gender;
         this.dyslexia_types = dyslexia_types;
+        this.role = role;
     }
 
     public String getId() {
@@ -55,6 +69,14 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void settRole(String role) {
+        this.role = role;
     }
 
     public String getPassword() {
@@ -96,7 +118,30 @@ public class User {
     public void setDyslexia_types(List<DyslexiaType> dyslexia_types) {
         this.dyslexia_types = dyslexia_types;
     }
-    
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return new ArrayList(Arrays.asList(new SimpleGrantedAuthority(this.role)));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
 }
