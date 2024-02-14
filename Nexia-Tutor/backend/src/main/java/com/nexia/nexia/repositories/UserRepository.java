@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.nexia.nexia.models.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, String> {
 
 }

@@ -29,13 +29,17 @@ public class PDFGeneratorController {
         this._pdfGeneratorService = PdfGeneratorService;
     }
 
-    String filePath = "src\\main\\resources\\pdf\\";
-    String userFilePath = "src\\main\\resources\\json\\ImportantUser.json";
+    String filePath = "reportGeneration\\src\\main\\resources\\pdf\\";
+    String userFilePath = "reportGeneration\\src\\main\\resources\\json\\ImportantUser.json";
 
     // String jsonFilePath = "src\\main\\resources\\json\\ImportantUser.json";
     @GetMapping("/pdf/down/{userId}")
-    public void downloadPDF(HttpServletResponse response, @PathVariable String userId) throws IOException {
+    public ResponseEntity downloadPDF(HttpServletResponse response, @PathVariable String userId) throws IOException {
         User user = _userService.getUserById(userId, userFilePath);
+        //need to handle this error
+        if(user == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         UserData data = _userService.categoryDetection(user);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
         String formatedDate = dateFormat.format(data.getDate());
@@ -47,6 +51,7 @@ public class PDFGeneratorController {
         String headerValue = "attachment; filename=DyslexiaReport " + formatedDate + ".pdf";
         response.setHeader(headerKey, headerValue);
         this._pdfGeneratorService.downloadDocument(response,user);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/pdf/gen")

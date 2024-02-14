@@ -32,8 +32,7 @@ public class GameController {
     public ResponseEntity getGamesForLesson(@PathVariable String lessonName,
             @RequestBody Map<String, String> body) {
         String id = body.get("id");
-        long userID = Long.parseLong(id);
-        Object jsonResponse = gameService.getGamesForLesson(lessonName, userID);
+        Object jsonResponse = gameService.getGamesForLesson(lessonName, id);
         if (jsonResponse != null) {
             return ResponseEntity.ok(jsonResponse);
         } else {
