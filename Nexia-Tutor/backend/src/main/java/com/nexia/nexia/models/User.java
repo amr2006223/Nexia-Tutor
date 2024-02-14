@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -36,7 +37,7 @@ public class User implements UserDetails {
     private boolean gender;
     private String role;
 
-    @ManyToMany(targetEntity = DyslexiaType.class)
+    @ManyToMany(targetEntity = DyslexiaType.class,fetch = FetchType.EAGER)
     @JoinTable(name = "user_dyslexia_types", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "dyslexia_type_id"))
     private List<DyslexiaType> dyslexia_types;
 
@@ -121,7 +122,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList(Arrays.asList(new SimpleGrantedAuthority(this.role)));
+        return new ArrayList<SimpleGrantedAuthority>(Arrays.asList(new SimpleGrantedAuthority(this.role)));
     }
 
     @Override

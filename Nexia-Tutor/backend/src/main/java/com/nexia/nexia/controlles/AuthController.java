@@ -29,12 +29,9 @@ public class AuthController {
     private jwtService jwtService;
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody Map<String, String> body) {
-        String username = body.get("username");
-        String password = body.get("password");
-        String passwordHashed = this.bCryptPasswordEncoder.encode(password);
-        User user = new User();
-        user.setUsername(username);
+    public ResponseEntity register(@RequestBody User user) {
+
+        String passwordHashed = this.bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(passwordHashed);
         this.userRepository.save(user);
 

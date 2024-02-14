@@ -39,7 +39,7 @@ public class UserService {
         List<DyslexiaType> types = new ArrayList<>();
         Date date = null;
         String id = "203";
-        User addedUser = new User(id, user.getUsername(), "asdasd", date, "asdf", true, types);
+        User addedUser = new User(id, user.getUsername(), "asdasd", date, "asdf", true, types,"USER");
         // userRepository.save(user);
         UserEvent userEvent = new UserEvent();
         userEvent.setStatus("Pending");

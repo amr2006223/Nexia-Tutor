@@ -36,4 +36,5 @@ public class DyslexiaType {
     public void setDyslexia_type_name(String dyslexia_type_name) {
         this.dyslexia_type_name = dyslexia_type_name;
     }
+
 }
