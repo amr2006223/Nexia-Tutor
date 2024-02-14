@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +21,7 @@ import com.example.report_generation.report_generation.service.UserService;
 public class UserController {
     @Autowired
     ScreeningService _screeningService;
-    String filePath = "src\\main\\resources\\json\\ImportantUser.json";
+    String filePath = "reportGeneration\\src\\main\\resources\\json\\ImportantUser.json";
     @Autowired
     UserService _userService;
     @DeleteMapping("/delete/{userId}")
@@ -31,5 +32,11 @@ public class UserController {
    public ResponseEntity<User> addUser(@RequestBody User newUser) throws IOException {
        User user = _userService.InsertUser(newUser, filePath);
        return new ResponseEntity<User>(user,HttpStatus.OK);
+   }
+   
+   @GetMapping("/get/{id}")
+   public ResponseEntity<User> getUser(@PathVariable String id) throws IOException {
+       User user = _userService.getUserById(id, filePath);
+       return new ResponseEntity<User>(user, HttpStatus.OK);
    }
 }

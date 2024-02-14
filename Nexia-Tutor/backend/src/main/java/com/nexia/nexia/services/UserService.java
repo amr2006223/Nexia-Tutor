@@ -30,7 +30,7 @@ public class UserService {
     private UserProducer userProducer;
 
     // TODO: get user by userID
-    public User getUserById(Long userId) {
+    public User getUserById(String userId) {
         return userRepository.findById(userId).orElse(null);
     }
     public User addUser(UserDTO user){

@@ -25,8 +25,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.Map;
 @Service
 public class PDFGeneratorService {
-    String pdfFilePath = "src\\main\\resources\\pdf\\";
-    String userFilePath = "src\\main\\resources\\json\\ImportantUser.json";
+    String pdfFilePath = "reportGeneration\\src\\main\\resources\\pdf\\";
+    String userFilePath = "reportGeneration\\src\\main\\resources\\json\\ImportantUser.json";
     @Autowired 
     UserService _userService;
     public void downloadDocument(HttpServletResponse response,User user) throws IOException{
