@@ -9,6 +9,29 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserEvent {
     private String message;
-    private String status;
+    private Status status;
     private UserDTO user;
+    public static enum Status{
+        ADD,
+        UPDATE,
+        DELETE,
+
+    }
+    
+    public static enum Topics {
+        USER("USER"),
+        DYSLEXIATYPE("DYSLEXIATYPE"),
+        LESSON("LESSON");
+
+        private final String value;
+
+        Topics(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
 }
+
