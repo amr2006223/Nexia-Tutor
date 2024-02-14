@@ -34,9 +34,10 @@ public class GameService {
     public Map<String, Object> getGamesForLesson(String LessonName, String userId) {
         // 0.get user
         User user = userService.getUserById(userId);
+        if(user == null) return null;
         // get lesson and get all keywords
         LessonJson lessonDetails = lessonJsonService.getLessonByName(LessonName);
-
+        if(lessonDetails == null) return null;
         // 2. get user dyslexia types
         List<DyslexiaType> dyslexiaTypes = user.getDyslexia_types();
 
