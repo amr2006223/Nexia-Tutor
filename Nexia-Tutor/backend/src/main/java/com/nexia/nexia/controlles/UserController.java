@@ -20,10 +20,10 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/add")
-    public ResponseEntity<User> addNewUser(@RequestBody UserDTO user) {
-        User addedUser = userService.addUser(user);
-        return new ResponseEntity<User>(addedUser,HttpStatus.OK);
-    }
+    // @PostMapping("/add")
+    // public ResponseEntity<User> addNewUser(@RequestBody UserDTO user) {
+    //     User addedUser = userService.addUser(user);
+    //     return new ResponseEntity<User>(addedUser,HttpStatus.OK);
+    // }
     
 }

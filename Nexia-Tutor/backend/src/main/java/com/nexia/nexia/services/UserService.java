@@ -16,6 +16,7 @@ import com.nexia.nexia.kafka.UserProducer;
 import com.nexia.nexia.models.User;
 import com.nexia.nexia.repositories.DyslexiaTypeRepository;
 import com.nexia.nexia.repositories.UserRepository;
+import com.nexia.nexia.util.topics;
 import com.nexia.nexia.models.DyslexiaType;
 
 import java.sql.Date;
@@ -46,12 +47,13 @@ public class UserService {
         String passwordHashed = this.bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(passwordHashed);
         this.userRepository.save(user);
-
         String token = this.jwtService.generateToken(user.getId());
+        user.setToken(token);
+        produceUser(user);
         return token;
     }
 
-    public Map<String, String> login(String username,String password)
+    public User login(String username,String password)
     {
         User user = this.userRepository.findByUsername(username).orElse(null);
         if (user == null) {
@@ -61,33 +63,47 @@ public class UserService {
         if (!this.bCryptPasswordEncoder.matches(password, user.getPassword())) {
             return null;
         }
-        String token = this.jwtService.generateToken(user.getId());
-        Map<String, String> result = new HashMap<>();
-        result.put("token", token);
-        String uuid = this.jwtService.extractUUID(token);
-        result.put("UUID", uuid);
-        return result;
+        String token = user.getToken();
+        if(user.getToken() == null || jwtService.isTokenExpired(user.getToken())){
+            token = this.jwtService.generateToken(user.getId());
+            user.setToken(token);
+        }
+
+        return user;
     }
 
-    public User addUser(UserDTO user) {
-        // add user to database
-        List<DyslexiaType> types = new ArrayList<>();
-        Date date = null;
-        String id = "203";
-        User addedUser = new User(id, user.getUsername(), "asdasd", date, "asdf", true, types,"USER");
-        // userRepository.save(user);
-        UserEvent userEvent = new UserEvent();
-        userEvent.setStatus("Pending");
-        userEvent.setMessage("user status is pending");
-        userEvent.setUser(user);
-
-        NewTopic topic = TopicBuilder.name("new-topic").build();
-        // userProducer.changeTopic(topic);
-        userProducer.sendMessage(userEvent, "new-topic");
-        userProducer.sendMessage(userEvent, "user-data");
-
-        System.err.println(user.toString());
-        return addedUser;
+    public boolean produceUser(User user){
+        try{
+            UserEvent userEvent = new UserEvent();
+            userEvent.setStatus(UserEvent.Status.ADD);
+            userEvent.setMessage("Adding this user");
+            userEvent.setUser(new UserDTO(user.getId(), user.getUsername()));
+            userProducer.sendMessage(userEvent, UserEvent.Topics.USER.getValue());
+            System.err.println(user.toString());
+            return true;
+        }catch(Exception e){
+            return false;
+        }
     }
+    // public User addUser(UserDTO user) {
+    //     // add user to database
+    //     List<DyslexiaType> types = new ArrayList<>();
+    //     Date date = null;
+    //     String id = "203";
+    //     User addedUser = new User(id, user.getUsername(), "asdasd", date, "asdf", true, types,"USER");
+    //     // userRepository.save(user);
+    //     UserEvent userEvent = new UserEvent();
+    //     userEvent.setStatus("Pending");
+    //     userEvent.setMessage("user status is pending");
+    //     userEvent.setUser(user);
+
+    //     NewTopic topic = TopicBuilder.name("new-topic").build();
+    //     // userProducer.changeTopic(topic);
+    //     userProducer.sendMessage(userEvent, "new-topic");
+    //     userProducer.sendMessage(userEvent, "user-data");
+
+    //     System.err.println(user.toString());
+    //     return addedUser;
+    // }
 
 }

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 public class TestController {
     @GetMapping("/me")
-    public ResponseEntity GetMyDetails(@AuthenticationPrincipal UserDetails userdetails) {
-        return new ResponseEntity<>(userdetails, HttpStatus.OK);
+    public ResponseEntity<UserDetails> GetMyDetails(@AuthenticationPrincipal UserDetails userdetails) {
+        return new ResponseEntity<UserDetails>(userdetails, HttpStatus.OK);
     }
 
 }

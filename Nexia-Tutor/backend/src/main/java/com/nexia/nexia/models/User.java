@@ -5,14 +5,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.apache.kafka.common.protocol.types.Field.Array;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -36,7 +32,8 @@ public class User implements UserDetails {
     private String nationality;
     private boolean gender;
     private String role;
-
+    @Column(nullable = true)
+    private String token;
     @ManyToMany(targetEntity = DyslexiaType.class,fetch = FetchType.EAGER)
     @JoinTable(name = "user_dyslexia_types", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "dyslexia_type_id"))
     private List<DyslexiaType> dyslexia_types;
@@ -118,6 +115,18 @@ public class User implements UserDetails {
 
     public void setDyslexia_types(List<DyslexiaType> dyslexia_types) {
         this.dyslexia_types = dyslexia_types;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @Override

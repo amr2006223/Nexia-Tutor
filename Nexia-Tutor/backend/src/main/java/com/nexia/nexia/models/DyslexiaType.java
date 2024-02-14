@@ -1,5 +1,7 @@
 package com.nexia.nexia.models;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,25 +9,27 @@ import jakarta.persistence.Id;
 
 @Entity
 public class DyslexiaType {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private String id;
 
     private String dyslexia_type_name;
 
     public DyslexiaType() {
     }
 
-    public DyslexiaType(Long id, String dyslexia_type_name) {
+    public DyslexiaType(String id, String dyslexia_type_name) {
         this.id = id;
         this.dyslexia_type_name = dyslexia_type_name;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
