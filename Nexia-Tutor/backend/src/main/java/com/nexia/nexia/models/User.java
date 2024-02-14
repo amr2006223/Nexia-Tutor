@@ -14,7 +14,7 @@ import jakarta.persistence.ManyToMany;
 public class User {
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUID.Generator")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
     @Column(unique = true)
     private String username;
