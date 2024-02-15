@@ -23,7 +23,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 
 @Service
 public class UserService {
-    ObjectMapper objectMapper = new ObjectMapper();
+    
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     DyslexiaCategoryRepository _dyslexiaCategoryRepository;

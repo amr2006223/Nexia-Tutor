@@ -1,30 +1,30 @@
-package com.nexia.nexia.services;
+// package com.nexia.nexia.services;
 
 
-import org.springframework.stereotype.Service;
+// import org.springframework.stereotype.Service;
 
-// import com.nexia.nexia.repositories.KeywordRepository;
-// import com.nexia.nexia.repositories.LessonRepository;
+// // import com.nexia.nexia.repositories.KeywordRepository;
+// // import com.nexia.nexia.repositories.LessonRepository;
 
-@Service
-public class KeywordService {
-    // @Autowired
-    // private KeywordRepository keywordRepository;
-    // @Autowired
-    // private LessonRepository lessonRepository;
+// @Service
+// public class KeywordService {
+//     // @Autowired
+//     // private KeywordRepository keywordRepository;
+//     // @Autowired
+//     // private LessonRepository lessonRepository;
 
-    // TODO: add a method to get all keywords for lesson
-    // public List<Keyword> getAllKeywordsForLesson(Lesson lesson) {
-    // List<Keyword> lessonkeywords = keywordRepository.findByLesson(lesson);
-    // return lessonkeywords;
-    // }
+//     // TODO: add a method to get all keywords for lesson
+//     // public List<Keyword> getAllKeywordsForLesson(Lesson lesson) {
+//     // List<Keyword> lessonkeywords = keywordRepository.findByLesson(lesson);
+//     // return lessonkeywords;
+//     // }
 
-    // public List<Keyword> getAllKeywordsForLessonById(Long lessonId) {
-    // for (Lesson lesson : lessonRepository.findAll()) {
-    // if (lesson.getId().equals(lessonId)) {
-    // return keywordRepository.findByLesson(lesson);
-    // }
-    // }
-    // return null;
-    // }
-}
+//     // public List<Keyword> getAllKeywordsForLessonById(Long lessonId) {
+//     // for (Lesson lesson : lessonRepository.findAll()) {
+//     // if (lesson.getId().equals(lessonId)) {
+//     // return keywordRepository.findByLesson(lesson);
+//     // }
+//     // }
+//     // return null;
+//     // }
+// }

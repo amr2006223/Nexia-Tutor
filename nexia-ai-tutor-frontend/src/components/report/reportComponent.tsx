@@ -51,7 +51,7 @@ const ReportPage: React.FC<ReportPageProps> = ({
   };
 
   const downloadReport = async () => {
-    const reportUrl = `http://localhost:8080/pdf/down/123e4567-e89b-12d3-a456-426614174001`;
+    const reportUrl = `http://localhost:8081/pdf/down/123e4567-e89b-12d3-a456-426614174001`;
  
     try {
       const response = await fetch(reportUrl, {

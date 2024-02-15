@@ -23,20 +23,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // @PostMapping("/add")
-    // public ResponseEntity<User> addNewUser(@RequestBody UserDTO user) {
-    //     User addedUser = userService.addUser(user);
-    //     return new ResponseEntity<User>(addedUser,HttpStatus.OK);
-    // }
-
     @PutMapping("/update")
-    public ResponseEntity<User> putMethodName(@RequestBody User user) {
+    public ResponseEntity<User> updateUser(@RequestBody User user) {
         userService.updateUser(user);
         return new ResponseEntity<User> (user,HttpStatus.OK);
     }
 
     @PostMapping("/delete/{id}")
-    public ResponseEntity<String> addNewUser(@PathVariable String id) {
+    public ResponseEntity<String> deleteUser(@PathVariable String id) {
         userService.deleteUser(id);
         return new ResponseEntity<String>("User Got Deleted",HttpStatus.OK);
     }
