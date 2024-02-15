@@ -56,8 +56,7 @@ public class PDFGeneratorController {
 
     @PostMapping("/pdf/gen")
     public ResponseEntity<String> generatePdf(@RequestBody Map<String, Object> body) throws IOException {
-        // TODO: process POST request
-        _pdfGeneratorService.generateDocumentInServer(body);
+        _pdfGeneratorService.generateDocumentInServer(body.get("userId").toString());
         return new ResponseEntity<String>("Pdf Generated Successfully", HttpStatus.OK);
     }
 

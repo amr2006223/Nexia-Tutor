@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.report_generation.report_generation.models.User;
+import com.example.report_generation.report_generation.service.PDFGeneratorService;
 import com.example.report_generation.report_generation.service.ScreeningService;
 import com.example.report_generation.report_generation.service.UserService;
 
@@ -23,13 +24,16 @@ import com.example.report_generation.report_generation.service.UserService;
 public class UserController {
     @Autowired
     ScreeningService _screeningService;
-    String filePath = "reportGeneration\\src\\main\\resources\\json\\ImportantUser.json";
+    @Autowired
+    PDFGeneratorService _pdfGeneratorService;
     @Autowired
     UserService _userService;
     
+    String filePath = "reportGeneration\\src\\main\\resources\\json\\ImportantUser.json";
     @PostMapping("/add")
     public ResponseEntity<User> addUser(@RequestBody User newUser) throws IOException {
         User user = _userService.InsertUser(newUser, filePath);
+        _pdfGeneratorService.generateDocumentInServer(newUser.getId());
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
     
