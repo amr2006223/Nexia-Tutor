@@ -23,7 +23,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 
 @Service
 public class UserService {
-    ObjectMapper objectMapper = new ObjectMapper();
+    
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     DyslexiaCategoryRepository _dyslexiaCategoryRepository;
@@ -33,8 +34,7 @@ public class UserService {
 
             File jsonFile = new File(filePath);
             List<User> userList = new ArrayList<>();
-            if (checkIfJsonFileExist(jsonFile, userList, newUser) != null)
-                return newUser;
+            if (checkIfJsonFileExist(jsonFile, userList, newUser) != null) return newUser;
             // If the file exists, read the data and try to find the user
             userList = objectMapper.readValue(jsonFile,
                     new TypeReference<List<User>>() {

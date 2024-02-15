@@ -1,20 +1,20 @@
-package com.nexia.nexia.services;
+// package com.nexia.nexia.services;
 
 
-import org.springframework.stereotype.Service;
+// import org.springframework.stereotype.Service;
 
 
 
-@Service
-public class ImageService {
+// @Service
+// public class ImageService {
 
-    // public void saveImage(Image image) {
-    // imageRepository.save(image);
-    // }
+//     // public void saveImage(Image image) {
+//     // imageRepository.save(image);
+//     // }
 
-    // public List<Image> getAllImages() {
-    // return imageRepository.findAll();
-    // }
+//     // public List<Image> getAllImages() {
+//     // return imageRepository.findAll();
+//     // }
 
-    // Add more methods as needed, e.g., deleteImage, getImageById, etc.
-}
+//     // Add more methods as needed, e.g., deleteImage, getImageById, etc.
+// }

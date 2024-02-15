@@ -18,9 +18,10 @@ public class AuthController {
     @Autowired
     private UserService userService;
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody User user) {
-        String token = userService.signUp(user);
-        return new ResponseEntity<String>(token, HttpStatus.OK);
+    public ResponseEntity<?> register(@RequestBody User user) {
+        User addedUser = userService.signUp(user);
+        if(addedUser == null) return new ResponseEntity<String>("Failed to add user",HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<User>(addedUser, HttpStatus.OK);
 
     }
     @PostMapping("/login")

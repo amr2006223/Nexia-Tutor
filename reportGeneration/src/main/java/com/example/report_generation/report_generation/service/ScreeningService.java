@@ -19,7 +19,7 @@ public class ScreeningService {
     private final RestTemplate restTemplate;
     private final DyslexiaCategoryRepository _categoryRepository;
     @Autowired
-    UserService _userService;
+    private UserService _userService;
     String filePath = "src\\main\\resources\\json\\ImportantUser.json";
     public ScreeningService(RestTemplate restTemplate, DyslexiaCategoryRepository categoryRepository) {
         this.restTemplate = restTemplate;

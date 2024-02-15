@@ -23,9 +23,10 @@ public class jwtService {
     }
 
     // encode uuid generate token
-    public String generateToken(String uuid) {
+    public String generateToken(String userId) {
         String token = JWT.create()
-                .withSubject(uuid)
+                .withSubject(
+                        userId)
                 .withExpiresAt(new Date(System.currentTimeMillis() + this.validity))
                 .sign(this.algorithm);
         return token;

@@ -24,16 +24,21 @@ public class UserService {
         return userRepository.findById(userId).orElse(null);
     }
 
-    public String signUp(User user){
-        String passwordHashed = this.bCryptPasswordEncoder.encode(user.getPassword());
-        user.setPassword(passwordHashed);
-        String token = this.jwtService.generateToken(user.getId());
-        user.setToken(token);
-        this.userRepository.save(user);
-        if(userProducer.broadcastUser(user,UserEvent.Status.ADD,"Adding user")){
-            System.out.println("error user couldnt be added in other microservices");
+    public User signUp(User user){
+        try{
+
+            String passwordHashed = this.bCryptPasswordEncoder.encode(user.getPassword());
+            user.setPassword(passwordHashed);
+            String token = this.jwtService.generateToken(user.getId());
+            user.setToken(token);
+            User addedUser = this.userRepository.save(user);
+            if(userProducer.broadcastUser(user,UserEvent.Status.ADD,"Adding user")){
+                System.out.println("error user couldnt be added in other microservices");
+            }
+            return addedUser;
+        }catch(Exception e){
+            return null;
         }
-        return token;
     }
 
     

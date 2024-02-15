@@ -18,11 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class LessonJsonService {
 
-    // @Autowired
-    // private ImageService imageService;
-
-    private final String filePath = "backend\\src\\main\\resources\\json\\lessons.json"; // Specify the
-    // file path
+    private final String filePath = "Nexia-Tutor\\backend\\src\\main\\resources\\json\\lessons.json"; // Specify the
 
     public void saveLessons(List<LessonJson> lessons, boolean overwrite) {
         ObjectMapper objectMapper = new ObjectMapper();
