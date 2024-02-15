@@ -17,7 +17,6 @@ public class UserEvent {
         DELETE,
 
     }
-    
     public static enum Topics {
         USER("USER"),
         DYSLEXIATYPE("DYSLEXIATYPE"),

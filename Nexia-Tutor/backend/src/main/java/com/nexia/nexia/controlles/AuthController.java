@@ -1,6 +1,6 @@
 package com.nexia.nexia.controlles;
 import java.util.Map;
-import java.util.HashMap;
+
 import org.springframework.web.bind.annotation.RestController;
 import com.nexia.nexia.models.User;
 import com.nexia.nexia.services.UserService;
@@ -30,7 +30,9 @@ public class AuthController {
             return new ResponseEntity<String>("Not Found", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<User>(user, HttpStatus.OK);
-
     }
-
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestBody Map<String, String> body) {
+        return new ResponseEntity<String>("not implemented", HttpStatus.OK);
+    }
 }

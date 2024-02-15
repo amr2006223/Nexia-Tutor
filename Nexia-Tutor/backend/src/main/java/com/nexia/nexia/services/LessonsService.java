@@ -1,13 +1,8 @@
 package com.nexia.nexia.services;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.nexia.nexia.models.Lesson;
 //import com.nexia.nexia.repositories.LessonRepository;
-import java.util.*;
 
 @Service
 public class LessonsService {

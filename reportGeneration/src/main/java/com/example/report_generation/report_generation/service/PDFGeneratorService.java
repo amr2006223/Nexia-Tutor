@@ -5,15 +5,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.lowagie.text.pdf.BaseFont;
 import com.example.report_generation.report_generation.models.User;
-import com.example.report_generation.report_generation.models.UserData;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
-import com.lowagie.text.List;
-import com.lowagie.text.ListItem;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
@@ -60,7 +56,7 @@ public class PDFGeneratorService {
 
         // generate the actual document
         Document document = new Document(PageSize.A4);
-        PdfWriter writer = getWriter(document, user);
+        // PdfWriter writer = getWriter(document, user);
 
         document.open();
 

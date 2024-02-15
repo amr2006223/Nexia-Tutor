@@ -22,7 +22,7 @@ public class WebSecurityConfig {
         httpSecurity.cors(cors -> cors.disable())
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorizeRequests -> authorizeRequests.requestMatchers("/auth/**").permitAll()
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests.requestMatchers("/auth/**").permitAll().requestMatchers("/user/**").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN").requestMatchers("/test/**").hasAuthority("USER").anyRequest().authenticated())
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
