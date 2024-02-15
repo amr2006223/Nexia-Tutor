@@ -34,7 +34,7 @@ public class PDFGeneratorController {
 
     // String jsonFilePath = "src\\main\\resources\\json\\ImportantUser.json";
     @GetMapping("/pdf/down/{userId}")
-    public ResponseEntity downloadPDF(HttpServletResponse response, @PathVariable String userId) throws IOException {
+    public ResponseEntity<?> downloadPDF(HttpServletResponse response, @PathVariable String userId) throws IOException {
         User user = _userService.getUserById(userId, userFilePath);
         //need to handle this error
         if(user == null){

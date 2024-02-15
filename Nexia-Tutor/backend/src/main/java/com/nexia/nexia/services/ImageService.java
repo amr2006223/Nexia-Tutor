@@ -1,11 +1,9 @@
 package com.nexia.nexia.services;
 
-import com.nexia.nexia.models.Image;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+
 
 @Service
 public class ImageService {

@@ -2,9 +2,9 @@ package com.nexia.nexia.models;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import jakarta.persistence.Entity;
+
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+
 import jakarta.persistence.Id;
 
 public class Image {

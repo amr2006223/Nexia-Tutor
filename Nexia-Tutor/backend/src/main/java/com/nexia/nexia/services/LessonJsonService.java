@@ -4,26 +4,22 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nexia.nexia.models.Image;
 import com.nexia.nexia.models.Keyword;
-import com.nexia.nexia.models.Lesson;
 import com.nexia.nexia.models.LessonJson;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class LessonJsonService {
 
-    @Autowired
-    private ImageService imageService;
+    // @Autowired
+    // private ImageService imageService;
 
     private final String filePath = "backend\\src\\main\\resources\\json\\lessons.json"; // Specify the
     // file path
