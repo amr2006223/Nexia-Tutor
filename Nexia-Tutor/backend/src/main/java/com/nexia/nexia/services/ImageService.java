@@ -18,3 +18,4 @@
 
 //     // Add more methods as needed, e.g., deleteImage, getImageById, etc.
 // }
+

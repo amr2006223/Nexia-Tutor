@@ -2,12 +2,12 @@ package com.nexia.nexia.models;
 
 import java.util.List;
 
-public class LessonJson {
+public class Lesson {
     private String lessonName;
 
     private List<Keyword> keywords;
 
-    public LessonJson() {
+    public Lesson() {
     }
 
     public String getLessonName() {
