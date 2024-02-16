@@ -14,7 +14,6 @@ public class DyslexiaType {
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
-
     private String dyslexia_type_name;
 
     public DyslexiaType() {

@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 
 public class AuthController {
     @Autowired
     private UserService userService;
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody User user) {
-        String token = userService.signUp(user);
-        return new ResponseEntity<String>(token, HttpStatus.OK);
+    public ResponseEntity<User> register(@RequestBody User user) {
+        User addedUser = userService.addEntity(user);
+        return new ResponseEntity<User>(addedUser, HttpStatus.OK);
 
     }
     @PostMapping("/login")
@@ -31,6 +31,7 @@ public class AuthController {
         }
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
+    //TO-DO logout implementation
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestBody Map<String, String> body) {
         return new ResponseEntity<String>("not implemented", HttpStatus.OK);

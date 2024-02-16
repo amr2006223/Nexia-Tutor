@@ -1,39 +1,29 @@
 package com.nexia.nexia.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import java.util.List;
 
-@Entity
 public class Lesson {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String lessonName;
 
-    private String lesson_name;
+    private List<Keyword> keywords;
 
     public Lesson() {
     }
 
-    public Lesson(Long id, String lesson_name) {
-        this.id = id;
-        this.lesson_name = lesson_name;
+    public String getLessonName() {
+        return lessonName;
     }
 
-    public Long getId() {
-        return id;
+    public void setLessonName(String lessonName) {
+        this.lessonName = lessonName;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public List<Keyword> getKeywords() {
+        return keywords;
     }
 
-    public String getLesson_name() {
-        return lesson_name;
+    public void setKeywords(List<Keyword> keywords) {
+        this.keywords = keywords;
     }
 
-    public void setLesson_name(String lesson_name) {
-        this.lesson_name = lesson_name;
-    }
 }
