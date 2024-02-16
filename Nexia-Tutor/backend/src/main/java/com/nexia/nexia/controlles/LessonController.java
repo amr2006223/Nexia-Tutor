@@ -9,10 +9,6 @@ import com.nexia.nexia.models.Image;
 import com.nexia.nexia.models.Keyword;
 import com.nexia.nexia.models.Lesson;
 import com.nexia.nexia.services.LessonService;
-
-
-import java.util.List;
-
 import java.util.List;
 
 @RestController
