@@ -1,5 +1,7 @@
 package com.nexia.nexia.services;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public abstract class CrudOperations<T, X, R extends JpaRepository<T, X>> { 
@@ -16,7 +18,8 @@ public abstract class CrudOperations<T, X, R extends JpaRepository<T, X>> {
         try{
             repository.save(entity);
             return entity;
-        }catch(Exception e){
+        }
+        catch(Exception e){
             return null;
         }
     }
@@ -26,7 +29,8 @@ public abstract class CrudOperations<T, X, R extends JpaRepository<T, X>> {
         try {
             repository.delete(entity);
             return true;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             return false;
         }
     }
@@ -46,6 +50,15 @@ public abstract class CrudOperations<T, X, R extends JpaRepository<T, X>> {
         if (entity == null) return null;
             return entity;
         } catch (Exception e) {
+            return null;
+        }
+    }
+    public List<T> getAllEntities(){
+        try{
+            List<T> allEntities = repository.findAll();
+            if(allEntities.isEmpty() || allEntities == null) return null;
+            return allEntities;
+        }catch(Exception e){
             return null;
         }
     }

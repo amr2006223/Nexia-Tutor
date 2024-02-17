@@ -8,10 +8,12 @@ import com.nexia.nexia.models.Lesson;
 import com.nexia.nexia.models.User;
 import com.nexia.nexia.repositories.DyslexiaTypeRepository;
 import com.nexia.nexia.repositories.GameRepository;
+import com.nexia.nexia.services.iservices.IGameService;
+
 import java.util.*;
 
 @Service
-public class GameService extends CrudOperations<Game, Long, GameRepository> {
+public class GameService extends CrudOperations<Game, Long, GameRepository> implements IGameService {
 
     @Autowired
     private UserService userService;
@@ -26,15 +28,18 @@ public class GameService extends CrudOperations<Game, Long, GameRepository> {
         super(repository);
     }
 
-    public Map<String, Object> getGamesForLesson(String LessonName, String userId) {
+    @Override
+    public Map<String, Object> getGamesForLesson(String lessonName, String userId) {
         try {
 
             // get user
             User user = userService.getEntityById(userId);
-            if (user == null) return null;
+            if (user == null)
+                return null;
             // get lesson and get all keywords
-            Lesson lessonDetails = lessonJsonService.getEntityById(LessonName);
-            if (lessonDetails == null) return null;
+            Lesson lessonDetails = lessonJsonService.getEntityById(lessonName);
+            if (lessonDetails == null)
+                return null;
             // get user dyslexia types
             List<DyslexiaType> dyslexiaTypes = user.getDyslexia_types();
             // get all games for dyslexia types (loop)
@@ -60,6 +65,5 @@ public class GameService extends CrudOperations<Game, Long, GameRepository> {
         } else {
             return gameRepository.findByDyslexiaType(dyslexiaType);
         }
-
     }
 }
