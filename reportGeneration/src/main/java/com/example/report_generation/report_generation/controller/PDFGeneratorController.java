@@ -56,8 +56,11 @@ public class PDFGeneratorController {
 
     @PostMapping("/pdf/gen")
     public ResponseEntity<String> generatePdf(@RequestBody Map<String, Object> body) throws IOException {
-        _pdfGeneratorService.generateDocumentInServer(body.get("userId").toString());
+        boolean generated = _pdfGeneratorService.generateDocumentInServer(body.get("userId").toString());
+        if(!generated) return new ResponseEntity<String>("Falied to generate PDF", HttpStatus.BAD_REQUEST);
         return new ResponseEntity<String>("Pdf Generated Successfully", HttpStatus.OK);
+
+        
     }
 
 }
