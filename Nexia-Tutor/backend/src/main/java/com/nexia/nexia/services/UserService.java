@@ -7,9 +7,10 @@ import com.example.basedomain.basedomain.dto.UserEvent;
 import com.nexia.nexia.kafka.UserProducer;
 import com.nexia.nexia.models.User;
 import com.nexia.nexia.repositories.UserRepository;
+import com.nexia.nexia.services.iservices.IUserService;
 
 @Service
-public class UserService extends CrudOperations<User, String, UserRepository> {
+public class UserService extends CrudOperations<User, String, UserRepository> implements IUserService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -23,7 +24,7 @@ public class UserService extends CrudOperations<User, String, UserRepository> {
     public UserService(UserRepository repository) {
         super(repository);
     }
-
+    @Override
     public User login(String username, String password) {
         User user = this.userRepository.findByUsername(username).orElse(null);
         if (user == null)
@@ -38,7 +39,8 @@ public class UserService extends CrudOperations<User, String, UserRepository> {
         }
         return user;
     }
-
+    
+    @Override
     public void logout() {
         throw new UnsupportedOperationException("Method logout() is not implemented yet");
     }

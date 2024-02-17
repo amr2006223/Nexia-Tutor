@@ -6,8 +6,10 @@ import com.nexia.nexia.models.Image;
 import com.nexia.nexia.models.Keyword;
 import com.nexia.nexia.models.Lesson;
 import com.nexia.nexia.repositories.LessonRepository;
+import com.nexia.nexia.services.iservices.ILessonService;
 
 import org.springframework.stereotype.Service;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,10 +18,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class LessonService extends CrudOperations<Lesson, String, LessonRepository> {
+public class LessonService extends CrudOperations<Lesson, String, LessonRepository> implements ILessonService {
 
     private final String filePath = "Nexia-Tutor\\backend\\src\\main\\resources\\json\\lessons.json";
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public LessonService(LessonRepository repository) {
         super(repository);
@@ -60,7 +62,8 @@ public class LessonService extends CrudOperations<Lesson, String, LessonReposito
     public Lesson updateEntity(Lesson updatedLesson) {
         String lessonName = updatedLesson.getLessonName();
         List<Lesson> lessons = getLessons();
-        if (lessons == null) return null;
+        if (lessons == null)
+            return null;
         for (int i = 0; i < lessons.size(); i++) {
             Lesson lesson = lessons.get(i);
             if (lessonName.equals(lesson.getLessonName())) {
@@ -73,6 +76,7 @@ public class LessonService extends CrudOperations<Lesson, String, LessonReposito
         return null;
     }
 
+    @Override
     public void saveLessons(List<Lesson> lessons) {
         List<Lesson> oldLessons = getLessons();
         if (oldLessons == null) {
@@ -83,6 +87,7 @@ public class LessonService extends CrudOperations<Lesson, String, LessonReposito
         writeLessonsToFile(oldLessons);
     }
 
+    @Override
     public List<Image> getLessonImages(String lessonName, String keyword) {
         Lesson lesson = getEntityById(lessonName);
         if (lesson != null) {
@@ -95,8 +100,8 @@ public class LessonService extends CrudOperations<Lesson, String, LessonReposito
         return null;
     }
 
+    @Override
     public List<Lesson> getLessons() {
-        ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.readValue(new File(filePath), new TypeReference<List<Lesson>>() {
             });
@@ -106,15 +111,12 @@ public class LessonService extends CrudOperations<Lesson, String, LessonReposito
         }
     }
 
+    @Override
     public List<String> getLessonNames() {
         return Optional.ofNullable(getLessons()).map(lessons -> lessons.stream()
                 .map(Lesson::getLessonName)
                 .collect(Collectors.toList())).orElse(null);
     }
-
-    // public void deleteLesson(String lessonName) {
-
-    // }
 
     private void writeLessonsToFile(List<Lesson> lessons) {
         try {

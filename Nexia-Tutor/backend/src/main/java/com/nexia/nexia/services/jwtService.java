@@ -11,9 +11,10 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.nexia.nexia.services.iservices.IJwtService;
 
 @Service
-public class JwtService {
+public class JwtService implements IJwtService {
 
     private final String jwtSecret; // used for encoding
     private final Algorithm algorithm; // algorithm for encoding
@@ -26,7 +27,7 @@ public class JwtService {
         this.validity = validity;
     }
 
-    // encode uuid generate token
+    @Override
     public String generateToken(String uuid) {
         Date expiresAt = new Date(System.currentTimeMillis() + this.validity);
         return JWT.create()
@@ -35,7 +36,7 @@ public class JwtService {
                 .sign(this.algorithm);
     }
 
-    // Check if token is expired
+    @Override
     public boolean isTokenExpired(String token) {
         try {
             DecodedJWT decodedJWT = JWT.decode(token);
@@ -47,7 +48,7 @@ public class JwtService {
         }
     }
 
-    // decode token => extract uuid
+    @Override
     public String extractUUID(String token) throws JWTVerificationException {
         JWTVerifier jwtVerifier = JWT.require(this.algorithm).build();
         DecodedJWT decodedJWT = jwtVerifier.verify(token);
