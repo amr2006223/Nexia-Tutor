@@ -1,5 +1,5 @@
 "use client";
-import ProgressBarComponent from "@/components/common/progressBar";
+import ProgressBarComponent from "@/shared/progress/progressBar";
 import { getGamesForLesson } from "@/services/games/getGamesForLesson";
 import { LessonGamesModel } from "@/types/lesson";
 import { Grid, Paper } from "@mui/material";
@@ -79,7 +79,7 @@ const Page = ({ params: { id } }: { params: { id: string } }) => {
                           <CardActions className="card-action-dense">
                             <Link
                               href={{
-                                pathname: `/${game.game_name}`,
+                                pathname: `/games/${game.game_name}`,
                                 query: {
                                   keyword: keyword.keyword_name,
                                   imgLink: keyword.images[0].image_url,
