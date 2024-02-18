@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import ProgressBarComponent from "../common/progressBar";
+import ProgressBarComponent from "../../shared/progress/progressBar";
 
 type LettersGridProps = {
   onClickLetter: (letter: string) => void;
