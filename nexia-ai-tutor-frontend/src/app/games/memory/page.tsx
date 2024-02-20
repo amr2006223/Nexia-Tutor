@@ -29,7 +29,7 @@ const page = () => {
     const _boxes = images.map((image, index) => ({
       id: index + 1,
       image,
-      color: "bg-gray",
+      color: "bg-gray-300 hover:bg-gray-500",
     }));
     setBoxes(_boxes);
     // get random image and set it as selected image
@@ -71,7 +71,7 @@ const page = () => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     // 2. start progress
-    await startProgress(5);
+    await startProgress(3);
     setInfoText("Time's up!");
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -92,7 +92,7 @@ const page = () => {
   };
 
   const checkAnswer = (id: number) => {
-    if(changeColor) return;
+    if (changeColor) return;
     if (id === selectedImage!.id) {
       setInfoText("Correct!");
       setChangeColor(true);
@@ -110,7 +110,7 @@ const page = () => {
       if (box.id === selectedImage!.id) {
         return {
           ...box,
-          color: "text-white bg-green",
+          color: "bg-green-300 hover:bg-green-500 text-white",
         };
       }
       return box;
@@ -148,7 +148,7 @@ const page = () => {
                     <div
                       key={box.id}
                       onClick={() => checkAnswer(box.id)}
-                      className={`flex items-center justify-center rounded-lg h-24 w-24 text-2xl cursor-pointer font-bold border-2 border-black ${box.color}-300 hover:${box.color}-700 hover:text-white transition duration-300 ease-in-out`}
+                      className={`flex items-center justify-center rounded-lg h-24 w-24 text-2xl cursor-pointer font-bold border-2 border-black ${box.color} hover:text-white transition duration-300 ease-in-out`}
                     >
                       {box.id}
                     </div>
