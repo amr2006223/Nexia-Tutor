@@ -40,13 +40,11 @@ public class PDFGeneratorController {
         if(user == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        UserData data = _userService.categoryDetection(user);
+        //category detection and get the latest record
+        UserData data = _userService.getLatestRecord(user);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
         String formatedDate = dateFormat.format(data.getDate());
-        // User user = _userService.getUserById(userId, jsonFilePath);
         response.setContentType("application/pdf");
-        // DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:mm:ss");
-        // String currentDateTime = dateFormatter.format(new Date());
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=DyslexiaReport " + formatedDate + ".pdf";
         response.setHeader(headerKey, headerValue);

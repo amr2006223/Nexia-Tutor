@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 
 @Service
 public class UserService {
-    
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
@@ -34,7 +35,8 @@ public class UserService {
 
             File jsonFile = new File(filePath);
             List<User> userList = new ArrayList<>();
-            if (checkIfJsonFileExist(jsonFile, userList, newUser) != null) return newUser;
+            if (checkIfJsonFileExist(jsonFile, userList, newUser) != null)
+                return newUser;
             // If the file exists, read the data and try to find the user
             userList = objectMapper.readValue(jsonFile,
                     new TypeReference<List<User>>() {
@@ -173,18 +175,25 @@ public class UserService {
         return accuracy / count;
     }
 
-    public UserData categoryDetection(User user) {
-        // get user
-        
+    public List<DyslexiaCategory> categoryDetection(User user) {
         // get the newest record of the user
         UserData data = getLatestRecord(user);
         Map<String, String> record = data.getRecord();
         // get the average of the record and what categories that the user had
-
-        DyslexiaCategory alphaAwarnessCategory = _dyslexiaCategoryRepository.findCategoryByName("Alphabetic Awareness");
-        if (getAccuracy(1, 4, record) > alphaAwarnessCategory.getAverage())
-            return data;
-        return data;
+        List<DyslexiaCategory> userCategories = new ArrayList<DyslexiaCategory>();
+        // TO-DO needs refactoring asap database need to have the number or the interval
+        // of question fro each dyslexia type
+        DyslexiaCategory alpha = _dyslexiaCategoryRepository.findCategoryByName("Alphabetic Awareness");
+        DyslexiaCategory phono = _dyslexiaCategoryRepository.findCategoryByName("Phonological Awareness");
+        DyslexiaCategory visual = _dyslexiaCategoryRepository.findCategoryByName("Visual Working Memory");
+        System.out.println("User Accuracy: " + getAccuracy(5,9, record) + "\n" + "alpha accuracy " + phono.getAverage());
+        if (getAccuracy(1, 4, record) <= alpha.getAverage())
+            userCategories.add(alpha);
+        if (getAccuracy(5, 9, record) <= phono.getAverage())
+            userCategories.add(phono);
+        if (getAccuracy(18, 21, record) <= visual.getAverage())
+            userCategories.add(visual);
+        return userCategories;
 
     }
 }
