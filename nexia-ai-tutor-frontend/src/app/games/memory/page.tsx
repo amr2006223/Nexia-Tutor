@@ -29,7 +29,7 @@ const page = () => {
     const _boxes = images.map((image, index) => ({
       id: index + 1,
       image,
-      color: "bg-gray-300",
+      color: "bg-gray",
     }));
     setBoxes(_boxes);
     // get random image and set it as selected image
@@ -83,12 +83,22 @@ const page = () => {
     }));
 
     // 4. start progress
-    setProgress(0);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    await startProgress(4);
+    // setProgress(0);
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    // await startProgress(4);
 
-    // 5. change the color of the box that has the id = id of the selected image
-    setChangeColor(true);
+    // // 5. change the color of the box that has the id = id of the selected image
+    // setChangeColor(true);
+  };
+
+  const checkAnswer = (id: number) => {
+    if(changeColor) return;
+    if (id === selectedImage!.id) {
+      setInfoText("Correct!");
+      setChangeColor(true);
+    } else {
+      setInfoText("Wrong!");
+    }
   };
 
   useEffect(() => {
@@ -100,7 +110,7 @@ const page = () => {
       if (box.id === selectedImage!.id) {
         return {
           ...box,
-          color: "bg-green-300",
+          color: "text-white bg-green",
         };
       }
       return box;
@@ -137,7 +147,8 @@ const page = () => {
                   {boxes.map((box, index) => (
                     <div
                       key={box.id}
-                      className={`flex items-center justify-center rounded-lg h-24 w-24 text-2xl font-bold border-2 border-black ${box.color}`}
+                      onClick={() => checkAnswer(box.id)}
+                      className={`flex items-center justify-center rounded-lg h-24 w-24 text-2xl cursor-pointer font-bold border-2 border-black ${box.color}-300 hover:${box.color}-700 hover:text-white transition duration-300 ease-in-out`}
                     >
                       {box.id}
                     </div>
