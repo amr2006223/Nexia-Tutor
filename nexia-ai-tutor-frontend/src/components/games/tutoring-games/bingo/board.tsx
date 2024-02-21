@@ -8,9 +8,10 @@ import {
   getTextSound,
   getTextSoundFemale,
 } from "@/services/text-to-speech/textSound";
-import ProgressBarComponent from "../../../../shared/progress/progressBar";
+import ProgressBarComponent from "../../../../shared/components/progress/progressBar";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { useRouter } from "next/navigation";
+import { playSoundFromGoogle } from "@/shared/utils/play-sounds";
 
 type Props = {
   size: number;
@@ -160,8 +161,7 @@ const BingoBoard = ({ size, letters, keyword }: Props) => {
 
   const handleCongrats = async () => {
     try {
-      const audio = new Audio("data:audio/wav;base64," + congratsSound);
-      await audio.play();
+      await playSoundFromGoogle(congratsSound);
     } catch (error) {
       console.log("error: hunt: listen word error: ", error);
     }
@@ -179,8 +179,7 @@ const BingoBoard = ({ size, letters, keyword }: Props) => {
 
   const spellLetter = async (letter: LetterDetail) => {
     try {
-      const audio = new Audio("data:audio/wav;base64," + letter.sound);
-      await audio.play();
+      await playSoundFromGoogle(letter.sound);
     } catch (error) {
       console.log("error: spellLetter", error);
     }
@@ -322,11 +321,8 @@ const BingoBoard = ({ size, letters, keyword }: Props) => {
                 className="font-bold text-2xl"
                 variant="contained"
                 style={{ backgroundColor: "#3E4772", color: "#CDEBC5" }}
-                onClick={() => {
-                  const audio = new Audio(
-                    "data:audio/wav;base64," + spelledLetter?.sound
-                  );
-                  audio.play();
+                onClick={async () => {
+                  await playSoundFromGoogle(spelledLetter!.sound);
                 }}
               >
                 Letter sound
