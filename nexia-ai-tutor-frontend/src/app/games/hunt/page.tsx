@@ -1,6 +1,6 @@
 "use client";
 import ProgressBarComponent from "@/shared/components/progress/progressBar";
-import LettersGrid from "@/components/hunt/lettersGrid";
+import LettersGrid from "@/components/games/tutoring-games/hunt/lettersGrid";
 import {
   getTextSound,
   getTextSoundFemale,

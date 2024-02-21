@@ -9,6 +9,8 @@ import SecondryWordRhymeComponent from "@/components/games/tutoring-games/rhyme/
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
 import CounterComponent from "@/shared/components/counter/CounterComponent";
+import FlagIcon from "@mui/icons-material/Flag";
+
 type RhymingGameProps = {
   keyword: RhymingWord;
   otherWords: RhymingWord[];
@@ -109,10 +111,10 @@ const RhymingGamePage = () => {
   }, []);
 
   return (
-    <div>
+    <div style={{ minHeight: "100vh", position: "relative" }}>
       {loading && <ProgressBarComponent />}
       {startGame ? (
-        <div>
+        <div style={{ paddingBottom: "60px" }}>
           {response && (
             <div className="flex flex-col justify-center items-center mt-3">
               <div className="flex flex-row items-center">
@@ -143,17 +145,33 @@ const RhymingGamePage = () => {
                   />
                 ))}
               </div>
-
-              <div className="flex flex-row justify-between items-center mt-3 ">
+              <div
+                style={{
+                  position: "fixed",
+                  bottom: 0,
+                  width: "100%",
+                  backgroundColor: "#fff",
+                  padding: "10px",
+                  borderTop: "2px solid #3e4772",
+                }}
+                className="flex flex-row justify-between items-center mt-3"
+              >
                 <CounterComponent
                   count={wrongAnswers}
                   color="red"
                   icon={CloseIcon}
                 />
+
                 <CounterComponent
                   count={correctAnswers}
                   color="green"
                   icon={CheckIcon}
+                />
+
+                <CounterComponent
+                  count={response.numberOfCorrectAnswers}
+                  color="purple"
+                  icon={FlagIcon}
                 />
               </div>
             </div>

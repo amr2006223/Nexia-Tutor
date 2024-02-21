@@ -10,16 +10,20 @@ type Props = {
   checkFunction: Function;
 };
 
-const SecondryWordRhymeComponent = ({ index, secondaryWord, checkFunction }: Props) => {
+const SecondryWordRhymeComponent = ({
+  index,
+  secondaryWord,
+  checkFunction,
+}: Props) => {
   return (
     <div
       key={index}
       className="flex flex-col items-center justify-center m-2 bg-green-100"
     >
       {secondaryWord.showImage && (
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center transition-opacity duration-500 ease-in-out">
           <img
-            className="rounded-md m-2 bg-red-200"
+            className="rounded-md m-2 bg-blue-200"
             src={secondaryWord.data.image}
             alt={secondaryWord.data.word}
             width={100}
