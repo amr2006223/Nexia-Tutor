@@ -1,5 +1,6 @@
 package com.example.report_generation.report_generation.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,8 @@ public class ScreeningController {
     ScreeningService _screeningService;
     
     @GetMapping("/get/average")
-    public ResponseEntity<DyslexiaCategory> getAverage(){
-        return new ResponseEntity<DyslexiaCategory> (_screeningService.getAverageFromScreeningService(),HttpStatus.OK);
+    public ResponseEntity<List<DyslexiaCategory>> getAverage(){
+        return new ResponseEntity<List<DyslexiaCategory>> (_screeningService.getAverageFromScreeningService(),HttpStatus.OK);
     }
     
     @PostMapping("/post/smth")
