@@ -1,5 +1,5 @@
 "use client";
-import ProgressBarComponent from "@/shared/progress/progressBar";
+import ProgressBarComponent from "@/shared/components/progress/progressBar";
 import React, { useEffect, useState } from "react";
 
 type Boxes = {

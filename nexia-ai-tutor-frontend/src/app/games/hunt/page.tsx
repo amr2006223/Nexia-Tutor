@@ -1,5 +1,5 @@
 "use client";
-import ProgressBarComponent from "@/shared/progress/progressBar";
+import ProgressBarComponent from "@/shared/components/progress/progressBar";
 import LettersGrid from "@/components/hunt/lettersGrid";
 import {
   getTextSound,
