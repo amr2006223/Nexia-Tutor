@@ -161,13 +161,11 @@ const RhymingGamePage = () => {
                   color="red"
                   icon={CloseIcon}
                 />
-
                 <CounterComponent
                   count={correctAnswers}
                   color="green"
                   icon={CheckIcon}
                 />
-
                 <CounterComponent
                   count={response.numberOfCorrectAnswers}
                   color="purple"
