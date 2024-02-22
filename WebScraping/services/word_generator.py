@@ -1,5 +1,4 @@
 import random
-
 class WordGenerator:
     @staticmethod
     def load_words():
@@ -8,6 +7,6 @@ class WordGenerator:
         return words
 
     @staticmethod
-    def generate_word(num):
+    def generate_words(num):
         words = WordGenerator.load_words()
         return random.sample(words, num)

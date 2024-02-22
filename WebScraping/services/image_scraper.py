@@ -38,7 +38,7 @@ class ImageScraper:
                     image_links.append({'query': search_query, 'link': unquote(data_src)})
                 elif src and src.startswith('data:image/jpeg;'):
                     image_links.append({'query': search_query, 'link': unquote(src)})
-                if len(image_links) == 4:
+                if len(image_links) == 1:
                      break
             # Return the list of image links
             return image_links

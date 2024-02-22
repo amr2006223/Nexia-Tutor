@@ -22,12 +22,12 @@ class RhymeScraper:
             rhyme_elements = soup.find_all('a', class_='r')
 
             # Try to get specific rhymes, or just take the first three if those don't exist
-            specific_indices = [3, 10, 15, 20, 23]
+            specific_indices = [3, 10, 15]
             rhymes = [rhyme.text for i, rhyme in enumerate(rhyme_elements) if i in specific_indices]
 
             # If no specific rhymes, take the first three
             if not rhymes:
-                rhymes = [rhyme.text for i, rhyme in enumerate(rhyme_elements) if i < 5]
+                rhymes = [rhyme.text for i, rhyme in enumerate(rhyme_elements) if i < 3]
 
             # Give back the list of rhymes
             return rhymes

@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, request
 from services.image_scraper import ImageScraper
 from services.rhyme_scraper import RhymeScraper
+from services.word_generator import WordGenerator
+from services.text_to_speech import TextToSpeech
 
 
 app = Flask(__name__)
@@ -18,15 +20,34 @@ def get_rhymes_and_images():
     word_image_links = ImageScraper.get_image_links(word) 
 
     rhymes = RhymeScraper.fetch_rhymes(word)
+    
     rhyme_image_links = [] 
     for rhyme in rhymes:
             image_links =  ImageScraper.get_image_links(rhyme)
             rhyme_image_links.extend(image_links)
-   
-
+    
+    # 0. get the word and its image and sound
+    word_sound = TextToSpeech.get_audio(word)
+    keyWord = {'text': word, 'image': word_image_links[0]['link'], 'sound': word_sound}
+    
+    # 1. words that rhyme with the word
+    for i in range(len(rhymes)):
+        word_sound = TextToSpeech.get_audio(rhymes[i])
+        rhymes[i] = {'text': rhymes[i], 'image': rhyme_image_links[i]['link'], 'rhyme': True, 'sound': word_sound}
+        
+    # 2. get words that doesnot rhyme with the word
+    not_rhymes = WordGenerator.generate_words(3)
+    
+    for i in range(len(not_rhymes)):
+        word_sound = TextToSpeech.get_audio(not_rhymes[i])
+        not_rhymes[i] = {'text': not_rhymes[i], 'image': ImageScraper.get_image_links(not_rhymes[i])[0]['link'], 'rhyme': False, 'sound': word_sound}
+    
+    # all_words = rhymes + not_rhymes
+    # rhymes.extend(not_rhymes)
+    # random.shuffle(rhymes)
     # Check if we found rhymes and images
     if rhymes is not None and image_links:
-        return jsonify({'word': word, 'rhymes': rhymes,'word_image_links': word_image_links ,'rhyme_image_links': rhyme_image_links})
+        return jsonify({'keyWord': keyWord, 'rhymes': rhymes, 'not_rhymes': not_rhymes})
    
     else:
         # If something went wrong while finding rhymes or images, tell the person there was an issue
@@ -46,6 +67,14 @@ def get_memory_game():
 
     # Return the list of image links for the memory game
     return jsonify({'word': word, 'image_links': image_links})
+
+
+
+@app.route('/test', methods=['GET'])
+def test():
+    return jsonify({'test': 'test'})
+
+
 
 # Run the Flask app
 if __name__ == '__main__':
