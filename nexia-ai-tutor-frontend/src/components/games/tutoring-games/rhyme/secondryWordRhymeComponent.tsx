@@ -3,7 +3,7 @@ import CorrectButtonComponent from "@/shared/components/buttons/correctButtonCom
 import SpeakerButtonComponent from "@/shared/components/buttons/speakerButtonComponent";
 import { RhymingWord } from "@/types/tutoring-games/rhyme/rhyme";
 import React from "react";
-
+import "animate.css";
 type Props = {
   index: number;
   secondaryWord: RhymingWord;
@@ -18,10 +18,12 @@ const SecondryWordRhymeComponent = ({
   return (
     <div
       key={index}
-      className="flex flex-col items-center justify-center m-2 bg-green-100"
+      className=" flex flex-col items-center justify-center m-2 bg-green-100 "
     >
+      {/* <h1 className="animate__animated animate__bounce">An animated element</h1> */}
+
       {secondaryWord.showImage && (
-        <div className="flex flex-col items-center justify-center transition-opacity duration-500 ease-in-out">
+        <div className="animate__animated animate__zoomIn flex flex-col items-center justify-center">
           <img
             className="rounded-md m-2 bg-blue-200"
             src={secondaryWord.data.image}
