@@ -36,12 +36,13 @@ export default function Login() {
               </div> */}
               {/* <p className="text-gray-400">or use your email account</p> */}
               <div className="flex flex-col items-center">
-                <div className="bg-gray-100 flex items-center w-64 p-2 mb-3">
+                <div className="bg-gray-100 flex items-center w-64 p-2 mb-3 relative">
                   <FontAwesomeIcon icon={faEnvelope} className="text-gray-400 m-2" />
+                  
                   <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
+                    type="text"
+                    name="username"
+                    placeholder="username"
                     className="text-sm bg-gray-100 outline-none flex-1"
                   />
                 </div>
