@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from services.image_scraper import ImageScraper
 from services.rhyme_scraper import RhymeScraper
 from services.word_generator import WordGenerator
@@ -6,6 +7,14 @@ from services.text_to_speech import TextToSpeech
 
 
 app = Flask(__name__)
+CORS(
+    app,
+    resources={r"/*": {"origins": "*"}},
+    headers={
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type",
+    },
+)
 
 @app.route('/get_rhymes_game_data', methods=['GET'])
 def get_rhymes_and_images():
@@ -33,14 +42,14 @@ def get_rhymes_and_images():
     # 1. words that rhyme with the word
     for i in range(len(rhymes)):
         word_sound = TextToSpeech.get_audio(rhymes[i])
-        rhymes[i] = {'text': rhymes[i], 'image': rhyme_image_links[i]['link'], 'rhyme': True, 'sound': word_sound}
+        rhymes[i] = {'text': rhymes[i], 'image': rhyme_image_links[i]['image_link'], 'rhyme': True, 'sound': word_sound}
         
     # 2. get words that doesnot rhyme with the word
     not_rhymes = WordGenerator.generate_words(3)
     
     for i in range(len(not_rhymes)):
         word_sound = TextToSpeech.get_audio(not_rhymes[i])
-        not_rhymes[i] = {'text': not_rhymes[i], 'image': ImageScraper.get_image_links(not_rhymes[i])[0]['link'], 'rhyme': False, 'sound': word_sound}
+        not_rhymes[i] = {'text': not_rhymes[i], 'image': ImageScraper.get_image_links(not_rhymes[i])[0]['image_link'], 'rhyme': False, 'sound': word_sound}
     
     # all_words = rhymes + not_rhymes
     # rhymes.extend(not_rhymes)
@@ -65,10 +74,17 @@ def get_memory_game():
         return jsonify({'error': 'Word parameter is missing'}), 400
 
     # Use the ImageService to get a list of images for the memory game
-    image_links = ImageScraper.get_image_links(word)
-
-    # Return the list of image links for the memory game
-    return jsonify({'word': word, 'image_links': image_links})
+    wrodImage = ImageScraper.get_image_links(word)
+    # 
+    otherWords = WordGenerator.generate_words(3)
+    # get the images for the other words
+    for i in range(len(otherWords)):
+        otherWords[i] = {'query': otherWords[i], 'image_link': ImageScraper.get_image_links(otherWords[i])[0]['image_link']}
+    
+    
+    response = jsonify({'keyword': wrodImage, 'other_words': otherWords})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 
