@@ -14,6 +14,9 @@ public class DyslexiaCategory {
     private String id;
     private String name;
     private double average;
+    private int start;
+    private int end;
+    
     public String getId() {
         return id;
     }
@@ -31,6 +34,18 @@ public class DyslexiaCategory {
     }
     public void setAverage(double average) {
         this.average = average;
+    }
+    public int getStart() {
+        return start;
+    }
+    public void setStart(int start) {
+        this.start = start;
+    }
+    public int getEnd() {
+        return end;
+    }
+    public void setEnd(int end) {
+        this.end = end;
     }
     
 }
