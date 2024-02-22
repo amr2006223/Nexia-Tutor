@@ -39,9 +39,12 @@ public class User implements UserDetails {
     private String role;
     @Column(nullable = true)
     private String token;
-    @ManyToMany(targetEntity = DyslexiaType.class,fetch = FetchType.EAGER)
-    @JoinTable(name = "user_dyslexia_types", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "dyslexia_type_id"))
-    private List<DyslexiaType> dyslexia_types;
+
+    @ManyToMany(targetEntity = DyslexiaType.class, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_dyslexia_types",
+     joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "dyslexia_type_id"))
+    private List<DyslexiaType> dyslexiaTypes;
 
     public User() {
     }
@@ -54,7 +57,7 @@ public class User implements UserDetails {
         this.birthDate = birthDate;
         this.nationality = nationality;
         this.gender = gender;
-        this.dyslexia_types = dyslexia_types;
+        this.dyslexiaTypes = dyslexia_types;
         this.role = role;
     }
 
@@ -115,11 +118,11 @@ public class User implements UserDetails {
     }
 
     public List<DyslexiaType> getDyslexia_types() {
-        return dyslexia_types;
+        return dyslexiaTypes;
     }
 
     public void setDyslexia_types(List<DyslexiaType> dyslexia_types) {
-        this.dyslexia_types = dyslexia_types;
+        this.dyslexiaTypes = dyslexia_types;
     }
 
     public void setRole(String role) {

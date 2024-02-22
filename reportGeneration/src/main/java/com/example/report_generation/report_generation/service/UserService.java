@@ -11,6 +11,8 @@ import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.basedomain.basedomain.dto.UserEvent;
+import com.example.report_generation.report_generation.kafka.DyslexiaTypeProducer;
 import com.example.report_generation.report_generation.models.DyslexiaCategory;
 import com.example.report_generation.report_generation.models.User;
 import com.example.report_generation.report_generation.models.UserData;
@@ -26,10 +28,13 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 public class UserService {
 
     private ObjectMapper objectMapper = new ObjectMapper();
-
+    private DyslexiaTypeProducer dyslexiaTypeProducer;
     @Autowired
     DyslexiaCategoryRepository _dyslexiaCategoryRepository;
 
+    public UserService(DyslexiaTypeProducer _dyslexiaTypeProducer) {
+        dyslexiaTypeProducer = _dyslexiaTypeProducer;
+    }
     public User InsertUser(User newUser, String filePath) throws IOException {
         try {
 
@@ -183,16 +188,13 @@ public class UserService {
         List<DyslexiaCategory> userCategories = new ArrayList<DyslexiaCategory>();
         // TO-DO needs refactoring asap database need to have the number or the interval
         // of question fro each dyslexia type
-        DyslexiaCategory alpha = _dyslexiaCategoryRepository.findCategoryByName("Alphabetic Awareness");
-        DyslexiaCategory phono = _dyslexiaCategoryRepository.findCategoryByName("Phonological Awareness");
-        DyslexiaCategory visual = _dyslexiaCategoryRepository.findCategoryByName("Visual Working Memory");
-        System.out.println("User Accuracy: " + getAccuracy(5,9, record) + "\n" + "alpha accuracy " + phono.getAverage());
-        if (getAccuracy(1, 4, record) <= alpha.getAverage())
-            userCategories.add(alpha);
-        if (getAccuracy(5, 9, record) <= phono.getAverage())
-            userCategories.add(phono);
-        if (getAccuracy(18, 21, record) <= visual.getAverage())
-            userCategories.add(visual);
+        List<DyslexiaCategory> categories = _dyslexiaCategoryRepository.findAll();
+        for (DyslexiaCategory dyslexiaCategory : categories) {
+            if (getAccuracy(dyslexiaCategory.getStart(), dyslexiaCategory.getEnd(), record) <= dyslexiaCategory.getAverage())
+                userCategories.add(dyslexiaCategory);
+                //broadcast that user to the other services
+                dyslexiaTypeProducer.broadcastDyslexiaType(userCategories, "Categorizing User",user.getId());
+        }
         return userCategories;
 
     }

@@ -78,7 +78,7 @@ public class LessonController {
 
     }
 
-    @PutMapping("/update}")
+    @PutMapping("/update")
     public ResponseEntity<String> editLesson( @RequestBody Lesson updatedLesson) {
         try {
             lessonService.updateEntity(updatedLesson);
