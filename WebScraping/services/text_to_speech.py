@@ -6,7 +6,7 @@ class TextToSpeech:
     def get_audio(text):
         url = 'https://texttospeech.googleapis.com/v1/text:synthesize'
         dict_to_send = {
-        "input": { "text": "{text}" },
+        "input": { "text": text },
         "voice": {
             "languageCode": "en-US",
             "ssmlGender": "FEMALE"

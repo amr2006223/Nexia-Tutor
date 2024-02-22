@@ -47,7 +47,9 @@ def get_rhymes_and_images():
     # random.shuffle(rhymes)
     # Check if we found rhymes and images
     if rhymes is not None and image_links:
-        return jsonify({'keyWord': keyWord, 'rhymes': rhymes, 'not_rhymes': not_rhymes})
+        response =  jsonify({'keyWord': keyWord, 'rhymes': rhymes, 'not_rhymes': not_rhymes})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
    
     else:
         # If something went wrong while finding rhymes or images, tell the person there was an issue
