@@ -3,13 +3,14 @@ import ProgressBarComponent from "@/shared/components/progress/progressBar";
 import SpeakerButtonComponent from "@/shared/components/buttons/speakerButtonComponent";
 import { Button } from "@mui/material";
 import React, { useEffect } from "react";
-import { playMp3Sound } from "@/shared/utils/play-sounds";
+import { playSoundFromGoogle, playMp3Sound } from "@/shared/utils/play-sounds";
 import { RhymingWord } from "@/types/tutoring-games/rhyme/rhyme";
 import SecondryWordRhymeComponent from "@/components/games/tutoring-games/rhyme/secondryWordRhymeComponent";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
 import CounterComponent from "@/shared/components/counter/CounterComponent";
 import FlagIcon from "@mui/icons-material/Flag";
+import { getKeywordDataForRhymeGame } from "@/services/games/rhyme/getKeywordData";
 
 type RhymingGameProps = {
   keyword: RhymingWord;
@@ -25,43 +26,53 @@ const RhymingGamePage = () => {
   const [wrongAnswers, setWrongAnswers] = React.useState(0);
 
   const getData = async () => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      // await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    const keyword: RhymingWord = {
-      data: {
-        word: "car",
-        sound: "/car.mp3",
-        image:
-          "https://static.vecteezy.com/system/resources/previews/023/524/637/original/red-sport-car-design-transparent-background-free-png.png",
-      },
-      showImage: false,
-      rhymed: true,
-    };
+      const response = await getKeywordDataForRhymeGame("hat");
+      // console.log(response);
+      const { keyWord, not_rhymes, rhymes } = response;
+      // console.log("keyWordResponse", keyWord);
+      // console.log("not_rhymesResponse", not_rhymes);
+      // console.log("rhymesResponse", rhymes);
+      // return;
+      const allWords = [...not_rhymes, ...rhymes];
 
-    const otherWords: RhymingWord[] = [
-      {
+      const keyword: RhymingWord = {
         data: {
-          word: "Star",
-          sound: "/star.mp3",
-          image: "https://clipart-library.com/img/2184494.png",
+          word: keyWord.text,
+          sound: keyWord.sound,
+          image: keyWord.image,
         },
         showImage: false,
         rhymed: true,
-      },
-      {
-        data: {
-          word: "Guitar",
-          sound: "/guitar.mp3",
-          image:
-            "https://png.pngtree.com/png-clipart/20230217/ourmid/pngtree-guitar-cartoon-png-image_6604793.png",
-        },
-        showImage: false,
-        rhymed: false,
-      },
-    ];
-    const props = { keyword, otherWords, numberOfCorrectAnswers: 1 };
-    setResponse(props);
-    setLoading(false);
+      };
+
+      const otherWords: RhymingWord[] = allWords.map(
+        (item: { text: any; sound: any; image: any; rhyme: any }) => {
+          return {
+            data: {
+              word: item.text,
+              sound: item.sound,
+              image: item.image,
+            },
+            rhymed: item.rhyme,
+            showImage: false,
+          };
+        }
+      );
+
+      // shuffle the array
+      otherWords.sort(() => Math.random() - 0.5);
+      console.log("otherWords", otherWords);
+      const props = { keyword, otherWords, numberOfCorrectAnswers: 3 };
+
+      setResponse(props);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
   };
 
   const showOtherWords = async () => {
@@ -71,7 +82,7 @@ const RhymingGamePage = () => {
         word.showImage = true;
         setResponse({ ...response });
         await new Promise((resolve) => setTimeout(resolve, 500));
-        await playMp3Sound(word.data.sound);
+        await playSoundFromGoogle(word.data.sound);
         await new Promise((resolve) => setTimeout(resolve, 1000));
       }
     }
@@ -84,7 +95,7 @@ const RhymingGamePage = () => {
       await playMp3Sound("/what_rhymes.mp3");
 
       // // 2. play the keyword sound
-      await playMp3Sound(response.keyword.data.sound);
+      await playSoundFromGoogle(response.keyword.data.sound);
 
       // // 3. show the keyword image
       await showOtherWords();
@@ -118,11 +129,6 @@ const RhymingGamePage = () => {
           {response && (
             <div className="flex flex-col justify-center items-center mt-3">
               <div className="flex flex-row items-center">
-                <SpeakerButtonComponent
-                  sound="/what_rhymes.mp3"
-                  from_google={false}
-                  theme="dark"
-                />
                 <div className="flex text-3xl font-bold ">
                   What word rhymes with
                 </div>
@@ -130,12 +136,16 @@ const RhymingGamePage = () => {
                   className="ml-2"
                   src={response.keyword.data.image}
                   alt={response.keyword.data.word}
-                  width={70}
-                  height={70}
+                  style={{ width: "50px", height: "50px" }}
+                />
+                <SpeakerButtonComponent
+                  sound={response.keyword.data.sound}
+                  from_google={true}
+                  theme="dark"
                 />
               </div>
 
-              <div className="flex flex-row">
+              <div className="grid grid-cols-3 grid-flow-row gap-4">
                 {response.otherWords.map((word, index) => (
                   <SecondryWordRhymeComponent
                     key={index}
