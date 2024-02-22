@@ -10,6 +10,11 @@ export default function Home() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [birthdate, setBirthdate] = useState("");
+  const [gender, setGender] = useState("");
+  const [nationality, setNationality] = useState("");
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -31,6 +36,26 @@ export default function Home() {
 
   const handleConfirmPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     setConfirmPassword(e.target.value);
+  };
+
+  const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+  };
+
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const handleBirthdateChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setBirthdate(e.target.value);
+  };
+
+  const handleGenderChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setGender(e.target.value);
+  };
+
+  const handleNationalityChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setNationality(e.target.value);
   };
 
   return (
@@ -59,6 +84,8 @@ export default function Home() {
                       name="text"
                       placeholder="username"
                       className="text-sm bg-gray-100 outline-none flex-1"
+                      value={username}
+                      onChange={handleUsernameChange}
                     />
                   </div>
                   <div className="bg-gray-100 flex items-center w-64 p-2 mb-3 relative">
@@ -68,6 +95,44 @@ export default function Home() {
                       name="email"
                       placeholder="Email"
                       className="text-sm bg-gray-100 outline-none flex-1"
+                      value={email}
+                      onChange={handleEmailChange}
+                    />
+                  </div>
+                  <div className="bg-gray-100 flex items-center w-64 p-2 mb-3 relative">
+                    <FontAwesomeIcon icon={faUser} className="text-gray-400 m-2" />
+                    <input
+                      type="date"
+                      name="birthdate"
+                      placeholder="Birthdate"
+                      className="text-sm bg-gray-100 outline-none flex-1"
+                      value={birthdate}
+                      onChange={handleBirthdateChange}
+                    />
+                  </div>
+                  <div className="bg-gray-100 flex items-center w-64 p-2 mb-3 relative">
+                    <FontAwesomeIcon icon={faUser} className="text-gray-400 m-2" />
+                    <select
+                    name="gender"
+                    className="text-sm bg-gray-100 outline-none flex-1"
+                    value={gender}
+                    onChange={handleGenderChange}
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                  </select>
+
+                  </div>
+                  <div className="bg-gray-100 flex items-center w-64 p-2 mb-3 relative">
+                    <FontAwesomeIcon icon={faUser} className="text-gray-400 m-2" />
+                    <input
+                      type="text"
+                      name="nationality"
+                      placeholder="Nationality"
+                      className="text-sm bg-gray-100 outline-none flex-1"
+                      value={nationality}
+                      onChange={handleNationalityChange}
                     />
                   </div>
                   <div className="bg-gray-100 flex items-center w-64 p-2 mb-3 relative">
