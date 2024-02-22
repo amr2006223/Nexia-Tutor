@@ -2,6 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body {
+    overflow-x: hidden;
+  }
+}
+
+@layer components {
+  .header_top__icon_wrapper {
+    @apply bg-[#F0FFEB] rounded-md p-[6px] text-[14px] cursor-pointer hover:bg-[#8c97cd] hover:text-[#3E4772];
+  }
+
+  .navbar__link:hover {
+    color: #8c97cd;
+    transition: all 0.4s;
+  }
+
+  .navbar__link::after {
+    position: absolute;
+    content: "";
+    background-color: #8c97cd;
+    height: 3px;
+    width: 100%;
+    bottom: -5px;
+    left: 0;
+    scale: 0;
+    transform-origin: left;
+    transition: all 0.4s;
+  }
+
+  .navbar__link:hover::after {
+    scale: 1;
+  }
+}
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -15,15 +48,88 @@
     --background-end-rgb: 0, 0, 0;
   }
 } */
+@font-face {
+  font-family: 'OpenDyslexic-Regular';
+  src: url('/OpenDyslexic-Regular.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'OpenDyslexic-Bold';
+  src: url('/OpenDyslexic-Bold.otf') format('opentype');
+}
 
 body {
-  /* color: rgb(var(--foreground-rgb)); */
   color: #3e4772;
   background-color: #cdebc5;
-  /* background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    ) */
-  /* rgb(var(--background-start-rgb)); */
+  font-family: 'OpenDyslexic-Regular'; /* Fallback fonts */
 }
+
+/* Apply bold font to specific elements */
+.bold-text {
+  font-family: 'OpenDyslexic-Bold';
+}
+
+
+/* CSS for smooth transitions */
+#hero-container {
+  transition: height 0.3s ease-in-out, padding-top 0.3s ease-in-out, padding-bottom 0.3s ease-in-out;
+}
+
+#girl-container {
+  transition: left 0.3s ease-in-out, right 0.3s ease-in-out;
+}
+
+/* CSS for smooth yellow light overlay animation */
+/* CSS for smooth yellow light overlay animation */
+@keyframes light-effect {
+  0% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+}
+
+.animate-light-effect {
+  animation: light-effect 2s infinite alternate;
+}
+
+.light-circle {
+  background: radial-gradient(circle at center, rgba(255, 255, 0, 0.5) 40%, rgba(255, 255, 0, 0) 95%);
+  width: 100%;
+  height: 80%;
+  filter: blur(40px); /* Add a 40% blur filter */
+}
+
+/* styles.css */
+.border-t-12 {
+  border-top-width: 60px;
+}
+
+.border-r-12 {
+  border-right-width: 60px;
+}
+
+.border-b-12 {
+  border-bottom-width: 60px;
+}
+
+/* styles.css */
+.custom-map-width {
+  width: 50rem; /* Adjust this value as needed */
+  max-width: 50rem;
+}
+
+/* styles.css */
+.custom-map-width-dashed {
+  width: 47rem; /* Adjust this value as needed */
+  max-width: 47rem;
+}
+
+
