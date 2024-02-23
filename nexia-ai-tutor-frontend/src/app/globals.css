@@ -50,12 +50,12 @@
 } */
 @font-face {
   font-family: 'OpenDyslexic-Regular';
-  src: url('/OpenDyslexic-Regular.otf') format('opentype');
+  src: url('/assets/fonts/OpenDyslexic-Regular.otf') format('opentype');
 }
 
 @font-face {
   font-family: 'OpenDyslexic-Bold';
-  src: url('/OpenDyslexic-Bold.otf') format('opentype');
+  src: url('/assets/fonts/OpenDyslexic-Bold.otf') format('opentype');
 }
 
 body {
@@ -130,6 +130,34 @@ body {
 .custom-map-width-dashed {
   width: 47rem; /* Adjust this value as needed */
   max-width: 47rem;
+}
+
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-text {
+  animation: fadeInUp 1s ease forwards;
+}
+
+
+@keyframes zoomInAnimation {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 

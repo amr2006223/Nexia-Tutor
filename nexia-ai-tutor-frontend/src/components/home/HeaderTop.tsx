@@ -24,7 +24,7 @@ const HeaderTop = () => {
           </div>
 
           <div className="text-[#3E4772] text-[12px]">
-            <b>STAY TUNED</b> NEW LEVELS WILL BE ADDED THIS THIS WEEK 
+            <b>STAY TUNED</b> NEW LEVELS WILL BE ADDED THIS WEEK 
           </div>
 
           <div className="flex gap-4">
@@ -36,7 +36,7 @@ const HeaderTop = () => {
               id="language"
             >
               <option value="English">English</option>
-              <option value="French">Arabic</option>
+              <option value="French">العربية</option>
             </select>
           </div>
         </div>

@@ -6,7 +6,7 @@ const HeaderMain = () => {
     <div className="relative">
       <div
         className="w-full h-auto left-1/2 transformer"
-        style={{ backgroundImage: 'url("/hero.gif")' }}
+        style={{ backgroundImage: 'url("/assets/images/hero.gif")' }}
       >
         {/* Apply opacity to the background only */}
         <div className="absolute inset-0 bg-[#CDEBC5] opacity-50"></div>
@@ -17,12 +17,10 @@ const HeaderMain = () => {
               Logo
             </div>
 
-            <div className="w-full sm:w-[400px] md:w-[80%] relative underline">
-              <b className="bold-text">Screening Test</b>
-            </div>
-    
-
-            <div className="hidden lg:flex gap-4 text-[30px]">
+            <div className="w-full sm:w-[400px] md:w-[80%] relative underline flex items-center justify-between">
+              <a href="/">
+                <b className="bold-text">Screening Test</b>
+              </a>
               <Button
                 className="font-bold text-base"
                 variant="contained"
