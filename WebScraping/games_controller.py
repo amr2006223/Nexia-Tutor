@@ -37,7 +37,7 @@ def get_rhymes_and_images():
     
     # 0. get the word and its image and sound
     word_sound = TextToSpeech.get_audio(word)
-    keyWord = {'text': word, 'image': word_image_links[0]['link'], 'sound': word_sound}
+    keyWord = {'text': word, 'image': word_image_links[0]['image_link'], 'sound': word_sound}
     
     # 1. words that rhyme with the word
     for i in range(len(rhymes)):
@@ -76,11 +76,32 @@ def get_memory_game():
     # Use the ImageService to get a list of images for the memory game
     wrodImage = ImageScraper.get_image_links(word)
     # 
+    
+    
+    # sha8al
+    # nemberOfWords = 3
+    # otherWords = []
+    # i = 0
+    # while len(otherWords) < nemberOfWords:
+    #     word = WordGenerator.generate_words(1)
+    #     image = ImageScraper.get_image_links(word)
+    #     if image:
+    #         otherWords.append({'query': word, 'image_link': image[0]['image_link']})
+    #         i += 1
+    #     else: 
+    #         print('No image found for word: ', word)
+            
     otherWords = WordGenerator.generate_words(3)
     # get the images for the other words
     for i in range(len(otherWords)):
-        otherWords[i] = {'query': otherWords[i], 'image_link': ImageScraper.get_image_links(otherWords[i])[0]['image_link']}
-    
+        image = None
+        while not image:
+            image = ImageScraper.get_image_links(otherWords[i])
+            if image:
+                otherWords[i] = {'query': otherWords[i], 'image_link': image[0]['image_link']}
+                break
+            else:
+                print('No image found for word: ', otherWords[i])
     
     response = jsonify({'keyword': wrodImage, 'other_words': otherWords})
     response.headers.add('Access-Control-Allow-Origin', '*')
@@ -90,7 +111,8 @@ def get_memory_game():
 
 @app.route('/test', methods=['GET'])
 def test():
-    return jsonify({'test': 'test'})
+    iamge = ImageScraper.get_image_links("observation")
+    return jsonify({'image': iamge})
 
 
 

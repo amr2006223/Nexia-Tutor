@@ -26,6 +26,7 @@ const page = () => {
   const loadingImages = async () => {
     const keyText = "dog";
     const response = await getMemoryGameData(keyText);
+    console.log(response);
 
     const { keyword, other_words } = response;
     const allWords = [...keyword, ...other_words];
