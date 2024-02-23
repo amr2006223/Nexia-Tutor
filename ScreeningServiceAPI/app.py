@@ -106,12 +106,24 @@ def getAverage():
     dataPreProcessing.cleanData(desktopData)
     desktopData = dataPreProcessing.removeErroredAccuracy(desktopData)
     # data_filterd_for_user = dataManipulator.filter_data_by_age(3,30)
-    allAverages = {"average":dataManipulator.get_average(1,4,desktopData),"name":"Alphabetic Awareness"}
+    # allAverages = {"average":dataManipulator.get_average(1,4,desktopData),"name":"Alphabetic Awareness"}
+    allAverages = [
+                    {
+                        "average":dataManipulator.get_average(1,4,desktopData),
+                        "name" : "Alphabetic Awareness"
+                    },
+                    {
+                        "average":dataManipulator.get_average(5, 9, desktopData),
+                        "name" : "Phonological Awareness"
+                    },
+                    {
+                        "average":dataManipulator.get_average(18,21,desktopData),
+                        "name" : "Visual Working Memory"
+                    },
+                ]
     return jsonify(allAverages)
-    # dataManipulator.get_average(5, 9, desktopData)
     # dataManipulator.get_average(10, 13, desktopData)
     # dataManipulator.get_average(14,17,desktopData)
-    # dataManipulator.get_average(18,21,desktopData)
     # dataManipulator.get_average(22, 23, desktopData)
     # dataManipulator.get_average(24,24,desktopData)
     # dataManipulator.get_average(25, 25, desktopData)

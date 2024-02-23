@@ -1,13 +1,15 @@
 import string
 import numpy as np
 from PyPDF2 import PdfReader
-from nltk.tokenize import sent_tokenize
+from nltk.tokenize import sent_tokenize,word_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import networkx as nx
 import re
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
+from nltk.stem import SnowballStemmer
+from nltk.stem import WordNetLemmatizer
 stop_words = set(stopwords.words('english'))
 def get_top_scored_words(tfidf_matrix, tfidf_vectorizer, top_n=5):
     feature_names = tfidf_vectorizer.get_feature_names_out()
@@ -35,12 +37,12 @@ def preprocess_text(text):
     text = re.sub(r'^[•●∙‣⁃◦⦿⦾◯◉⚫⚬⚪◼◻⬤⚆⚇✴️⦁⚈]+|\d+\.\s+', '', text)
     # Remove stop words
     punctuation = set(string.punctuation)
-    text = ' '.join([word for word in text.split() if word.lower() not in stop_words and word not in punctuation])
+    text = ' '.join([word.lower() for word in text.split() if word.lower() not in stop_words and word.lower() not in punctuation])
     # Remove code-related content using regex
     text = re.sub(r'\b\S+\.py\S*\b', '', text)
     text = re.sub(r'\b\S+\.html?\S*\b', '', text)
     # Apply stemming using Porter Stemmer
-    stemmer = PorterStemmer()
+    stemmer = SnowballStemmer("english")
     text = ' '.join([stemmer.stem(word) for word in text.split()])
     # Add more regex patterns as needed to remove other code-related content
     return text

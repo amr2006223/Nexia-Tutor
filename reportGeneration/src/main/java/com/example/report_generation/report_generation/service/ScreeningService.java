@@ -1,5 +1,7 @@
 package com.example.report_generation.report_generation.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import com.example.report_generation.report_generation.models.DyslexiaCategory;
 import com.example.report_generation.report_generation.models.User;
 import com.example.report_generation.report_generation.repository.DyslexiaCategoryRepository;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
@@ -26,7 +29,7 @@ public class ScreeningService {
         _categoryRepository = categoryRepository;
     }
 
-    public DyslexiaCategory getAverageFromScreeningService() {
+    public List<DyslexiaCategory> getAverageFromScreeningService() {
         String url = "http://127.0.0.1:5000/average";
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
@@ -36,9 +39,19 @@ public class ScreeningService {
 
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            DyslexiaCategory category =  objectMapper.readValue(responseBody, DyslexiaCategory.class);
-            saveCategory(category);
-            return category;
+            TypeReference<List<DyslexiaCategory>> typeReference = new TypeReference<List<DyslexiaCategory>>() {
+            };
+            List<DyslexiaCategory> categories = objectMapper.readValue(responseBody, typeReference);
+            for (DyslexiaCategory dyslexiaCategory : categories) {
+                DyslexiaCategory newDyslexiaCategory = _categoryRepository.findCategoryByName(dyslexiaCategory.getName());
+                if(newDyslexiaCategory == null)
+                    saveCategory(dyslexiaCategory);
+                else{
+                    newDyslexiaCategory.setAverage(dyslexiaCategory.getAverage());
+                    saveCategory(newDyslexiaCategory);
+                }
+            }
+            return categories;
         } catch (Exception e) {
             // Handle the exception, e.g., log it or throw a custom exception
             e.printStackTrace();

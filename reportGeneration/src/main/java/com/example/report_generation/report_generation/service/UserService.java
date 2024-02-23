@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.basedomain.basedomain.dto.UserEvent;
+import com.example.report_generation.report_generation.kafka.DyslexiaTypeProducer;
 import com.example.report_generation.report_generation.models.DyslexiaCategory;
 import com.example.report_generation.report_generation.models.User;
 import com.example.report_generation.report_generation.models.UserData;
@@ -23,18 +26,22 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 
 @Service
 public class UserService {
-    
-    private ObjectMapper objectMapper = new ObjectMapper();
 
+    private ObjectMapper objectMapper = new ObjectMapper();
+    private DyslexiaTypeProducer dyslexiaTypeProducer;
     @Autowired
     DyslexiaCategoryRepository _dyslexiaCategoryRepository;
 
+    public UserService(DyslexiaTypeProducer _dyslexiaTypeProducer) {
+        dyslexiaTypeProducer = _dyslexiaTypeProducer;
+    }
     public User InsertUser(User newUser, String filePath) throws IOException {
         try {
 
             File jsonFile = new File(filePath);
             List<User> userList = new ArrayList<>();
-            if (checkIfJsonFileExist(jsonFile, userList, newUser) != null) return newUser;
+            if (checkIfJsonFileExist(jsonFile, userList, newUser) != null)
+                return newUser;
             // If the file exists, read the data and try to find the user
             userList = objectMapper.readValue(jsonFile,
                     new TypeReference<List<User>>() {
@@ -173,18 +180,22 @@ public class UserService {
         return accuracy / count;
     }
 
-    public UserData categoryDetection(User user) {
-        // get user
-        
+    public List<DyslexiaCategory> categoryDetection(User user) {
         // get the newest record of the user
         UserData data = getLatestRecord(user);
         Map<String, String> record = data.getRecord();
         // get the average of the record and what categories that the user had
-
-        DyslexiaCategory alphaAwarnessCategory = _dyslexiaCategoryRepository.findCategoryByName("Alphabetic Awareness");
-        if (getAccuracy(1, 4, record) > alphaAwarnessCategory.getAverage())
-            return data;
-        return data;
+        List<DyslexiaCategory> userCategories = new ArrayList<DyslexiaCategory>();
+        // TO-DO needs refactoring asap database need to have the number or the interval
+        // of question fro each dyslexia type
+        List<DyslexiaCategory> categories = _dyslexiaCategoryRepository.findAll();
+        for (DyslexiaCategory dyslexiaCategory : categories) {
+            if (getAccuracy(dyslexiaCategory.getStart(), dyslexiaCategory.getEnd(), record) <= dyslexiaCategory.getAverage())
+                userCategories.add(dyslexiaCategory);
+                //broadcast that user to the other services
+                dyslexiaTypeProducer.broadcastDyslexiaType(userCategories, "Categorizing User",user.getId());
+        }
+        return userCategories;
 
     }
 }
