@@ -5,9 +5,17 @@ const CounterComponent = (props: CounterProps) => {
 
   return (
     <div
-      className={`flex flex-row items-center border border-${color}-500 rounded-lg mx-4`}
+      className={`flex flex-row items-center border rounded-lg mx-4`}
+      style={{
+        borderColor: `${color}`,
+      }}
     >
-      <div className={`bg-${color}-500 rounded-md`}>
+      <div
+        className={`rounded-md`}
+        style={{
+          backgroundColor: `${color}`,
+        }}
+      >
         {React.createElement(icon, {
           fontSize: "large",
           style: { color: "white" },
