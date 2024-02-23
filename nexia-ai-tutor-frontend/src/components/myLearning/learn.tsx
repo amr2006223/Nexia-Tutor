@@ -16,7 +16,7 @@ export default function LearningPage() {
       {/* Rectangle 1 */}
       <div className="w-full max-w-2xl mt-8 p-8 bg-[#E3FFDC] rounded-lg text-2xl font-bold flex-1 justify-between items-center">
         <div className="flex items-center">
-          <div className="bg-green-500 rounded-2xl p-4 px-12 flex items-center"> {/* Adjusted layout */}
+          <div className="bg-green-500 rounded-2xl p-4 px-12 flex items-center"> 
             <div className="text-center">
               <h1 className="text-lg flex-row inline">Your Coins</h1>
               <p>75</p>
@@ -29,7 +29,7 @@ export default function LearningPage() {
           </button>
         </div>
 
-        <div className="flex items-center space-x-4"> {/* Updated layout for buttons */}
+        <div className="flex items-center space-x-4"> 
           <button className="mt-4 hover:bg-[#85B6E8] bg-[#85B6E8] bg-opacity-50 border border-[#85B6E8] border-2 text-[#3E4772] px-2 py-2 rounded-2xl font-bold hover:bg-opacity-40 transition duration-300 ease-in-out flex items-center">
             <FiPlay className="text-2xl" />
             <span className=" ml-1 font-bold text-sm">Continue where you left</span>
@@ -59,9 +59,9 @@ export default function LearningPage() {
           <div className="flex items-center mt-4 bg-[#CDEBC5] rounded-lg p-4 drop-shadow-lg">
             <p className="ml-2">Content 1</p>
             <button className="ml-auto bg-[#CDEBC5] text-[#3E4772]">Continue</button>
-            <FiPlay className="ml-2 h-6 w-6" fill="#3182CE" /> {/* Set the fill property for solid icon */}
+            <FiPlay className="ml-2 h-6 w-6" fill="#3182CE" /> 
           </div>
-          {/* Add more small rectangles here if needed */}
+          {/* more rectangles here if needed */}
         </div>
         <hr className="mt-4 border-2 rounded-full border-[#3E4772]" />
       </div>
