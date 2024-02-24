@@ -3,8 +3,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import unquote
 
 class ImageScraper:
-    @staticmethod
-    def get_image_links(search_query):
+    def get_image_links(self,search_query):
         # Construct the URL for Google Images search with the given query
         search_url = f"https://www.google.com/search?q={search_query}&tbm=isch"
 
