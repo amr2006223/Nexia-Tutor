@@ -2,8 +2,7 @@ import requests
 import json
 
 class TextToSpeech:
-    @staticmethod
-    def get_audio(text):
+    def get_audio(self,text):
         url = 'https://texttospeech.googleapis.com/v1/text:synthesize'
         dict_to_send = {
         "input": { "text": text },

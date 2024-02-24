@@ -2,8 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 class RhymeScraper:
-    @staticmethod
-    def fetch_rhymes(word):
+    def fetch_rhymes(self,word):
         # The website we're using to find rhymes
         base_url = "https://www.rhymezone.com"
 
