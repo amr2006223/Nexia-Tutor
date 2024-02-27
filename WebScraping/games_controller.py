@@ -71,21 +71,18 @@ def get_rhymes_and_images():
     result = {}
      # Get a word from the person who is asking for rhymes and images
     word = request.args.get('word')
-    thread1 = threading.Thread(target=getUserWordImage, args=(result,word))
-    thread2 = threading.Thread(target=getRhymesForWord, args=(result,word))
-    thread3 = threading.Thread(target=getNotRhymesForWord, args=(result,))
+    thread1 = threading.Thread(target = getUserWordImage, args = (result,word))
+    thread2 = threading.Thread(target = getRhymesForWord, args = (result,word))
+    thread3 = threading.Thread(target = getNotRhymesForWord, args = (result,))
+    
     thread1.start()
     thread2.start()
     thread3.start()
     thread1.join()
     thread2.join()
     thread3.join()
+    
     print(result)
-    # all_words = rhymes + not_rhymes
-    # rhymes.extend(not_rhymes)
-    # random.shuffle(rhymes)
-    # Check if we found rhymes and images
-    # response.headers.add('Access-Control-Allow-Origin', '*')
     try:
         response =  jsonify(result)
         response.headers.add('Access-Control-Allow-Origin', '*')
