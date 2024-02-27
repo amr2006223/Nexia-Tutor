@@ -9,10 +9,9 @@ export default function TodayLesson() {
 
   return (
     <main>
-      < HeaderMain />
+      <HeaderMain />
       <MobNavbar />
-      <Learn />
-
+      <LearningPage />
     </main>
   );
 }

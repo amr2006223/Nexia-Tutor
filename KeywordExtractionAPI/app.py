@@ -46,6 +46,10 @@ def upload_pdf():
         cleaned_text = utils.preprocess_text(utils.extract_text_from_pdf(filePath))
         keywords = kw_model.extract_keywords(cleaned_text, keyphrase_ngram_range=(1, 1),highlight=True)
         os.remove(filePath)
+        
+        for i in range(len(keywords)):
+            keywords[i] = keywords[i][0]
+        print(keywords)
         return jsonify({'keywords': keywords}), 200
     else:
         return jsonify({'error': 'Invalid file type, only PDF files are allowed'}), 400

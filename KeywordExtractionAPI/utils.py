@@ -42,8 +42,8 @@ def preprocess_text(text):
     text = re.sub(r'\b\S+\.py\S*\b', '', text)
     text = re.sub(r'\b\S+\.html?\S*\b', '', text)
     # Apply stemming using Porter Stemmer
-    stemmer = SnowballStemmer("english")
-    text = ' '.join([stemmer.stem(word) for word in text.split()])
+    # stemmer = SnowballStemmer("english")
+    # text = ' '.join([stemmer.stem(word) for word in text.split()])
     # Add more regex patterns as needed to remove other code-related content
     return text
 

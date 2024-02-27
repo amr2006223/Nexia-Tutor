@@ -15,7 +15,7 @@ public class UserService extends CrudOperations<User, String, UserRepository> im
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
-    private JwtService jwtService;
+    private jwtService jwtService;
     @Autowired
     private UserRepository userRepository;
     @Autowired

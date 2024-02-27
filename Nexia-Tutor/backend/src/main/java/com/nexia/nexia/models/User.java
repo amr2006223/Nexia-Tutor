@@ -11,7 +11,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,9 +42,7 @@ public class User implements UserDetails {
     private String token;
 
     @ManyToMany(targetEntity = DyslexiaType.class, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_dyslexia_types",
-     joinColumns = @JoinColumn(name = "user_id"),
-      inverseJoinColumns = @JoinColumn(name = "dyslexia_type_id"))
+    @JoinTable(name = "user_dyslexia_types", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "dyslexia_type_id"))
     private List<DyslexiaType> dyslexiaTypes;
 
     public User() {
