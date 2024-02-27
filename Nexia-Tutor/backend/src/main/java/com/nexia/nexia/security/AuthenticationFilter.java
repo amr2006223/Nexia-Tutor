@@ -12,7 +12,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.nexia.nexia.models.User;
 import com.nexia.nexia.repositories.UserRepository;
-import com.nexia.nexia.services.JwtService;
+import com.nexia.nexia.services.jwtService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -23,7 +23,7 @@ import jakarta.servlet.http.HttpServletResponse;
 // han3mel custom made filter and use it for only one time
 public class AuthenticationFilter extends OncePerRequestFilter {
     @Autowired
-    private JwtService jwtService;
+    private jwtService jwtService;
     @Autowired
     private UserRepository userRepository;
 

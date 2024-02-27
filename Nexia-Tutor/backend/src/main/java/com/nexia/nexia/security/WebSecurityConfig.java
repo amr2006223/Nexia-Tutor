@@ -21,9 +21,20 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.cors(cors -> cors.disable())
                 .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorizeRequests -> authorizeRequests.requestMatchers("/api/**").permitAll().requestMatchers("/user/**").permitAll()
-                        .requestMatchers("/admin/**").hasAuthority("ADMIN").requestMatchers("/test/**").hasAuthority("USER").anyRequest().authenticated())
+                // .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorizeRequests -> 
+                authorizeRequests.
+                requestMatchers("/api/auth/login").permitAll().
+                requestMatchers("/api/**").permitAll().
+                requestMatchers("/**").permitAll().
+                requestMatchers("/api/auth/**").permitAll().
+                requestMatchers("/user/**").permitAll().
+                requestMatchers("/admin/**").
+                hasAuthority("ADMIN").
+                requestMatchers("/test/**").
+                hasAuthority("USER").
+                anyRequest().
+                authenticated())
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();

@@ -2,7 +2,7 @@ package com.nexia.nexia.services;
 
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
@@ -14,19 +14,12 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.nexia.nexia.services.iservices.IJwtService;
 
 @Service
-public class JwtService implements IJwtService {
+public class jwtService implements IJwtService {
 
-    private final String jwtSecret; // used for encoding
-    private final Algorithm algorithm; // algorithm for encoding
-    private final long validity; // expiration date in milliseconds
-
-    public JwtService(@Value("${jwt.secret}") String jwtSecret,
-            @Value("${jwt.validity:7776000000}") long validity) {
-        this.jwtSecret = jwtSecret;
-        this.algorithm = Algorithm.HMAC256(this.jwtSecret);
-        this.validity = validity;
-    }
-
+    private final String jwtSecret = "w6d7mK6k7qdemci4ouZAzFKDWTHYq213"; // used for encoding
+    private final Algorithm algorithm = Algorithm.HMAC256(this.jwtSecret); // algorithm for encoding
+    private final long validity = 7776000000L; // expiration date in milliseconds
+    
     @Override
     public String generateToken(String uuid) {
         Date expiresAt = new Date(System.currentTimeMillis() + this.validity);
