@@ -1,9 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Button, Grid, IconButton, Snackbar } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import LetterComponentBingo from "./letterComponent";
 import { LetterDetail } from "@/types/bingo";
-import CloseIcon from "@mui/icons-material/Close";
 import {
   getTextSound,
   getTextSoundFemale,
@@ -12,6 +11,7 @@ import ProgressBarComponent from "../../../../shared/components/progress/progres
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { useRouter } from "next/navigation";
 import { playSoundFromGoogle } from "@/shared/utils/play-sounds";
+import Swal from "sweetalert2";
 
 type Props = {
   size: number;
@@ -21,31 +21,11 @@ type Props = {
 
 const BingoBoard = ({ size, letters, keyword }: Props) => {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState("Bingo");
   const [congratsSound, setCongratsSound] = useState("");
   //
   const [gridContent, setGridContent] = useState<LetterDetail[]>([]);
   const [clickedLetter, setClickedLetter] = useState<LetterDetail>();
   const [spelledLetter, setSpelledLetter] = useState<LetterDetail>();
-  // const [audioUrl, setAudioUrl] = useState("");
-
-  const handleClick = (message: string) => {
-    setOpen(false);
-    setMessage(message);
-    setOpen(true);
-  };
-
-  const handleClose = (
-    event: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
-  };
 
   function shuffleArray(letters: string[]) {
     return [...letters].sort(() => 0.5 - Math.random());
@@ -112,7 +92,7 @@ const BingoBoard = ({ size, letters, keyword }: Props) => {
 
       const generateFirstLetterToSpell = () => {
         let randomIndex = Math.floor(Math.random() * gridContent.length);
-
+        console.log("gridContent", gridContent);
         while (!keyword.includes(gridContent[randomIndex].value)) {
           randomIndex = Math.floor(Math.random() * gridContent.length);
         }
@@ -143,10 +123,13 @@ const BingoBoard = ({ size, letters, keyword }: Props) => {
         };
         updatedGridContent[clickedLetter.index] = updatedLetter;
         setGridContent(updatedGridContent);
-        handleClick("Correct Letter");
         changeRandomSpelled(updatedGridContent);
       } else {
-        handleClick("Wrong Letter");
+        Swal.fire({
+          title: "Try Again!",
+          text: "Wrong Letter",
+          icon: "error",
+        });
         // delay 2 seconds
         if (spelledLetter) {
           spellLetter(spelledLetter);
@@ -161,6 +144,11 @@ const BingoBoard = ({ size, letters, keyword }: Props) => {
 
   const handleCongrats = async () => {
     try {
+      Swal.fire({
+        title: "Congratulations!",
+        text: "You you compelete Bingo",
+        icon: "success",
+      });
       await playSoundFromGoogle(congratsSound);
     } catch (error) {
       console.log("error: hunt: listen word error: ", error);
@@ -214,7 +202,6 @@ const BingoBoard = ({ size, letters, keyword }: Props) => {
       if (row.every((cell) => cell.isClicked)) {
         console.log("Bingo in row", i);
         console.log("row: " + i, row);
-        handleClick("Bingo");
         handleCongrats();
 
         return;
@@ -231,7 +218,6 @@ const BingoBoard = ({ size, letters, keyword }: Props) => {
       if (column.every((cell) => cell.isClicked)) {
         console.log("Bingo in column", i);
         console.log("column: " + i, column);
-        handleClick("Bingo");
         handleCongrats();
         return;
       }
@@ -249,7 +235,6 @@ const BingoBoard = ({ size, letters, keyword }: Props) => {
     if (leftDiagonal.every((cell) => cell.isClicked)) {
       console.log("Bingo in diagonal 1");
       console.log("leftDiagonal: ", leftDiagonal);
-      handleClick("Bingo");
       handleCongrats();
       return;
     }
@@ -257,24 +242,10 @@ const BingoBoard = ({ size, letters, keyword }: Props) => {
     if (rightdiagonal.every((cell) => cell.isClicked)) {
       console.log("Bingo in diagonal 2");
       console.log("rightdiagonal: ", rightdiagonal);
-      handleClick("Bingo");
       handleCongrats();
       return;
     }
   };
-
-  const action = (
-    <React.Fragment>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </React.Fragment>
-  );
 
   return (
     <div>
@@ -341,15 +312,6 @@ const BingoBoard = ({ size, letters, keyword }: Props) => {
                 ))}
             </Grid>
           </div>
-
-          {/*  */}
-          <Snackbar
-            open={open}
-            autoHideDuration={6000}
-            onClose={handleClose}
-            message={message}
-            action={action}
-          />
         </div>
       ) : (
         <ProgressBarComponent />

@@ -136,12 +136,23 @@ def get_memory_game():
 
 
 
+@app.route('/get_image_word', methods=['GET'])
+def get_image_word():
+    word = request.args.get('word')
+    iamge = imageScraper.get_image_links(word)
+    return jsonify({'image': iamge[0]['image_link']})
+
+@app.route('/get_audio_word', methods=['GET'])
+def get_audio_word():
+    word = request.args.get('word')
+    sound = textToSpeech.get_audio(word)
+    return jsonify({'sound': sound})
+
 @app.route('/test', methods=['GET'])
 def test():
-    iamge = imageScraper.get_image_links("observation")
-    return jsonify({'image': iamge})
-
-
+    word = request.args.get('word')
+    rhymes = rhymeScraper.fetch_rhymes(word)
+    return jsonify({'rhymes': rhymes})
 
 # Run the Flask app
 if __name__ == '__main__':

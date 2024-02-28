@@ -9,48 +9,17 @@ import { Box, Button, IconButton, Snackbar } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { useSearchParams, useRouter } from "next/navigation";
+import { getWordImage } from "@/services/images/getWordImage";
+import Swal from "sweetalert2";
 
 const LetterHuntPage = () => {
   const router = useRouter();
-
-  const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState("");
-  const handleClick = (message: string) => {
-    setOpen(false);
-    setMessage(message);
-    setOpen(true);
-  };
-
-  const handleClose = (
-    event: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
-  };
-  const action = (
-    <React.Fragment>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </React.Fragment>
-  );
-  //
   const searchParams = useSearchParams();
-  const keywordValue = searchParams.get("keyword");
-  const imgLinkValue = searchParams.get("imgLink");
-  const imgLink = imgLinkValue ? imgLinkValue : "";
+  const keywordValue = searchParams.get("word");
 
   const keyword = keywordValue ? keywordValue.toUpperCase() : "";
   const [keywordSound, setKeywordSound] = useState("");
+  const [keywordImage, setKeywordImage] = useState("");
   const [congratsSound, setCongratsSound] = useState("");
 
   const getKeywordSound = async () => {
@@ -58,21 +27,33 @@ const LetterHuntPage = () => {
     const congratsResponse = await getTextSoundFemale(
       "Congratulations! You found the letter " + keyword[0]
     );
+    const image = await getWordImage(keyword);
+
     setKeywordSound(response);
     setCongratsSound(congratsResponse);
+    setKeywordImage(image);
   };
 
   useEffect(() => {
     getKeywordSound();
+    // getKeywordImage();
   }, []);
 
   const handleOnClickLetter = (letter: string) => {
     if (letter === keyword[0]) {
-      handleClick("correct letter");
+      Swal.fire({
+        title: "Congratulations!",
+        text: "You found the letter " + keyword[0],
+        icon: "success",
+      });
       handleCongrats();
     } else {
-      handleClick("wrong letter");
       handleListen();
+      Swal.fire({
+        title: "Try Again!",
+        text: "Wrong Letter",
+        icon: "error",
+      });
     }
   };
 
@@ -123,8 +104,9 @@ const LetterHuntPage = () => {
               maxWidth: { xs: 250, md: 250 },
             }}
             alt={keyword}
-            src={imgLink}
+            src={keywordImage}
           />
+
           <br />
           <div
             className="flex flex-col items-center ustify-center p-5 rounded-2xl"
@@ -142,13 +124,6 @@ const LetterHuntPage = () => {
             </Button>
             <br />
             <LettersGrid onClickLetter={handleOnClickLetter} />
-            <Snackbar
-              open={open}
-              autoHideDuration={1500}
-              onClose={handleClose}
-              message={message}
-              action={action}
-            />
           </div>
         </div>
       ) : (

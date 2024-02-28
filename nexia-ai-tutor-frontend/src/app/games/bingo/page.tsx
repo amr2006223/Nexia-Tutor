@@ -6,7 +6,8 @@ import { useSearchParams } from "next/navigation";
 
 const BingoGamePage = () => {
   const searchParams = useSearchParams();
-  const keywordValue = searchParams.get("keyword");
+  const keywordValue = searchParams.get("word");
+
   const uppercaseKeyWord = keywordValue ? keywordValue.toUpperCase() : "";
   const keyWord = uppercaseKeyWord ? uppercaseKeyWord.split("") : [];
 

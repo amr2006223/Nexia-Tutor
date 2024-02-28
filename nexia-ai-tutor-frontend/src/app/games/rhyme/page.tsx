@@ -11,6 +11,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import CounterComponent from "@/shared/components/counter/CounterComponent";
 import FlagIcon from "@mui/icons-material/Flag";
 import { getKeywordDataForRhymeGame } from "@/services/games/rhyme/getKeywordData";
+import { useSearchParams } from "next/navigation";
 
 type RhymingGameProps = {
   keyword: RhymingWord;
@@ -19,6 +20,8 @@ type RhymingGameProps = {
 };
 
 const RhymingGamePage = () => {
+  const searchParams = useSearchParams();
+  const keywordValue = searchParams.get("word");
   const [response, setResponse] = React.useState<RhymingGameProps | null>(null);
   const [loading, setLoading] = React.useState(true);
   const [startGame, setStartGame] = React.useState(false);
@@ -29,7 +32,7 @@ const RhymingGamePage = () => {
     try {
       // await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      const response = await getKeywordDataForRhymeGame("hat");
+      const response = await getKeywordDataForRhymeGame(keywordValue as string);
       // console.log(response);
       const { keyWord, not_rhymes, rhymes } = response;
       // console.log("keyWordResponse", keyWord);
@@ -122,81 +125,86 @@ const RhymingGamePage = () => {
   }, []);
 
   return (
-    <div style={{ minHeight: "100vh", position: "relative" }}>
-      {loading && <ProgressBarComponent />}
-      {startGame ? (
-        <div style={{ paddingBottom: "60px" }}>
-          {response && (
-            <div className="flex flex-col justify-center items-center mt-3">
-              <div className="flex flex-row items-center">
-                <div className="flex text-3xl font-bold ">
-                  What word rhymes with
-                </div>
-                <img
-                  className="ml-2"
-                  src={response.keyword.data.image}
-                  alt={response.keyword.data.word}
-                  style={{ width: "50px", height: "50px" }}
-                />
-                <SpeakerButtonComponent
-                  sound={response.keyword.data.sound}
-                  from_google={true}
-                  theme="dark"
-                />
-              </div>
+    <>
+      {loading ? (
+        <ProgressBarComponent />
+      ) : (
+        <div style={{ minHeight: "100vh", position: "relative" }}>
+          {startGame ? (
+            <div style={{ paddingBottom: "60px" }}>
+              {response && (
+                <div className="flex flex-col justify-center items-center mt-3">
+                  <div className="flex flex-row items-center">
+                    <div className="flex text-3xl font-bold ">
+                      What word rhymes with
+                    </div>
+                    <img
+                      className="ml-2"
+                      src={response.keyword.data.image}
+                      alt={response.keyword.data.word}
+                      style={{ width: "50px", height: "50px" }}
+                    />
+                    <SpeakerButtonComponent
+                      sound={response.keyword.data.sound}
+                      from_google={true}
+                      theme="dark"
+                    />
+                  </div>
 
-              <div className="grid grid-cols-3 grid-flow-row gap-4">
-                {response.otherWords.map((word, index) => (
-                  <SecondryWordRhymeComponent
-                    key={index}
-                    index={index}
-                    secondaryWord={word}
-                    checkFunction={() => ckeckIfRhyming(word)}
-                  />
-                ))}
-              </div>
-              <div
-                style={{
-                  position: "fixed",
-                  bottom: 0,
-                  width: "100%",
-                  backgroundColor: "#fff",
-                  padding: "10px",
-                  borderTop: "2px solid #3e4772",
-                }}
-                className="flex flex-row justify-between items-center mt-3"
+                  <div className="grid grid-cols-3 grid-flow-row gap-4">
+                    {response.otherWords.map((word, index) => (
+                      <SecondryWordRhymeComponent
+                        key={index}
+                        index={index}
+                        secondaryWord={word}
+                        checkFunction={() => ckeckIfRhyming(word)}
+                      />
+                    ))}
+                  </div>
+                  <div
+                    style={{
+                      position: "fixed",
+                      bottom: 0,
+                      width: "100%",
+                      backgroundColor: "#fff",
+                      padding: "10px",
+                      borderTop: "2px solid #3e4772",
+                    }}
+                    className="flex flex-row justify-between items-center mt-3"
+                  >
+                    <CounterComponent
+                      count={wrongAnswers}
+                      color="red"
+                      icon={CloseIcon}
+                    />
+                    <CounterComponent
+                      count={correctAnswers}
+                      color="green"
+                      icon={CheckIcon}
+                    />
+                    <CounterComponent
+                      count={response.numberOfCorrectAnswers}
+                      color="purple"
+                      icon={FlagIcon}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex flex-col justify-center items-center mt-3">
+              <Button
+                onClick={() => startTheGame()}
+                variant="contained"
+                color="primary"
               >
-                <CounterComponent
-                  count={wrongAnswers}
-                  color="red"
-                  icon={CloseIcon}
-                />
-                <CounterComponent
-                  count={correctAnswers}
-                  color="green"
-                  icon={CheckIcon}
-                />
-                <CounterComponent
-                  count={response.numberOfCorrectAnswers}
-                  color="purple"
-                  icon={FlagIcon}
-                />
-              </div>
+                Start Game
+              </Button>
             </div>
           )}
         </div>
-      ) : (
-        <div className="flex flex-col justify-center items-center mt-3">
-          <Button
-            onClick={() => startTheGame()}
-            variant="contained"
-            color="primary"
-          >
-            Start Game
-          </Button>
-        </div>
       )}
-    </div>
+    </>
   );
 };
 

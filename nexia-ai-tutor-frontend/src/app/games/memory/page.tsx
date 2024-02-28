@@ -2,6 +2,7 @@
 import { getMemoryGameData } from "@/services/games/memory/getMemoryGameData";
 import ProgressBarComponent from "@/shared/components/progress/progressBar";
 import React, { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 type Boxes = {
   id: number;
@@ -16,6 +17,8 @@ type selectedImage = {
 };
 
 const page = () => {
+  const searchParams = useSearchParams();
+  const keywordValue = searchParams.get("word");
   const [loading, setLoading] = useState<boolean>(true);
   const [progress, setProgress] = useState<number>(0);
   const [infoText, setInfoText] = useState<string>("Memorize the Pictures");
@@ -24,7 +27,7 @@ const page = () => {
   const [changeColor, setChangeColor] = useState<boolean>(false);
 
   const loadingImages = async () => {
-    const keyText = "dog";
+    const keyText = keywordValue as string;
     const response = await getMemoryGameData(keyText);
     console.log(response);
 
