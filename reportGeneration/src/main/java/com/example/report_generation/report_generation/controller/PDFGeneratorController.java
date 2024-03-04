@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class PDFGeneratorController {
-    PDFGeneratorService _pdfGeneratorService;
+    private PDFGeneratorService _pdfGeneratorService;
     @Autowired
-    UserService _userService;
+    private UserService _userService;
 
     public PDFGeneratorController(PDFGeneratorService PdfGeneratorService) {
         this._pdfGeneratorService = PdfGeneratorService;
@@ -53,7 +53,7 @@ public class PDFGeneratorController {
     }
 
     @PostMapping("/pdf/gen")
-    public ResponseEntity<String> generatePdf(@RequestBody Map<String, Object> body) throws IOException {
+    public ResponseEntity<String> generatePDF(@RequestBody Map<String, Object> body) throws IOException {
         boolean generated = _pdfGeneratorService.generateDocumentInServer(body.get("userId").toString());
         if(!generated) return new ResponseEntity<String>("Falied to generate PDF", HttpStatus.BAD_REQUEST);
         return new ResponseEntity<String>("Pdf Generated Successfully", HttpStatus.OK);

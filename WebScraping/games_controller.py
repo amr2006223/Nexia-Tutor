@@ -156,7 +156,7 @@ def test():
 
 # Run the Flask app
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True,port=5001)
 
 #http://127.0.0.1:5000/get_rhymes_game_data?word=cat
 #http://127.0.0.1:5000/get_memory_game_data?word=cat

@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock, faEye, faUser, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import GoogleButton from 'react-google-button';
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -15,7 +17,8 @@ export default function Home() {
   const [birthdate, setBirthdate] = useState("");
   const [gender, setGender] = useState("");
   const [nationality, setNationality] = useState("");
-
+  
+  const router = useRouter();
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
@@ -26,9 +29,33 @@ export default function Home() {
       alert("Passwords do not match");
       return;
     }
+    const formattedBirthdate = new Date(birthdate).toISOString().split("T")[0];
+    let genderValue = gender === "Male" ? false : true;
     // Continue with form submission
+    const result = {
+      username: username,
+      password: password,
+      birthDate: formattedBirthdate,
+      gender: genderValue,
+      nationality: nationality,
+      role: "USER",
+    };
+    axios
+      .post("http://localhost:8080/api/auth/register", result)
+      .then((response) => {
+        if(response.status == 200){
+           router.push("/home");
+           console.log("Successful Login", response.data);
+        }
+        // const message = response.data;
+      })
+      .catch((error) => {
+        console.error("Error", error);
+        // Handle login error
+      });
+    };
     // Add your logic here to submit the form data
-  };
+ 
 
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);

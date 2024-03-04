@@ -2,7 +2,7 @@ import random
 
 class WordGenerator:
     def load_words():
-        with open("WebScraping/words.txt", 'r') as file:
+        with open("words.txt", 'r') as file:
             words = file.read().splitlines()
         return words
 

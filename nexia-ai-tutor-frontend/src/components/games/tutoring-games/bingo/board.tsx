@@ -275,7 +275,7 @@ const BingoBoard = ({ size, letters, keyword }: Props) => {
               color: "#3E4772",
             }}
           >
-            Lesson 1
+            BINGO
           </div>
           <br />
           <div
