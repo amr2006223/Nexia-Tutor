@@ -53,7 +53,7 @@ public class UserService extends CrudOperations<User, String, UserRepository> im
         System.out.println(token);
         user.setToken(token);
         User addedUser = this.userRepository.save(user);
-        if (userProducer.broadcastUser(user, UserEvent.Status.ADD, "Adding user")) {
+        if (!userProducer.broadcastUser(user, UserEvent.Status.ADD, "Adding user")) {
             System.out.println("error user couldnt be added in other microservices");
         }
         return addedUser;

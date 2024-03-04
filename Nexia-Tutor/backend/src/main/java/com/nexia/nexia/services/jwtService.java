@@ -2,7 +2,6 @@ package com.nexia.nexia.services;
 
 import java.util.Date;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;

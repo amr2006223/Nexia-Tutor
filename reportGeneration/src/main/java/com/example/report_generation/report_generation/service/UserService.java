@@ -6,12 +6,11 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ArrayList;
-import java.util.HashMap;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.basedomain.basedomain.dto.UserEvent;
 import com.example.report_generation.report_generation.kafka.DyslexiaTypeProducer;
 import com.example.report_generation.report_generation.models.DyslexiaCategory;
 import com.example.report_generation.report_generation.models.User;
@@ -40,7 +39,7 @@ public class UserService {
 
             File jsonFile = new File(filePath);
             List<User> userList = new ArrayList<>();
-            if (checkIfJsonFileExist(jsonFile, userList, newUser) != null)
+            if (createJsonFileWithUsers(jsonFile, userList, newUser) != null)
                 return newUser;
             // If the file exists, read the data and try to find the user
             userList = objectMapper.readValue(jsonFile,
@@ -127,7 +126,7 @@ public class UserService {
         return null;
     }
 
-    public boolean checkIfUserInJsonFile(List<User> userList, User newUser) {
+    private boolean checkIfUserInJsonFile(List<User> userList, User newUser) {
         boolean found = false;
         for (User user : userList) {
             if (user.getId().equals(newUser.getId())) {
@@ -145,7 +144,7 @@ public class UserService {
 
     }
 
-    public User checkIfJsonFileExist(File jsonFile, List<User> userList, User newUser)
+    private User createJsonFileWithUsers(File jsonFile, List<User> userList, User newUser)
             throws StreamWriteException, DatabindException, IOException {
         if (!jsonFile.exists()) {
             // If the file doesn't exist, create a new list with the provided user data

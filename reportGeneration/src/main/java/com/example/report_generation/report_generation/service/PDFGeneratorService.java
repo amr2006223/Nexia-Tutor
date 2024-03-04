@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,11 +39,11 @@ import java.awt.Color;
 public class PDFGeneratorService {
     String pdfFilePath = "reportGeneration\\src\\main\\resources\\pdf\\";
     String userFilePath = "reportGeneration\\src\\main\\resources\\json\\ImportantUser.json";
-    @Autowired
-    UserService _userService;
     Color defaultColor = new Color(0x3E4772);
     String defalutFont = FontFactory.HELVETICA;
     String defaultTitleFont = FontFactory.HELVETICA_BOLD;
+    @Autowired
+    UserService _userService;
 
     public void downloadDocument(HttpServletResponse response, User user) throws IOException {
         try {

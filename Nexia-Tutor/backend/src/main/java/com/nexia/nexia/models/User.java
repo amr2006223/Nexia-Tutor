@@ -11,8 +11,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,7 +31,7 @@ public class User implements UserDetails {
     private String username;
     // @JsonIgnore
     private String password;
-    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss'Z'")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date birthDate;
     private String nationality;
     private boolean gender;

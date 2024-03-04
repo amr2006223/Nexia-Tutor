@@ -1,14 +1,9 @@
 package com.nexia.nexia.controlles;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.RestController;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nexia.nexia.models.User;
 import com.nexia.nexia.services.UserService;
-import com.nexia.nexia.util.ObjectToJSON;
-import com.nexia.nexia.viewModels.UserVM;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

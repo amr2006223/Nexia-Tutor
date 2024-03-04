@@ -96,7 +96,7 @@ const LetterHuntPage = () => {
             </Button>
           </div>
 
-          <div className="text-center font-bold text-3xl">Lesson 1</div>
+          <div className="text-center font-bold text-3xl">Hunt Game</div>
           <Box
             component="img"
             sx={{
