@@ -66,4 +66,14 @@ public class GameService extends CrudOperations<Game, Long, GameRepository> impl
             return gameRepository.findByDyslexiaType(dyslexiaType);
         }
     }
+    public List<Game> getGamesForUser(String userId){
+        User user = userService.getEntityById(userId);
+        if(user == null) return null;
+        List<Game> userGames = new ArrayList<Game>();
+        for (DyslexiaType dyslexiaType : user.getDyslexia_types()) {
+            userGames.addAll(getGamesForDyslexiaType(dyslexiaType.getId()));
+        }
+        return userGames;
+    }
+
 }

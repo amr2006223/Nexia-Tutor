@@ -64,8 +64,8 @@ public class PDFGeneratorService {
         }
     }
 
-    public boolean generateDocumentInServer(String id) throws IOException {
-        User user = _userService.getUserById(id, userFilePath);
+    public boolean generateDocumentInServer(User user) throws IOException {
+        // User user = _userService.getUserById(id, userFilePath);
         if (user == null)
             return false;
         try {
