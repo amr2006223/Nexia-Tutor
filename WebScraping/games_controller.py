@@ -1,10 +1,13 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from openai import OpenAIError
 from services.image_scraper import ImageScraper
 from services.rhyme_scraper import RhymeScraper
 from services.word_generator import WordGenerator
 from services.text_to_speech import TextToSpeech
+from services.open_ai import OpenAI
 import queue
+import threading
 
 app = Flask(__name__)
 CORS(
@@ -20,8 +23,10 @@ with app.app_context():
     imageScraper = ImageScraper()
     textToSpeech = TextToSpeech()
     wordGenerator = WordGenerator()
+    openAI = OpenAI()
+
     
-    import threading
+ 
 
 def getUserWordImage(queue,word):
     # Check if the person forgot to provide a word; if they did, tell them it's needed
@@ -136,7 +141,7 @@ def get_memory_game():
 
 
 
-@app.route('/get_image_word', methods=['GET'])
+@app.route('/web/get_image_word', methods=['GET'])
 def get_image_word():
     word = request.args.get('word')
     iamge = imageScraper.get_image_links(word)
@@ -154,9 +159,41 @@ def test():
     rhymes = rhymeScraper.fetch_rhymes(word)
     return jsonify({'rhymes': rhymes})
 
+# Define a route for generating images based on a word
+@app.route('/get_image_word', methods=['GET'])
+def generate_image():
+    # Retrieve parameters from the request URL
+    word = request.args.get('word', default='', type=str)
+    model = request.args.get('model', default='dall-e-2', type=str)
+    size = request.args.get('size', default='1024x1024', type=str)
+
+    try:
+        # Call the function to generate an image with retry logic
+        result = openAI.generate_image_with_retry(word, model, size)
+
+        # Extract the image URL from the result
+        image_url = result.data[0].url  # Assuming there is only one image URL in the list
+
+        # Prepare the response data as a dictionary
+        response_data = {'image': image_url} 
+
+        # Return the response data as JSON
+        return jsonify(response_data)
+
+    except OpenAIError as e:
+        # Handle OpenAI errors and return an error response
+        print(f"Error from OpenAI API: {e}")
+        return jsonify({'error': str(e)}), 500
+    except Exception as e:
+        # Handle unexpected errors and return an error response
+        print(f"Unexpected error: {e}")
+        return jsonify({'error': 'Unexpected error occurred.'}), 500
+
+
 # Run the Flask app
 if __name__ == '__main__':
     app.run(debug=True,port=5001)
 
 #http://127.0.0.1:5000/get_rhymes_game_data?word=cat
 #http://127.0.0.1:5000/get_memory_game_data?word=cat
+#http://localhost:5000/get_image_word?word=batman
