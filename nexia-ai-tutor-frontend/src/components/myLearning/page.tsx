@@ -104,7 +104,7 @@ export default function LearningPage(): JSX.Element {
           </div>
 
           {/* Rectangle 1 */}
-          <div className="w-full max-w-2xl mt-8 p-8 bg-[#E3FFDC] rounded-lg text-2xl font-bold flex-1 justify-between items-center">
+          {/* <div className="w-full max-w-2xl mt-8 p-8 bg-[#E3FFDC] rounded-lg text-2xl font-bold flex-1 justify-between items-center">
             <div className="flex items-center">
               <div className="bg-green-500 rounded-2xl p-4 px-12 flex items-center">
                 <div className="text-center">
@@ -131,10 +131,10 @@ export default function LearningPage(): JSX.Element {
                 </span>
               </button>
             </div>
-          </div>
+          </div> */}
 
           {/* Rectangle 2 */}
-          <div className="w-full max-w-xl mt-8 p-8 bg-[#E3FFDC] rounded-lg">
+          <div className="w-full max-w-2xl mt-8 p-8 bg-[#E3FFDC] rounded-lg">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold text-[#3E4772]">
                 Your Contents

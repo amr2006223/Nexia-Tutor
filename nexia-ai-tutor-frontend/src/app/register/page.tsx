@@ -2,11 +2,16 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import Head from "next/head";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faLock, faEye, faUser, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import GoogleButton from 'react-google-button';
+import {
+  faLock,
+  faEye,
+  faUser,
+  faEyeSlash,
+} from "@fortawesome/free-solid-svg-icons";
+// import GoogleButton from "react-google-button";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Home() {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -17,8 +22,10 @@ export default function Home() {
   const [birthdate, setBirthdate] = useState("");
   const [gender, setGender] = useState("");
   const [nationality, setNationality] = useState("");
-  
+  const [parentPin, setParentPin] = useState("");
+
   const router = useRouter();
+
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
@@ -38,14 +45,16 @@ export default function Home() {
       birthDate: formattedBirthdate,
       gender: genderValue,
       nationality: nationality,
+      // TODO: check parent pin in the backend
+      // parentPin: parentPin,
       role: "USER",
     };
     axios
       .post("http://localhost:8080/api/auth/register", result)
       .then((response) => {
-        if(response.status == 200){
-           router.push("/home");
-           console.log("Successful Login", response.data);
+        if (response.status == 200) {
+          router.push("/home");
+          console.log("Successful Login", response.data);
         }
         // const message = response.data;
       })
@@ -53,9 +62,12 @@ export default function Home() {
         console.error("Error", error);
         // Handle login error
       });
-    };
-    // Add your logic here to submit the form data
- 
+  };
+  // Add your logic here to submit the form data
+
+  const handleParentPinChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setParentPin(e.target.value);
+  };
 
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
@@ -105,7 +117,10 @@ export default function Home() {
               <form onSubmit={handleSubmit}>
                 <div className="flex flex-col items-center">
                   <div className="bg-gray-100 flex items-center w-64 p-2 mb-3 relative">
-                    <FontAwesomeIcon icon={faUser} className="text-gray-400 m-2" />
+                    <FontAwesomeIcon
+                      icon={faUser}
+                      className="text-gray-400 m-2"
+                    />
                     <input
                       type="name"
                       name="text"
@@ -116,7 +131,10 @@ export default function Home() {
                     />
                   </div>
                   <div className="bg-gray-100 flex items-center w-64 p-2 mb-3 relative">
-                    <FontAwesomeIcon icon={faUser} className="text-gray-400 m-2" />
+                    <FontAwesomeIcon
+                      icon={faUser}
+                      className="text-gray-400 m-2"
+                    />
                     <input
                       type="email"
                       name="email"
@@ -127,7 +145,10 @@ export default function Home() {
                     />
                   </div>
                   <div className="bg-gray-100 flex items-center w-64 p-2 mb-3 relative">
-                    <FontAwesomeIcon icon={faUser} className="text-gray-400 m-2" />
+                    <FontAwesomeIcon
+                      icon={faUser}
+                      className="text-gray-400 m-2"
+                    />
                     <input
                       type="date"
                       name="birthdate"
@@ -138,21 +159,26 @@ export default function Home() {
                     />
                   </div>
                   <div className="bg-gray-100 flex items-center w-64 p-2 mb-3 relative">
-                    <FontAwesomeIcon icon={faUser} className="text-gray-400 m-2" />
+                    <FontAwesomeIcon
+                      icon={faUser}
+                      className="text-gray-400 m-2"
+                    />
                     <select
-                    name="gender"
-                    className="text-sm bg-gray-100 outline-none flex-1"
-                    value={gender}
-                    onChange={handleGenderChange}
-                  >
-                    <option value="">Select Gender</option>
-                    <option value="female">Female</option>
-                    <option value="male">Male</option>
-                  </select>
-
+                      name="gender"
+                      className="text-sm bg-gray-100 outline-none flex-1"
+                      value={gender}
+                      onChange={handleGenderChange}
+                    >
+                      <option value="">Select Gender</option>
+                      <option value="female">Female</option>
+                      <option value="male">Male</option>
+                    </select>
                   </div>
                   <div className="bg-gray-100 flex items-center w-64 p-2 mb-3 relative">
-                    <FontAwesomeIcon icon={faUser} className="text-gray-400 m-2" />
+                    <FontAwesomeIcon
+                      icon={faUser}
+                      className="text-gray-400 m-2"
+                    />
                     <input
                       type="text"
                       name="nationality"
@@ -163,7 +189,36 @@ export default function Home() {
                     />
                   </div>
                   <div className="bg-gray-100 flex items-center w-64 p-2 mb-3 relative">
-                    <FontAwesomeIcon icon={faLock} className="text-gray-400 m-2" />
+                    <FontAwesomeIcon
+                      icon={faLock}
+                      className="text-gray-400 m-2"
+                    />
+                    <input
+                      type={passwordVisible ? "number" : "password"}
+                      name="parentPin"
+                      placeholder="Parent Pin"
+                      value={parentPin}
+                      onChange={handleParentPinChange}
+                      className="text-sm bg-gray-100 outline-none flex-1"
+                      maxLength={4}
+                    />
+                    <div
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {!passwordVisible ? (
+                        <FontAwesomeIcon icon={faEyeSlash} />
+                      ) : (
+                        <FontAwesomeIcon icon={faEye} />
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="bg-gray-100 flex items-center w-64 p-2 mb-3 relative">
+                    <FontAwesomeIcon
+                      icon={faLock}
+                      className="text-gray-400 m-2"
+                    />
                     <input
                       type={passwordVisible ? "text" : "password"}
                       name="password"
@@ -172,13 +227,23 @@ export default function Home() {
                       onChange={handlePasswordChange}
                       className="text-sm bg-gray-100 outline-none flex-1"
                     />
-                    <div className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer" onClick={togglePasswordVisibility}>
-                      {!passwordVisible ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} />}
+                    <div
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {!passwordVisible ? (
+                        <FontAwesomeIcon icon={faEyeSlash} />
+                      ) : (
+                        <FontAwesomeIcon icon={faEye} />
+                      )}
                     </div>
                   </div>
 
                   <div className="bg-gray-100 flex items-center w-64 p-2 mb-3 relative">
-                    <FontAwesomeIcon icon={faLock} className="text-gray-400 m-2" />
+                    <FontAwesomeIcon
+                      icon={faLock}
+                      className="text-gray-400 m-2"
+                    />
                     <input
                       type={passwordVisible ? "text" : "password"}
                       name="confirm password"
@@ -187,11 +252,18 @@ export default function Home() {
                       onChange={handleConfirmPasswordChange}
                       className="text-sm bg-gray-100 outline-none flex-1"
                     />
-                    <div className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer" onClick={togglePasswordVisibility}>
-                      {!passwordVisible ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} />}
+                    <div
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {!passwordVisible ? (
+                        <FontAwesomeIcon icon={faEyeSlash} />
+                      ) : (
+                        <FontAwesomeIcon icon={faEye} />
+                      )}
                     </div>
                   </div>
-                
+
                   <button
                     type="submit"
                     className="border-2 border-[#2A304D] rounded-full px-12 py-2 inline-block font-semibold hover:bg-[#2A304D] hover:text-gray-100"
@@ -202,35 +274,35 @@ export default function Home() {
                     <span className="mr-1">or sign up using Google</span>
                     <FontAwesomeIcon icon={faGoogle} />
                   </div> */}
-             <div className="mt-3 flex items-center text-[#2A304D]">
-               
-                {/* Container for Google button */}
-                <div className="google-button-container flex justify-center w-full">
-                  <GoogleButton
-                    type="dark" // can be light or dark
-                    onClick={() => {
-                      console.log('Google button clicked')
-                    }}
-                  />
-                </div>
-              </div>
+
+                  {/* <div className="mt-3 flex items-center text-[#2A304D]"> */}
+                  {/* Container for Google button */}
+                  {/* <div className="google-button-container flex justify-center w-full"> */}
+                  {/* <GoogleButton
+                        type="dark" // can be light or dark
+                        onClick={() => {
+                          console.log("Google button clicked");
+                        }}
+                      /> */}
+                  {/* </div> */}
+                  {/* </div> */}
                 </div>
               </form>
             </div>
           </div>
           {/* sign up section */}
           <div className="xl:w-2/5 bg-[#2A304D] text-gray-100 rounded-tr-2xl rounded-br-2xl py-36 px-12">
-            <h2 className="text-[#CDEBC5] text-3xl font-bold mb-2">start your Journey !</h2>
+            <h2 className="text-[#CDEBC5] text-3xl font-bold mb-2">
+              Already have an account?
+            </h2>
             <div className="border-2 w-10 border-white inline-block mb-2"></div>
-            <p className="mb-2">
-              If you already have an account, <span className="underline text-[#CDEBC5]"> sign in Now </span>
-            </p>
-            <a
-              href="#"
+            <p className="mb-2">If you already have an account, sign in Now</p>
+            <Link
+              href="/Login"
               className="border-2 border-white rounded-full px-12 py-2 inline-block font-semibold hover:bg-gray-100 hover:text-[#2A304D]"
             >
               Sign In
-            </a>
+            </Link>
           </div>
         </div>
       </main>
