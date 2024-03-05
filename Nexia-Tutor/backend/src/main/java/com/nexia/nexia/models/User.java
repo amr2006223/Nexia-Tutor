@@ -38,7 +38,9 @@ public class User implements UserDetails {
     private String role;
     @Column(nullable = true)
     private String token;
+    private String parentPin;
 
+  
     @ManyToMany(targetEntity = DyslexiaType.class, fetch = FetchType.EAGER)
     @JoinTable(name = "user_dyslexia_types", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "dyslexia_type_id"))
     private List<DyslexiaType> dyslexiaTypes;
@@ -47,7 +49,7 @@ public class User implements UserDetails {
     }
 
     public User(String id, String username, String password, Date birthDate, String nationality, boolean gender,
-            List<DyslexiaType> dyslexia_types, String role) {
+            List<DyslexiaType> dyslexia_types, String role,String parentPin) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -56,6 +58,15 @@ public class User implements UserDetails {
         this.gender = gender;
         this.dyslexiaTypes = dyslexia_types;
         this.role = role;
+        this.parentPin = parentPin;
+    }
+
+    public String getParentPin() {
+        return parentPin;
+    }
+
+    public void setParentPin(String parentPin) {
+        this.parentPin = parentPin;
     }
 
     public String getId() {
