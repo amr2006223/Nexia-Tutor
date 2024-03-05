@@ -183,6 +183,7 @@ public class UserService {
         // get the newest record of the user
         UserData data = getLatestRecord(user);
         Map<String, String> record = data.getRecord();
+        System.out.println(record);
         // get the average of the record and what categories that the user had
         List<DyslexiaCategory> userCategories = new ArrayList<DyslexiaCategory>();
         // TO-DO needs refactoring asap database need to have the number or the interval
@@ -190,10 +191,10 @@ public class UserService {
         List<DyslexiaCategory> categories = _dyslexiaCategoryRepository.findAll();
         for (DyslexiaCategory dyslexiaCategory : categories) {
             if (getAccuracy(dyslexiaCategory.getStart(), dyslexiaCategory.getEnd(), record) <= dyslexiaCategory.getAverage())
+                System.out.println("category added");
                 userCategories.add(dyslexiaCategory);
-                //broadcast that user to the other services
-                dyslexiaTypeProducer.broadcastDyslexiaType(userCategories, "Categorizing User",user.getId());
-        }
+            }
+        dyslexiaTypeProducer.broadcastDyslexiaType(userCategories, "Categorizing User",user.getId());
         return userCategories;
 
     }

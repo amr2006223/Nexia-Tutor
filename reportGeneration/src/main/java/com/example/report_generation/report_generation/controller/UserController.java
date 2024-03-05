@@ -33,7 +33,7 @@ public class UserController {
     @PostMapping("/add")
     public ResponseEntity<User> addUser(@RequestBody User newUser) throws IOException {
         User user = _userService.InsertUser(newUser, filePath);
-        _pdfGeneratorService.generateDocumentInServer(newUser.getId());
+        _pdfGeneratorService.generateDocumentInServer(user);
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
     
