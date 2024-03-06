@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { FiPlay } from "react-icons/fi";
 
@@ -157,7 +158,7 @@ const Hero = () => {
             >
               <FiPlay className="inline text-2xl" />
               <a
-                href="https://nexia-ai-tutor.vercel.app/"
+                href="/home"
                 target="_blank"
                 className="inline ml-1 font-bold text-lg"
                 style={{ fontSize: `${responsiveValues.buttonFontSize - 2}px` }}
@@ -165,7 +166,8 @@ const Hero = () => {
                 Demo
               </a>
             </button>
-            <button
+            <Link
+              href="/FormInterface"
               className="w-28 bg-[#CDEBC5] text-[#3E4772] px-4 py-2 rounded-2xl ml-4 font-bold text-lg hover:scale-110 shadow-lg transition duration-300 ease-in-out"
               style={{
                 fontFamily: "OpenDyslexic-Regular",
@@ -174,9 +176,8 @@ const Hero = () => {
                 width: `${responsiveValues.buttonWidth}`,
               }}
             >
-              {" "}
               Test Now
-            </button>
+            </Link>
           </div>
         </div>
       </div>

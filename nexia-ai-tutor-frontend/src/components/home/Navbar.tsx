@@ -32,12 +32,12 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
   useEffect(() => {
     checkLogin();
   }, []);
-const handleGetUserDetails = async () =>{
-  // get user name
-  const user = await getUserDetailsService();
-  userState.setUser(user);
-  setUserName(user.username);
-}
+  const handleGetUserDetails = async () => {
+    // get user name
+    const user = await getUserDetailsService();
+    userState.setUser(user);
+    setUserName(user.username);
+  };
   useEffect(() => {
     if (isLoggedIn) {
       handleGetUserDetails();
@@ -52,7 +52,13 @@ const handleGetUserDetails = async () =>{
     >
       {/* left */}
       <div className="flex items-center pl-4">
-        <div className="text-black">logo</div>
+        <Link href="/home">
+          <img
+            src="/assets/images/logo.png"
+            alt="logo"
+            className="cursor-pointer h-12 w-12"
+          />
+        </Link>
       </div>
       <div className="bg-[#3E4772] flex-grow flex justify-center">
         {/* Center */}
@@ -63,8 +69,8 @@ const handleGetUserDetails = async () =>{
           <Link className="navbar__link relative" href="#">
             Roadmap
           </Link>
-          <Link className="navbar__link relative" href="#">
-            About Nexia
+          <Link className="navbar__link relative" href="/myLearning">
+            My Learning
           </Link>
         </div>
       </div>
