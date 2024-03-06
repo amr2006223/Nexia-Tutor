@@ -11,10 +11,11 @@ import {
 } from "@/services/files/fileUpload";
 import ProgressBarComponent from "@/shared/components/progress/progressBar";
 import { lessonFileData } from "@/types/lessons/fileData";
+import { useUserStore } from "@/shared/state/user";
 
 export default function LearningPage(): JSX.Element {
   const router = useRouter();
-
+  const userState = useUserStore();
   const lessonState = useLessonStore();
 
   const [uploadedFiles, setUploadedFiles] = useState<lessonFileData[]>([]);
@@ -95,7 +96,7 @@ export default function LearningPage(): JSX.Element {
             <title>MyLearning</title>
           </Head>
           <div className="flex items-center">
-            <h1 className="text-2xl font-bold mr-4">Welcome Back, Nancy</h1>
+            <h1 className="text-2xl font-bold mr-4">Welcome Back, {userState.user.username}</h1>
             <img
               src="/assets/images/potato-heart.png"
               alt="Potato Heart"

@@ -32,7 +32,9 @@ public class UserController {
     String filePath = "reportGeneration\\src\\main\\resources\\json\\ImportantUser.json";
     @PostMapping("/add")
     public ResponseEntity<User> addUser(@RequestBody User newUser) throws IOException {
+        System.err.println("here here here");
         User user = _userService.InsertUser(newUser, filePath);
+        
         _pdfGeneratorService.generateDocumentInServer(user);
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }

@@ -66,8 +66,9 @@ public class PDFGeneratorService {
 
     public boolean generateDocumentInServer(User user) throws IOException {
         // User user = _userService.getUserById(id, userFilePath);
-        if (user == null)
+        if (user == null){
             return false;
+        }
         try {
             writeDocument(user);
             return true;

@@ -190,9 +190,10 @@ public class UserService {
         // of question fro each dyslexia type
         List<DyslexiaCategory> categories = _dyslexiaCategoryRepository.findAll();
         for (DyslexiaCategory dyslexiaCategory : categories) {
-            if (getAccuracy(dyslexiaCategory.getStart(), dyslexiaCategory.getEnd(), record) <= dyslexiaCategory.getAverage())
-                System.out.println("category added");
+            if (getAccuracy(dyslexiaCategory.getStart(), dyslexiaCategory.getEnd(), record) <= dyslexiaCategory.getAverage()){
                 userCategories.add(dyslexiaCategory);
+                System.out.println("category added");
+            }
             }
         dyslexiaTypeProducer.broadcastDyslexiaType(userCategories, "Categorizing User",user.getId());
         return userCategories;

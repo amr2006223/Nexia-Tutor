@@ -7,10 +7,11 @@ import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { LoginData } from "@/types/auth";
-import { checkToken, login } from "@/services/auth/auth";
+import { login } from "@/services/auth/auth";
+import Swal from "sweetalert2";
+import { useUserStore } from "@/shared/state/user";
 export default function Login() {
   const router = useRouter();
-
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -32,6 +33,12 @@ export default function Login() {
     const response = await login(result);
     if (response) {
       router.push("/home");
+    }else{
+        Swal.fire({
+          title: "Login Failed",
+          text: "Invalid Credentials",
+          icon: "error",
+        });
     }
   };
 

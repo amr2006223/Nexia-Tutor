@@ -61,9 +61,8 @@ public class UserService extends CrudOperations<User, String, UserRepository> im
 
     @Override
     public boolean deleteEntity(String token) {
-        String id = jwtService.extractUUID(token);
-        User user = getEntityById(id);
-        super.deleteEntity(id);
+        User user = getEntityById(token);
+        super.deleteEntity(user.getId());
         if (!userProducer.broadcastUser(user, UserEvent.Status.DELETE, "Deleting user"))
             return false;
         return true;

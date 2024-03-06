@@ -1,4 +1,6 @@
 import { checkLoggedInService, logoutService } from "@/services/auth/auth";
+import { getUserDetailsService } from "@/services/user/userDetails";
+import { useUserStore } from "@/shared/state/user";
 import { Button } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -12,7 +14,7 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
   const router = useRouter();
-
+  const userState = useUserStore();
   const checkLogin = async () => {
     if (await checkLoggedInService()) {
       setIsLoggedIn(true);
@@ -30,11 +32,15 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
   useEffect(() => {
     checkLogin();
   }, []);
-
+const handleGetUserDetails = async () =>{
+  // get user name
+  const user = await getUserDetailsService();
+  userState.setUser(user);
+  setUserName(user.username);
+}
   useEffect(() => {
     if (isLoggedIn) {
-      // get user name
-      setUserName("User Name");
+      handleGetUserDetails();
     }
   }, [isLoggedIn]);
 

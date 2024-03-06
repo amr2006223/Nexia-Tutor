@@ -29,11 +29,11 @@ public class GameService extends CrudOperations<Game, Long, GameRepository> impl
     }
 
     @Override
-    public Map<String, Object> getGamesForLesson(String lessonName, String userId) {
+    public Map<String, Object> getGamesForLesson(String lessonName, String token) {
         try {
 
             // get user
-            User user = userService.getEntityById(userId);
+            User user = userService.getEntityById(token);
             if (user == null)
                 return null;
             // get lesson and get all keywords
@@ -41,7 +41,7 @@ public class GameService extends CrudOperations<Game, Long, GameRepository> impl
             if (lessonDetails == null)
                 return null;
             // get user dyslexia types
-            List<DyslexiaType> dyslexiaTypes = user.getDyslexia_types();
+            Set<DyslexiaType> dyslexiaTypes = user.getDyslexia_types();
             // get all games for dyslexia types (loop)
             List<Game> gamesList = new ArrayList<>();
             for (DyslexiaType dyslexiaType : dyslexiaTypes) {
@@ -66,8 +66,8 @@ public class GameService extends CrudOperations<Game, Long, GameRepository> impl
             return gameRepository.findByDyslexiaType(dyslexiaType);
         }
     }
-    public List<Game> getGamesForUser(String userId){
-        User user = userService.getEntityById(userId);
+    public List<Game> getGamesForUser(String token){
+        User user = userService.getEntityById(token);
         if(user == null) return null;
         List<Game> userGames = new ArrayList<Game>();
         for (DyslexiaType dyslexiaType : user.getDyslexia_types()) {
