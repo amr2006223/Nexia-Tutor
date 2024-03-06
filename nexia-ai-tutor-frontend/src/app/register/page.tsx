@@ -9,9 +9,11 @@ import {
   faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
 // import GoogleButton from "react-google-button";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { RegisterData } from "@/types/auth";
+import { register } from "@/services/auth/auth";
+import Swal from "sweetalert2";
 
 export default function Home() {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -30,38 +32,57 @@ export default function Home() {
     setPasswordVisible(!passwordVisible);
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      alert("Passwords do not match");
-      return;
+  const validateForm = () => {
+    // is empty
+    if (username === "" || email === "" || birthdate === "") {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please fill in all the fields",
+      });
+      return false;
     }
+
+    // password match
+    if (password !== confirmPassword) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Passwords do not match",
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // validate form
+    if (!validateForm()) return;
+
     const formattedBirthdate = new Date(birthdate).toISOString().split("T")[0];
     let genderValue = gender === "Male" ? false : true;
-    // Continue with form submission
-    const result = {
+    //
+    const result: RegisterData = {
       username: username,
       password: password,
       birthDate: formattedBirthdate,
       gender: genderValue,
       nationality: nationality,
-      // TODO: check parent pin in the backend
-      // parentPin: parentPin,
+      parentPin: parentPin,
       role: "USER",
     };
-    axios
-      .post("http://localhost:8080/api/auth/register", result)
-      .then((response) => {
-        if (response.status == 200) {
-          router.push("/home");
-          console.log("Successful Login", response.data);
-        }
-        // const message = response.data;
-      })
-      .catch((error) => {
-        console.error("Error", error);
-        // Handle login error
+
+    const response = await register(result);
+    if (response) {
+      router.push("/login");
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "An error occurred, please try again",
       });
+    }
   };
   // Add your logic here to submit the form data
 

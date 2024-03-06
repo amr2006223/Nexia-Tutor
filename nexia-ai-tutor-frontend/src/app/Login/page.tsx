@@ -2,16 +2,20 @@
 import Head from "next/head";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { LoginData } from "@/types/auth";
+import { checkToken, login } from "@/services/auth/auth";
 export default function Login() {
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({
@@ -20,25 +24,17 @@ export default function Login() {
     }));
   };
   const handleSubmit = async () => {
-    const result = {
+    const result: LoginData = {
       username: formData.username,
       password: formData.password,
     };
-    axios
-      .post("http://localhost:8080/api/auth/login", result)
-      .then((response) => {
-        if (response.status == 200) {
-          router.push("/home");
-        }
-        console.log("Successful Login", response.data);
-        const message = response.data;
-      })
-      .catch((error) => {
-        console.error("Error", error);
-        // Handle login error
-      });
+
+    const response = await login(result);
+    if (response) {
+      router.push("/home");
+    }
   };
-  const router = useRouter();
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen xl:py-2 ">
       <Head>
@@ -55,7 +51,7 @@ export default function Login() {
             </div>
             <div className="py-10 text-[#2A304D]">
               <h2 className="text-3xl font-bold mb-2">
-                Sign in to Parent Account
+                Sign in to your account
               </h2>
               <div className="border-2 w-10 border-[#2A304D] inline-block mb-2"></div>
               {/* <p className="text-gray-400">or use your email account</p> */}

@@ -24,12 +24,12 @@ export default function Home() {
   return (
     <main>
       <Navbar isScrolled={isScrolled} />
-      {/* <div className="h-64 bg-red-400">alo</div>
+      <div className="h-64 bg-red-400">alo</div>
       <div className="h-64">alo</div>
       <div className="h-64">alo</div>
-      <div className="h-64 bg-blue-400">alo</div> */}
-      <Hero />
-      <Map />
+      <div className="h-64 bg-blue-400">alo</div>
+      {/* <Hero />
+      <Map /> */}
       <Footer />
     </main>
   );

@@ -1,12 +1,43 @@
+import { checkLoggedInService, logoutService } from "@/services/auth/auth";
 import { Button } from "@mui/material";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 interface NavbarProps {
   isScrolled: boolean;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState("");
+  const router = useRouter();
+
+  const checkLogin = async () => {
+    if (await checkLoggedInService()) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  };
+
+  const handleLogout = () => {
+    logoutService();
+    setIsLoggedIn(false);
+    router.push("/login");
+  };
+
+  useEffect(() => {
+    checkLogin();
+  }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      // get user name
+      setUserName("User Name");
+    }
+  }, [isLoggedIn]);
+
   return (
     <div
       className={`hidden lg:flex lg:justify-between w-full bg-[#3E4772] shadow-md ${
@@ -33,16 +64,26 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
       </div>
       <div className="flex items-center pr-4">
         {/* Right */}
-        <Link href="/Login">
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            className="text-[#3E4772] bg-[#CDEBC5] hover:bg-[#A3D9A5] hover:text-[#3E4772]"
-          >
-            Login
-          </Button>
-        </Link>
+        {isLoggedIn ? (
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <div className="text-[#CDEBC5]">Hi, {userName}</div>
+              <div className="text-red-500">|</div>
+              <Button variant="contained" onClick={handleLogout}>
+                Logout
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center gap-4">
+            <Link href="/login">
+              <Button variant="contained">Login</Button>
+            </Link>
+            <Link href="/register">
+              <Button variant="contained">Register</Button>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
