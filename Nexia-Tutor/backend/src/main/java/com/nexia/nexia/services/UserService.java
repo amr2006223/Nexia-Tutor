@@ -40,10 +40,10 @@ public class UserService extends CrudOperations<User, String, UserRepository> im
         return user;
     }
     
-    @Override
-    public void logout() {
-        throw new UnsupportedOperationException("Method logout() is not implemented yet");
-    }
+    // @Override
+    // public void logout() {
+    //     throw new UnsupportedOperationException("Method logout() is not implemented yet");
+    // }
 
     @Override
     public User addEntity(User user) {
@@ -60,9 +60,10 @@ public class UserService extends CrudOperations<User, String, UserRepository> im
     }
 
     @Override
-    public boolean deleteEntity(String userId) {
-        User user = getEntityById(userId);
-        super.deleteEntity(userId);
+    public boolean deleteEntity(String token) {
+        String id = jwtService.extractUUID(token);
+        User user = getEntityById(id);
+        super.deleteEntity(id);
         if (!userProducer.broadcastUser(user, UserEvent.Status.DELETE, "Deleting user"))
             return false;
         return true;
@@ -83,5 +84,10 @@ public class UserService extends CrudOperations<User, String, UserRepository> im
         } catch (Exception e) {
             return null;
         }
+    }
+    @Override
+    public User getEntityById(String token){
+        String userId = jwtService.extractUUID(token);
+        return super.getEntityById(userId);
     }
 }
