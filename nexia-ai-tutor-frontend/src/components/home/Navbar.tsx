@@ -63,14 +63,17 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
       <div className="bg-[#3E4772] flex-grow flex justify-center">
         {/* Center */}
         <div className="flex gap-10 font-medium py-4 text-[#CDEBC5]">
-          <Link className="navbar__link relative" href="#">
+          <Link className="navbar__link relative" href="/home">
             Home
           </Link>
-          <Link className="navbar__link relative" href="#">
+          {/* <Link className="navbar__link relative" href="#">
             Roadmap
-          </Link>
+          </Link> */}
           <Link className="navbar__link relative" href="/myLearning">
             My Learning
+          </Link>
+          <Link className="navbar__link relative" href="/FormInterface">
+            Test
           </Link>
         </div>
       </div>

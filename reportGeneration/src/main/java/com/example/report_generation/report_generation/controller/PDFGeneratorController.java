@@ -7,6 +7,7 @@ import com.example.report_generation.report_generation.models.User;
 import com.example.report_generation.report_generation.models.UserData;
 import com.example.report_generation.report_generation.service.PDFGeneratorService;
 import com.example.report_generation.report_generation.service.UserService;
+import com.example.report_generation.report_generation.service.jwtService;
 
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Map;
@@ -24,6 +25,8 @@ public class PDFGeneratorController {
     private PDFGeneratorService _pdfGeneratorService;
     @Autowired
     private UserService _userService;
+    @Autowired
+    private jwtService _JwtService;
 
     public PDFGeneratorController(PDFGeneratorService PdfGeneratorService) {
         this._pdfGeneratorService = PdfGeneratorService;
@@ -35,9 +38,11 @@ public class PDFGeneratorController {
     // String jsonFilePath = "src\\main\\resources\\json\\ImportantUser.json";
     @GetMapping("/pdf/down/{userId}")
     public ResponseEntity<?> downloadPDF(HttpServletResponse response, @PathVariable String userId) throws IOException {
-        User user = _userService.getUserById(userId, userFilePath);
+        String id = _JwtService.extractUUID(userId);
+        User user = _userService.getUserById(id, userFilePath);
         //need to handle this error
         if(user == null){
+            System.out.println("user is null");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         //category detection and get the latest record
@@ -54,7 +59,9 @@ public class PDFGeneratorController {
 
     @PostMapping("/pdf/gen")
     public ResponseEntity<String> generatePDF(@RequestBody Map<String, Object> body) throws IOException {
-        User user = _userService.getUserById(body.get("userId").toString(), userFilePath);
+        String token = body.get("userId").toString();
+        String id = _JwtService.extractUUID(token);
+        User user = _userService.getUserById(id, userFilePath);
         boolean generated = _pdfGeneratorService.generateDocumentInServer(user);
         if(!generated) return new ResponseEntity<String>("Falied to generate PDF", HttpStatus.BAD_REQUEST);
         return new ResponseEntity<String>("Pdf Generated Successfully", HttpStatus.OK);

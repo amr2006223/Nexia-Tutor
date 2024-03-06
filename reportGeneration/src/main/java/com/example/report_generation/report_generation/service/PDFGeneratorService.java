@@ -47,7 +47,9 @@ public class PDFGeneratorService {
 
     public void downloadDocument(HttpServletResponse response, User user) throws IOException {
         try {
-            PdfReader reader = new PdfReader(pdfFilePath + user.getId() + ".pdf");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MMM_yyyy HHmm");
+            String currentDate = dateFormat.format(user.getData().get(0).getDate());
+            PdfReader reader = new PdfReader(pdfFilePath +"\\" +  user.getId() +"\\"+ currentDate + ".pdf");
             int numberOfPages = reader.getNumberOfPages();
             Document document = new Document();
             // Replace "output.pdf" with the path for your output PDF file
@@ -121,7 +123,7 @@ public class PDFGeneratorService {
     }
 
     private PdfWriter openPDFWriter(Document document, String id,String date) throws DocumentException, FileNotFoundException {
-        File directory = new File(pdfFilePath + "\\" +id);
+        File directory = new File(pdfFilePath + "\\" + id);
         if (!directory.exists()) {
             directory.mkdirs(); // Make directories recursively
         }
