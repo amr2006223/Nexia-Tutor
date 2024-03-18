@@ -4,6 +4,8 @@ import { IconButton, Menu, MenuItem } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { getTextSound } from "@/services/text-to-speech/textSound";
 import SpeakerButtonComponent from "@/shared/components/buttons/speakerButtonComponent";
+import { useGameState } from "@/shared/state/game";
+import { GameModel } from "@/types/game";
 type props = { word: string };
 
 const menuItemStyle = { marginBlock: "2px" };
@@ -11,10 +13,10 @@ const menuItemStyle = { marginBlock: "2px" };
 const WordComponent = ({ word }: props) => {
   const router = useRouter();
   const [wordSound, setWordSound] = useState("");
-
+  const gameState = useGameState();
   const customActionsCell = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
+    
     const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);
     };
@@ -22,7 +24,10 @@ const WordComponent = ({ word }: props) => {
     const handleMenuClose = () => {
       setAnchorEl(null);
     };
-
+    const handlePlay = (game_name:String) => {
+      handleMenuClose();
+      router.push(`/games/${game_name}?word=${word}`);
+    };
     const handlePlayBingo = () => {
       handleMenuClose();
       router.push(`/games/bingo?word=${word}`);
@@ -40,7 +45,6 @@ const WordComponent = ({ word }: props) => {
       handleMenuClose();
       router.push(`/games/rhyme?word=${word}`);
     };
-
     return (
       <div>
         <IconButton
@@ -62,26 +66,32 @@ const WordComponent = ({ word }: props) => {
           open={Boolean(anchorEl)}
           onClose={handleMenuClose}
         >
-          {/* first item in menu */}
-          <MenuItem onClick={handlePlayBingo} sx={menuItemStyle}>
+          {/* firs  t item in menu */}
+          {gameState.games.map((game: GameModel) => (
+            <MenuItem onClick={()=>handlePlay(game.game_name)} sx={menuItemStyle}>
+              <FiPlay className="text-2xl" />
+              <span className="mx-2">{game.game_name}</span>
+            </MenuItem>
+          ))}
+          {/* <MenuItem onClick={handlePlayBingo} sx={menuItemStyle}>
             <FiPlay className="text-2xl" />
             <span className="mx-2">Bingo Game</span>
           </MenuItem>
           {/* second item in menu */}
-          <MenuItem onClick={handlePlayHunt} sx={menuItemStyle}>
+          {/* <MenuItem onClick={handlePlayHunt} sx={menuItemStyle}>
             <FiPlay className="text-2xl" />
             <span className="mx-2">Hunt Game</span>
-          </MenuItem>
+          </MenuItem> */}
           {/* Third item in menu */}
-          <MenuItem onClick={handlePlayMemory} sx={menuItemStyle}>
+          {/* <MenuItem onClick={handlePlayMemory} sx={menuItemStyle}>
             <FiPlay className="text-2xl" />
             <span className="mx-2">Memory Game</span>
-          </MenuItem>
+          </MenuItem> */}
           {/* Fourth item in menu */}
-          <MenuItem onClick={handlePlayRhyme} sx={menuItemStyle}>
+          {/* <MenuItem onClick={handlePlayRhyme} sx={menuItemStyle}>
             <FiPlay className="text-2xl" />
             <span className="mx-2">Rhyme Game</span>
-          </MenuItem>
+          </MenuItem> */} 
         </Menu>
       </div>
     );

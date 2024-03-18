@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nexia.nexia.models.User;
 import com.nexia.nexia.services.UserService;
+import com.nexia.nexia.services.jwtService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,24 +25,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class UserController {
     @Autowired
     private UserService userService;
-
-    @PutMapping("/update")
-    public ResponseEntity<User> updateUser(@RequestBody User user) {
+    @Autowired
+    private jwtService jwtService;
+    @PutMapping("/update/{token}")
+    public ResponseEntity<User> updateUser(@RequestBody User user,@PathVariable String token) {
+        String id = jwtService.extractUUID(token);
+        user.setId(id);
         userService.updateEntity(user);
         return new ResponseEntity<User> (user,HttpStatus.OK);
     }
 
-    @PostMapping("/delete/{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable String userId) {
-        userService.deleteEntity(userId);
+    @PostMapping("/delete/{token}")
+    public ResponseEntity<String> deleteUser(@PathVariable String token) {
+        userService.deleteEntity(token);
         return new ResponseEntity<String>("User Got Deleted",HttpStatus.OK);
     }
 
-    @GetMapping("/get/{userId}")
-    public ResponseEntity<User> getUser(@PathVariable String userId) {
-        User user = userService.getEntityById(userId);
+    @GetMapping("/get/{token}")
+    public ResponseEntity<User> getUser(@PathVariable String token) {
+        User user = userService.getEntityById(token);
         return new ResponseEntity<User>(user,HttpStatus.OK);
     }
-    
-    
 }

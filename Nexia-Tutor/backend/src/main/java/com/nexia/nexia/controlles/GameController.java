@@ -25,8 +25,8 @@ public class GameController {
     @PostMapping("/{lessonName}")
     public ResponseEntity<?> getGamesForLesson(@PathVariable String lessonName,
             @RequestBody Map<String, String> body) {
-        String id = body.get("id");
-        Object jsonResponse = gameService.getGamesForLesson(lessonName, id);
+        String token = body.get("token");
+        Object jsonResponse = gameService.getGamesForLesson(lessonName, token);
         if (jsonResponse != null) {
             return ResponseEntity.ok(jsonResponse);
         } else {
@@ -35,12 +35,11 @@ public class GameController {
     }
     @PostMapping("/token/{token}")
     public ResponseEntity<?> getGamesForUser(@PathVariable String token) {
-        String id = jwtService.extractUUID(token);
-        System.out.println(id);
-        List<Game> userGames = gameService.getGamesForUser(id);
+        List<Game> userGames = gameService.getGamesForUser(token);
         if(userGames == null) return new ResponseEntity<String>("User Not Found",HttpStatus.NOT_FOUND);
         if(userGames.isEmpty()) return new ResponseEntity<String>("No Games Found", HttpStatus.NOT_FOUND);
         return new ResponseEntity<List<Game>>(userGames,HttpStatus.OK);
+        // return new ResponseEntity<>(HttpStatus.OK);
     }
     
     @PostMapping("/gen/{token}")

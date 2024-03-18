@@ -1,20 +1,23 @@
-"use client"
+"use client";
 import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { LoginData } from "@/types/auth";
+import { login } from "@/services/auth/auth";
+import Swal from "sweetalert2";
+import { useUserStore } from "@/shared/state/user";
 export default function Login() {
-  
+  const router = useRouter();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
-  const handleInputChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -22,25 +25,23 @@ export default function Login() {
     }));
   };
   const handleSubmit = async () => {
-     const result = {
-       username: formData.username,
-       password: formData.password,
-     };
-    axios
-      .post("http://localhost:8080/api/auth/login", result)
-      .then((response) => {
-        if(response.status == 200){
-           router.push("/home");
-        }
-        console.log("Successful Login", response.data);
-        const message = response.data;
-      })
-      .catch((error) => {
-        console.error("Error", error);
-        // Handle login error
-      });
+    const result: LoginData = {
+      username: formData.username,
+      password: formData.password,
     };
-    const router = useRouter()
+
+    const response = await login(result);
+    if (response) {
+      router.push("/home");
+    }else{
+        Swal.fire({
+          title: "Login Failed",
+          text: "Invalid Credentials",
+          icon: "error",
+        });
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen xl:py-2 ">
       <Head>
@@ -57,7 +58,7 @@ export default function Login() {
             </div>
             <div className="py-10 text-[#2A304D]">
               <h2 className="text-3xl font-bold mb-2">
-                Sign in to Parent Account
+                Sign in to your account
               </h2>
               <div className="border-2 w-10 border-[#2A304D] inline-block mb-2"></div>
               {/* <p className="text-gray-400">or use your email account</p> */}
@@ -102,7 +103,7 @@ export default function Login() {
                 </div>
                 <Button
                   className="border-2 border-[#2A304D] rounded-full px-12 py-2 inline-block font-semibold hover:bg-[#2A304D] hover:text-gray-100"
-                  onClick={()=>handleSubmit()}
+                  onClick={() => handleSubmit()}
                 >
                   Sign in
                 </Button>
@@ -112,23 +113,18 @@ export default function Login() {
           {/* sing up section */}
           {/* blue */}
           <div className="xl:w-2/5 bg-[#2A304D] text-[#CDEBC5] rounded-tr-2xl rounded-br-2xl py-36 px-12">
-            <h2 className="text-3xl font-bold mb-2">Welcome !</h2>
+            <h2 className="text-3xl font-bold mb-2">New user?</h2>
             <div className="border-2 w-10 border-white inline-block mb-2 "></div>
-            <p className="mb-2 text-[#D9DEFF]">
-              Fill up personal information as a parent, add your child account,
-              and start journey with us.
-            </p>
-            <a
-              href="#"
+            <p className="mb-2 text-[#D9DEFF]">Create an account</p>
+            <Link
+              href="/register"
               className="border-2 border-white rounded-full px-12 py-2 inline-block font-semibold hover:bg-gray-100 hover:text-[#2A304D]"
             >
               Sign Up
-            </a>
+            </Link>
           </div>
         </div>
       </main>
     </div>
   );
 }
-
-

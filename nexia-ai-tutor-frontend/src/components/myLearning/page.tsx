@@ -11,10 +11,11 @@ import {
 } from "@/services/files/fileUpload";
 import ProgressBarComponent from "@/shared/components/progress/progressBar";
 import { lessonFileData } from "@/types/lessons/fileData";
+import { useUserStore } from "@/shared/state/user";
 
 export default function LearningPage(): JSX.Element {
   const router = useRouter();
-
+  const userState = useUserStore();
   const lessonState = useLessonStore();
 
   const [uploadedFiles, setUploadedFiles] = useState<lessonFileData[]>([]);
@@ -95,7 +96,7 @@ export default function LearningPage(): JSX.Element {
             <title>MyLearning</title>
           </Head>
           <div className="flex items-center">
-            <h1 className="text-2xl font-bold mr-4">Welcome Back, Nancy</h1>
+            <h1 className="text-2xl font-bold mr-4">Welcome Back, {userState.user.username}</h1>
             <img
               src="/assets/images/potato-heart.png"
               alt="Potato Heart"
@@ -104,7 +105,7 @@ export default function LearningPage(): JSX.Element {
           </div>
 
           {/* Rectangle 1 */}
-          <div className="w-full max-w-2xl mt-8 p-8 bg-[#E3FFDC] rounded-lg text-2xl font-bold flex-1 justify-between items-center">
+          {/* <div className="w-full max-w-2xl mt-8 p-8 bg-[#E3FFDC] rounded-lg text-2xl font-bold flex-1 justify-between items-center">
             <div className="flex items-center">
               <div className="bg-green-500 rounded-2xl p-4 px-12 flex items-center">
                 <div className="text-center">
@@ -131,10 +132,10 @@ export default function LearningPage(): JSX.Element {
                 </span>
               </button>
             </div>
-          </div>
+          </div> */}
 
           {/* Rectangle 2 */}
-          <div className="w-full max-w-xl mt-8 p-8 bg-[#E3FFDC] rounded-lg">
+          <div className="w-full max-w-2xl mt-8 p-8 bg-[#E3FFDC] rounded-lg">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold text-[#3E4772]">
                 Your Contents

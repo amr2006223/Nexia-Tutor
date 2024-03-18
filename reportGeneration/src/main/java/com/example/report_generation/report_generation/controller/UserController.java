@@ -17,6 +17,7 @@ import com.example.report_generation.report_generation.models.User;
 import com.example.report_generation.report_generation.service.PDFGeneratorService;
 import com.example.report_generation.report_generation.service.ScreeningService;
 import com.example.report_generation.report_generation.service.UserService;
+import com.example.report_generation.report_generation.service.jwtService;
 
 
 
@@ -28,11 +29,16 @@ public class UserController {
     PDFGeneratorService _pdfGeneratorService;
     @Autowired
     UserService _userService;
+    @Autowired
+    jwtService _JwtService;
     
     String filePath = "reportGeneration\\src\\main\\resources\\json\\ImportantUser.json";
     @PostMapping("/add")
     public ResponseEntity<User> addUser(@RequestBody User newUser) throws IOException {
+        String token = newUser.getId();
+        newUser.setId(_JwtService.extractUUID(token));
         User user = _userService.InsertUser(newUser, filePath);
+        
         _pdfGeneratorService.generateDocumentInServer(user);
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }

@@ -165,31 +165,32 @@ async def predict():
         generated_uuid = uuid.uuid4()
         result = {
             "id": json_data["id"],
-                "data": 
-                [
-                    {
-                    "id": str(generated_uuid),
-                    "prediction":int(prediction[0]),
-                    "record":json_data["record"],
-                    "date": serialized_datetime,
-                    }
-                ]  
-            }
+            "data": 
+            [
+                {
+                "id": str(generated_uuid),
+                "prediction":int(prediction[0]),
+                "record":json_data["record"],
+                "date": serialized_datetime,
+                }
+            ]  
+        }
         #Api Url
         api_url = 'http://localhost:8081/add'
         response = await make_async_request(api_url, result)
         if response.status == 200:
             return jsonify({'message': 'POST request successful',"prediction":int(prediction[0])})
         else:
-            return jsonify({'error': f'Error in POST request: {response.status_code}'})
+            print(response)
+            return jsonify({'error': f'Error in POST request: {response}'})
     # Return a JSON response
 
     except Exception as e:
         # Handle the exception (print or log the error)
         error_message = f"Error processing the request: {str(e)}"
-        return jsonify({"error": error_message}), 400  # Return a 400 Bad Request status
+        return jsonify({"error": error_message}), 500  # Return a 400 Bad Request status
     
             
     # return json.dumps(data)
 if(__name__ == "__main__"):
-    app.run(debug=True)
+    app.run(debug=True, port=5002)

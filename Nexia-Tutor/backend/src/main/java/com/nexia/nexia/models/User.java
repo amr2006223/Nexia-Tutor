@@ -3,6 +3,7 @@ package com.nexia.nexia.models;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.hibernate.annotations.GenericGenerator;
@@ -38,16 +39,18 @@ public class User implements UserDetails {
     private String role;
     @Column(nullable = true)
     private String token;
+    private String parentPin;
 
+  
     @ManyToMany(targetEntity = DyslexiaType.class, fetch = FetchType.EAGER)
     @JoinTable(name = "user_dyslexia_types", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "dyslexia_type_id"))
-    private List<DyslexiaType> dyslexiaTypes;
+    private Set<DyslexiaType> dyslexiaTypes;
 
     public User() {
     }
 
     public User(String id, String username, String password, Date birthDate, String nationality, boolean gender,
-            List<DyslexiaType> dyslexia_types, String role) {
+            Set<DyslexiaType> dyslexia_types, String role,String parentPin) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -56,6 +59,15 @@ public class User implements UserDetails {
         this.gender = gender;
         this.dyslexiaTypes = dyslexia_types;
         this.role = role;
+        this.parentPin = parentPin;
+    }
+
+    public String getParentPin() {
+        return parentPin;
+    }
+
+    public void setParentPin(String parentPin) {
+        this.parentPin = parentPin;
     }
 
     public String getId() {
@@ -114,11 +126,11 @@ public class User implements UserDetails {
         this.gender = gender;
     }
 
-    public List<DyslexiaType> getDyslexia_types() {
+    public Set<DyslexiaType> getDyslexia_types() {
         return dyslexiaTypes;
     }
 
-    public void setDyslexia_types(List<DyslexiaType> dyslexia_types) {
+    public void setDyslexia_types(Set<DyslexiaType> dyslexia_types) {
         this.dyslexiaTypes = dyslexia_types;
     }
 

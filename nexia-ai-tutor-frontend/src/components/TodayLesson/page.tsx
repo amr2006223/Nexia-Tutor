@@ -4,14 +4,28 @@ import WordComponent from "./wordComponent";
 import { useEffect, useState } from "react";
 import ProgressBarComponent from "@/shared/components/progress/progressBar";
 import { getFilesFromLocalStorage } from "@/services/files/fileUpload";
+import { getGamesForUser } from "@/services/games/getGamesForUser";
+import { useGameState } from "@/shared/state/game";
+import { GameModel } from "@/types/game";
 
 export default function TodayLesson() {
+  
   const [loading, setLoading] = useState(true);
   const [fileName, setFilename] = useState("");
   const [keywords, setkeywords] = useState([""]);
   const lessonState = useLessonStore();
-
+  const gameState = useGameState()
+const handleGames = async () => {
+  const gamesData = await getGamesForUser();
+  const games: GameModel[] = gamesData.map((game:any) => ({
+    game_id: game.id,
+    game_name: game.game_name,
+  }));
+  gameState.setGames(games);
+  console.log(games);
+};
   useEffect(() => {
+    handleGames();
     const fileName = lessonState.fileName;
     if (fileName === "") {
       // get the data of first file from local storage

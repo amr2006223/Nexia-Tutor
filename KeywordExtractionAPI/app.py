@@ -7,17 +7,17 @@ app = Flask(__name__)
 CORS(app)
 # Download NLTK stopwords
 
-@app.route("/bert")
-def bert():
-    cleaned_text = utils.preprocess_text(utils.extract_text_from_pdf("Sentences.pdf"))
-    keywords = kw_model.extract_keywords(utils.extract_text_from_pdf("Sentences.pdf"), keyphrase_ngram_range=(1, 1),highlight=True)
-    return keywords
+# @app.route("/bert")
+# def bert():
+#     cleaned_text = utils.preprocess_text(utils.extract_text_from_pdf("Sentences.pdf"))
+#     keywords = kw_model.extract_keywords(utils.extract_text_from_pdf("Sentences.pdf"), keyphrase_ngram_range=(1, 1),highlight=True)
+#     return keywords
 
-@app.route("/bert2")
-def bert2():
-    cleaned_text = utils.preprocess_text(utils.extract_text_from_pdf("Sentences.pdf"))
-    keywords = kw_model.extract_keywords(cleaned_text, keyphrase_ngram_range=(1, 1),highlight=True)
-    return keywords 
+# @app.route("/bert2")
+# def bert2():
+#     cleaned_text = utils.preprocess_text(utils.extract_text_from_pdf("Sentences.pdf"))
+#     keywords = kw_model.extract_keywords(cleaned_text, keyphrase_ngram_range=(1, 1),highlight=True)
+#     return keywords 
 
 @app.route("/extract-pdf-info")
 def extract_pdf_info():
@@ -44,7 +44,7 @@ def upload_pdf():
         filePath = os.path.join('uploads', filename)
         file.save(filePath)
         cleaned_text = utils.preprocess_text(utils.extract_text_from_pdf(filePath))
-        keywords = kw_model.extract_keywords(cleaned_text, keyphrase_ngram_range=(1, 1),highlight=True)
+        keywords = kw_model.extract_keywords(cleaned_text, keyphrase_ngram_range=(1, 1))
         os.remove(filePath)
         
         for i in range(len(keywords)):

@@ -30,14 +30,12 @@ public class DyslexiaTypeConsumer {
         User user = userRepository.findById(dyslexiaTypeEvent.getUserId()).orElse(null);
         if(user == null) return;
         System.out.println("user id in consumer" + user.getId());
+        
         for (DyslexiaTypesDTO dyslexiaType : userCategories) {
             DyslexiaType newDyslexiaType = new DyslexiaType(dyslexiaType.getId(),dyslexiaType.getName());
             try{
                 if(!dyslexiaTypeRepository.findById(dyslexiaType.getId()).isPresent()) {
                     dyslexiaTypeRepository.save(newDyslexiaType);
-                    user.getDyslexia_types().add(newDyslexiaType);
-                    userRepository.save(user);
-                    continue;
                 }
                 if(!user.getDyslexia_types().contains(newDyslexiaType)){
                     user.getDyslexia_types().add(newDyslexiaType);
