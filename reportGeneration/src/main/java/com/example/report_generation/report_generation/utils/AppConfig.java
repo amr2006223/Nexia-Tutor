@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
+import com.example.basedomain.basedomain.Shared.jwtService;
+
 @Configuration
 public class AppConfig {
 
@@ -11,10 +13,10 @@ public class AppConfig {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
-    // @Bean
-    // public JSONFileWriter jsonFileWriter() {
-    //     return new JSONFileWriter();
-    // }
+    @Bean
+    public jwtService jwtService() {
+        return new jwtService(); // You may need to pass dependencies if necessary
+    }
     
     // @Bean
     // public UserService userService() {

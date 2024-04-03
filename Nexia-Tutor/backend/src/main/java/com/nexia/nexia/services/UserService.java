@@ -8,7 +8,7 @@ import com.nexia.nexia.kafka.UserProducer;
 import com.nexia.nexia.models.User;
 import com.nexia.nexia.repositories.UserRepository;
 import com.nexia.nexia.services.iservices.IUserService;
-
+import com.example.basedomain.basedomain.Shared.jwtService;
 @Service
 public class UserService extends CrudOperations<User, String, UserRepository> implements IUserService {
 

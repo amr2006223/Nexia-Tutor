@@ -17,7 +17,7 @@ import com.example.report_generation.report_generation.models.User;
 import com.example.report_generation.report_generation.service.PDFGeneratorService;
 import com.example.report_generation.report_generation.service.ScreeningService;
 import com.example.report_generation.report_generation.service.UserService;
-import com.example.report_generation.report_generation.service.jwtService;
+import com.example.basedomain.basedomain.Shared.jwtService;
 
 
 
