@@ -1,5 +1,6 @@
 package com.example.report_generation.report_generation.utils;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -14,8 +15,9 @@ public class AppConfig {
         return new RestTemplate();
     }
     @Bean
-    public jwtService jwtService() {
-        return new jwtService(); // You may need to pass dependencies if necessary
+    public jwtService jwtService(@Value("${jwt.secret}") String jwtSecret,
+            @Value("${jwt.validity}") String validity) {
+        return new jwtService(jwtSecret, validity);
     }
     
     // @Bean

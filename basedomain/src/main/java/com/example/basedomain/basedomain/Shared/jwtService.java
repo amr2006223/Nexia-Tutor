@@ -12,20 +12,17 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
-import jakarta.annotation.PostConstruct;
-
 @Service
 public class jwtService {
-    @Value("${jwt.secret}")
-    private String jwtSecret; // used for encoding
-    private Algorithm algorithm; // algorithm for encoding
-    @Value("${jwt.validity}")
-    private String validity; // expiration date in milliseconds
+    private final String jwtSecret;
+    private final Algorithm algorithm;
+    private final String validity;
 
-    @PostConstruct
-    public void init() {
-        // Initialize Algorithm after jwtSecret is injected
-        this.algorithm = Algorithm.HMAC256(this.jwtSecret);
+    public jwtService(String _jwtSecret,
+            String _validity) {
+        this.jwtSecret = _jwtSecret;
+        this.algorithm = Algorithm.HMAC256(jwtSecret);
+        this.validity = _validity;
     }
 
     public String generateToken(String uuid) {
