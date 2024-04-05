@@ -51,8 +51,8 @@ public class UserService extends CrudOperations<User, String, UserRepository> im
         user.setPassword(passwordHashed);
         User addedUser = this.userRepository.save(user);
         String token = this.jwtService.generateToken(user.getId());
-        // System.out.println(token);
         user.setToken(token);
+        this.userRepository.save(user);
         if (!userProducer.broadcastUser(user, UserEvent.Status.ADD, "Adding user")) {
             System.out.println("error user couldnt be added in other microservices");
         }

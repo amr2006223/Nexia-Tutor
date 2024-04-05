@@ -31,18 +31,18 @@ public class GameService extends CrudOperations<Game, Long, GameRepository> impl
     @Override
     public Map<String, Object> getGamesForLesson(String lessonName, String token) {
         try {
-
-            // get user
+            // Get user details and check if the user exists
             User user = userService.getEntityById(token);
-            if (user == null)
-                return null;
-            // get lesson and get all keywords
+            if (user == null) return null;
+
+            // Get lesson details and check if the lesson exists
             Lesson lessonDetails = lessonJsonService.getEntityById(lessonName);
-            if (lessonDetails == null)
-                return null;
-            // get user dyslexia types
+            if (lessonDetails == null) return null;
+            
+            // Get a set of user dyslexia types
             Set<DyslexiaType> dyslexiaTypes = user.getDyslexia_types();
-            // get all games for dyslexia types (loop)
+
+            // Get all games for the for dyslexia type
             List<Game> gamesList = new ArrayList<>();
             for (DyslexiaType dyslexiaType : dyslexiaTypes) {
                 List<Game> gamesForType = getGamesForDyslexiaType(dyslexiaType.getId());
@@ -53,6 +53,7 @@ public class GameService extends CrudOperations<Game, Long, GameRepository> impl
             jsonResponse.put("keywords", lessonDetails.getKeywords());
             jsonResponse.put("games", gamesList);
             return jsonResponse;
+    
         } catch (Exception e) {
             return null;
         }
@@ -66,6 +67,7 @@ public class GameService extends CrudOperations<Game, Long, GameRepository> impl
             return gameRepository.findByDyslexiaType(dyslexiaType);
         }
     }
+    
     public List<Game> getGamesForUser(String token){
         User user = userService.getEntityById(token);
         if(user == null) return null;

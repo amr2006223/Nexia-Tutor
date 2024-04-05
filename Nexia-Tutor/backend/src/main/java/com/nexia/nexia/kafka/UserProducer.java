@@ -5,6 +5,7 @@ package com.nexia.nexia.kafka;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
@@ -23,19 +24,21 @@ public class UserProducer {
 
     
     private KafkaTemplate<String, UserEvent> kafkaTemplate;
-    
+    @Value("${topics.user}")
+    private String usertopic;
+
     public UserProducer(KafkaTemplate<String, UserEvent> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
     
 
-    public void sendMessage(UserEvent event,String topicName){
+    public void sendMessage(UserEvent event){
         LOGGER.info(String.format("Sending User Event => %s", event.toString()));
         //create a message 
         Message<UserEvent> message = MessageBuilder
             .withPayload(event)
             .setHeader(KafkaHeaders.TOPIC, 
-                        topicName)
+                        usertopic)
             .build();
             kafkaTemplate.send(message);
     }
@@ -46,7 +49,7 @@ public class UserProducer {
             userEvent.setStatus(status);
             userEvent.setMessage(message);
             userEvent.setUser(new UserDTO(user.getId(), user.getUsername(), user.getPassword(), user.getBirthDate(), user.getNationality(), user.isGender(), user.getToken()));
-            sendMessage(userEvent, UserEvent.Topics.USER.getValue());
+            sendMessage(userEvent);
             System.err.println(user.toString());
             return true;
         }catch(Exception e){
