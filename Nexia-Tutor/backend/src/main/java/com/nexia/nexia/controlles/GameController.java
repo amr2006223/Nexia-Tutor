@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nexia.nexia.models.Game;
 import com.nexia.nexia.services.GameService;
-import com.nexia.nexia.services.jwtService;
+import com.example.basedomain.basedomain.Shared.jwtService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

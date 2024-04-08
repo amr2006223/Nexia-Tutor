@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.support.MessageBuilder;
@@ -22,17 +23,20 @@ public class DyslexiaTypeProducer {
 
     private KafkaTemplate<String, DyslexiaTypeEvent> kafkaTemplate;
 
+    @Value("${topics.dyslexia}")
+    private String dyslexiaTopic;
+
     public DyslexiaTypeProducer(KafkaTemplate<String, DyslexiaTypeEvent> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendMessage(DyslexiaTypeEvent event, String topicName) {
+    public void sendMessage(DyslexiaTypeEvent event) {
         LOGGER.info(String.format("Sending Dyslexia Event => %s", event.toString()));
         // create a message
         Message<DyslexiaTypeEvent> message = MessageBuilder
                 .withPayload(event)
                 .setHeader(KafkaHeaders.TOPIC,
-                        topicName)
+                        dyslexiaTopic)
                 .build();
         kafkaTemplate.send(message);
     }
@@ -49,7 +53,7 @@ public class DyslexiaTypeProducer {
                 dyslexiaTypesDTOs.add(new DyslexiaTypesDTO(dyslexiaCategory.getName(), dyslexiaCategory.getId()));
             }
             dyslexiaTypeEvent.setDylsexiaTypes(dyslexiaTypesDTOs);
-            sendMessage(dyslexiaTypeEvent, UserEvent.Topics.DYSLEXIATYPE.getValue());
+            sendMessage(dyslexiaTypeEvent);
             System.err.println(dyslexiaTypeEvent.toString());
             return true;
         } catch (Exception e) {

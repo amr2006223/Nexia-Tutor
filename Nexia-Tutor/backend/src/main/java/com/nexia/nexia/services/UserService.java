@@ -8,7 +8,7 @@ import com.nexia.nexia.kafka.UserProducer;
 import com.nexia.nexia.models.User;
 import com.nexia.nexia.repositories.UserRepository;
 import com.nexia.nexia.services.iservices.IUserService;
-
+import com.example.basedomain.basedomain.Shared.jwtService;
 @Service
 public class UserService extends CrudOperations<User, String, UserRepository> implements IUserService {
 
@@ -51,8 +51,8 @@ public class UserService extends CrudOperations<User, String, UserRepository> im
         user.setPassword(passwordHashed);
         User addedUser = this.userRepository.save(user);
         String token = this.jwtService.generateToken(user.getId());
-        // System.out.println(token);
         user.setToken(token);
+        this.userRepository.save(user);
         if (!userProducer.broadcastUser(user, UserEvent.Status.ADD, "Adding user")) {
             System.out.println("error user couldnt be added in other microservices");
         }

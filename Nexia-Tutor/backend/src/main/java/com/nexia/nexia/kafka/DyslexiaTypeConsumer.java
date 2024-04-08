@@ -23,7 +23,7 @@ public class DyslexiaTypeConsumer {
     @Autowired
     UserRepository userRepository;
 
-    @KafkaListener(topics = "DYSLEXIATYPE" ,groupId = "${spring.kafka.consumer.group-id}")
+    @KafkaListener(topics = "${topics.dyslexia}" ,groupId = "${group.id}")
      public void Consume(DyslexiaTypeEvent dyslexiaTypeEvent){
         LOGGER.info(String.format("User event recieved => %s" , dyslexiaTypeEvent.toString()));
         List<DyslexiaTypesDTO> userCategories = dyslexiaTypeEvent.getDylsexiaTypes();
@@ -40,9 +40,7 @@ public class DyslexiaTypeConsumer {
                 if(!user.getDyslexia_types().contains(newDyslexiaType)){
                     user.getDyslexia_types().add(newDyslexiaType);
                     userRepository.save(user);
-                }
-
-                
+                }      
             }catch(Exception e){
                 throw e;
             }

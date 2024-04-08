@@ -19,7 +19,7 @@ public class UserConsumer {
      private static final Logger LOGGER = LoggerFactory.getLogger(UserConsumer.class);
      @Autowired
      UserRepository userRepository;
-     @KafkaListener(topics = "USER" ,groupId = "${spring.kafka.consumer.group-id}")
+     @KafkaListener(topics = "${topics.user}" ,groupId = "${group.id}")
      public void Consume(UserEvent userEvent){
         LOGGER.info(String.format("User event recieved => %s" , userEvent.toString()));
         //save user in database

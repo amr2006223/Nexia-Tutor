@@ -4,6 +4,7 @@ import java.util.Map;
 import org.springframework.web.bind.annotation.RestController;
 import com.nexia.nexia.models.User;
 import com.nexia.nexia.services.UserService;
+import com.example.basedomain.basedomain.Shared.jwtService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 @RestController
 @RequestMapping("/api/auth")
@@ -18,12 +22,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AuthController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private jwtService jwtService;
+
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user) {
         User addedUser = userService.addEntity(user);
         return new ResponseEntity<User>(addedUser, HttpStatus.OK);
 
     }
+    @GetMapping("/genToken/{id}")
+    public ResponseEntity<String> getToken(@PathVariable String id) {
+        return new ResponseEntity<String>(jwtService.generateToken(id),HttpStatus.OK);
+    }
+    
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
         User user = userService.login(body.get("username"), body.get("password"));

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nexia.nexia.models.User;
 import com.nexia.nexia.services.UserService;
-import com.nexia.nexia.services.jwtService;
+import com.example.basedomain.basedomain.Shared.jwtService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

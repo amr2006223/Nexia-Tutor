@@ -12,7 +12,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.nexia.nexia.models.User;
 import com.nexia.nexia.repositories.UserRepository;
-import com.nexia.nexia.services.jwtService;
+import com.example.basedomain.basedomain.Shared.jwtService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
