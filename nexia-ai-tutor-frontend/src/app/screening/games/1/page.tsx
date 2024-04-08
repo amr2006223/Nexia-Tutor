@@ -1,5 +1,7 @@
 "use client";
 import GameOneComponent from "@/components/games/screening-games/1/1";
+import { getTextSound } from "@/services/text-to-speech/textSound";
+import TimerComponent from "@/shared/components/progress/timer";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
@@ -26,6 +28,7 @@ const FirstScreeningGamePage = () => {
   const [currentWordsListIndex, setCurrentWordsListIndex] = useState(0);
   const [currentWordsList, setCurrentWordsList] = useState<string[]>([]);
   const [goalLetter, setGoalLetter] = useState("");
+  const [goalLetterSound, setGoalLetterSound] = useState("");
 
   useEffect(() => {
     setCurrentWordsList(wordsLists[currentWordsListIndex]);
@@ -38,7 +41,16 @@ const FirstScreeningGamePage = () => {
     );
 
     setGoalLetter(wordsLists[currentWordsListIndex][randomIndex]);
+
+    // get the sound of the goal letter
+    getGoalLetterSound();
   }, [currentWordsListIndex]);
+
+  const getGoalLetterSound = async () => {
+    const sound = await getTextSound(goalLetter);
+    console.log(sound);
+    setGoalLetterSound(sound);
+  };
 
   const goToNextWordsList = () => {
     setCurrentWordsList(wordsLists[currentWordsListIndex + 1]);
@@ -47,10 +59,17 @@ const FirstScreeningGamePage = () => {
 
   const handleSuccess = () => {
     if (checkFinished()) {
+      Swal.fire({
+        title: "Good job!",
+        text: "You have successfully completed the screening games.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
       return;
     }
 
     setHits((prevHits) => prevHits + 1);
+    handleResetTimer();
 
     goToNextWordsList();
   };
@@ -68,12 +87,6 @@ const FirstScreeningGamePage = () => {
 
   const checkFinished = () => {
     if (currentWordsListIndex === wordsLists.length - 1) {
-      Swal.fire({
-        title: "Good job!",
-        text: "You have successfully completed the screening games.",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
       return true;
     }
   };
@@ -82,13 +95,41 @@ const FirstScreeningGamePage = () => {
     setClicks((prevClicks) => prevClicks + 1);
   };
 
+  const [resetKey, setResetKey] = useState(0);
+  const handleResetTimer = () => {
+    setResetKey((prevKey) => prevKey + 1);
+  };
+
+  const handleOnTimeEnd = () => {
+    if (checkFinished()) {
+      return;
+    }
+    goToNextWordsList();
+    handleResetTimer();
+  };
+
   return (
     <div
       className="flex flex-col items-center justify-center h-screen"
       onClick={handleClicks}
     >
+      <div>
+        Clicks: {clicks} | Hits: {hits} | Misses: {misses}
+      </div>
+      <div>Game 1: Find the word</div>
+      <div>
+        Phase {currentWordsListIndex + 1} / {wordsLists.length}
+      </div>
+      <div>
+        <TimerComponent
+          onTimeEnd={handleOnTimeEnd}
+          timeOnSeconds={10}
+          key={resetKey}
+        />
+      </div>
       <GameOneComponent
         goalLetter={goalLetter}
+        goalLetterSound={goalLetterSound}
         wordsList={currentWordsList}
         handleSuccess={handleSuccess}
         handleFailure={handleFailure}

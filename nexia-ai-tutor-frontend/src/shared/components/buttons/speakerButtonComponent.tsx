@@ -31,7 +31,7 @@ const SpeakerButtonComponent = ({
     <VolumeUpRoundedIcon
       className="cursor-pointer "
       onClick={() => playSound()}
-      style={{ color: iconColor }}
+      style={{ color: iconColor, fontSize: "2rem" }}
     />
   );
 };
