@@ -7,6 +7,10 @@ type BoxesMatrixComponentProps = {
 
 const BoxesMatrixComponent = (props: BoxesMatrixComponentProps) => {
   const wordList = props.wordList;
+
+  // Shuffle the wordList
+  wordList.sort(() => Math.random() - 0.5);
+
   // Calculate number of rows and columns
   const numRows = Math.ceil(Math.sqrt(wordList.length));
   const numCols = Math.ceil(wordList.length / numRows);
