@@ -1,4 +1,4 @@
-package com.nexia.nexia;
+package com.example.gateway.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,10 +6,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class NexiaApplication {
+public class GatewayApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(NexiaApplication.class, args);
+		SpringApplication.run(GatewayApplication.class, args);
 	}
 
 }

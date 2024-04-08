@@ -1,0 +1,13 @@
+# spring:
+#   cloud:
+#     gateway:
+#       routes:
+#         - id: nexia-tutor
+#           uri: lb://nexia-tutor
+#           predicates:
+#             - Path=/nexia-tutor/**
+
+#         - id: nexia-tutor2 
+#           uri: lb://reportGeneration
+#           predicates:
+#             - Path=/reportGeneration/**
