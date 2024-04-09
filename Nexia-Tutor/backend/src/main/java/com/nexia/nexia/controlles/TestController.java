@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
-@RequestMapping("/nexia-tutor")
+@RequestMapping("nexia-tutor/")
 public class TestController {
     @GetMapping("/test")
     public ResponseEntity<String> GetMyDetails() {

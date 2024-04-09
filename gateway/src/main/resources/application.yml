@@ -7,7 +7,7 @@
 #           predicates:
 #             - Path=/nexia-tutor/**
 
-#         - id: nexia-tutor2 
-#           uri: lb://reportGeneration
-#           predicates:
-#             - Path=/reportGeneration/**
+#         # - id: reportGeneration
+#         #   uri: lb://reportGeneration
+#         #   predicates:
+#         #     - Path=/reportGeneration/**
