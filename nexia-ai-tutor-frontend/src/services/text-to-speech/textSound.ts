@@ -23,7 +23,7 @@ export const getTextSound = async (word: string) => {
   // return response.data.audioContent;
 
   const response = await axios.get(
-    `http://localhost:5001/get_audio_word?word=${word}`
+    `${process.env.WEB_SCRAPING_API}get_audio_word?word=${word}`
   );
   return response.data.sound;
 };
@@ -53,7 +53,7 @@ export const getTextSoundFemale = async (word: string) => {
   // return response.data.audioContent;
 
   const response = await axios.get(
-    `http://localhost:5001/get_audio_word?word=${word}`
+    `${process.env.WEB_SCRAPING_API}get_audio_word?word=${word}`
   );
   return response.data.sound;
 };
