@@ -1,4 +1,5 @@
 package com.nexia.nexia.controlles;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/games")
+@RequestMapping("/nexia-tutor/api/games")
 public class GameController {
     @Autowired
     private GameService gameService;
@@ -33,21 +34,23 @@ public class GameController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to retrieve data");
         }
     }
+
     @PostMapping("/token/{token}")
     public ResponseEntity<?> getGamesForUser(@PathVariable String token) {
         List<Game> userGames = gameService.getGamesForUser(token);
-        if(userGames == null) return new ResponseEntity<String>("User Not Found",HttpStatus.NOT_FOUND);
-        if(userGames.isEmpty()) return new ResponseEntity<String>("No Games Found", HttpStatus.NOT_FOUND);
-        return new ResponseEntity<List<Game>>(userGames,HttpStatus.OK);
+        if (userGames == null)
+            return new ResponseEntity<String>("User Not Found", HttpStatus.NOT_FOUND);
+        if (userGames.isEmpty())
+            return new ResponseEntity<String>("No Games Found", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<List<Game>>(userGames, HttpStatus.OK);
         // return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @PostMapping("/gen/{token}")
-    public String  test(@PathVariable String token) {
-       
+    public String test(@PathVariable String token) {
+
         String id = jwtService.generateToken(token);
-       return id;
+        return id;
     }
-    
 
 }
