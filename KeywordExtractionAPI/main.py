@@ -1,8 +1,9 @@
 from keybert import KeyBERT
 from flask import Flask
 import utils
+from service_init import register_with_eureka
 app = Flask(__name__)
-
+register_with_eureka()
 # Download NLTK stopwords
 
 @app.route("/bert")
