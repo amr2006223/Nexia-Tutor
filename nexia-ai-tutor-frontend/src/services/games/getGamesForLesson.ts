@@ -8,7 +8,7 @@ export const getGamesForLesson = async (
   //   console.log("lessonName: ", lessonName);
   //   console.log("user_id: ", user_id);
   const response = await axios.post(
-    `http://localhost:8081/api/games/${lessonName}`,
+    `${process.env.NEXIA_API}api/games/${lessonName}`,
     {
       id: user_id,
     },

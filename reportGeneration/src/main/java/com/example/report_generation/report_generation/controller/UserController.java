@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +18,6 @@ import com.example.report_generation.report_generation.service.PDFGeneratorServi
 import com.example.report_generation.report_generation.service.ScreeningService;
 import com.example.report_generation.report_generation.service.UserService;
 import com.example.basedomain.basedomain.Shared.jwtService;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
