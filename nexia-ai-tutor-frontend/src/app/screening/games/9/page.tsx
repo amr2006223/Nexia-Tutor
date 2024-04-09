@@ -45,6 +45,7 @@ const FirstScreeningGamePage = () => {
     "gris",
     "gril",
     "grin",
+    "gliv",
   ];
 
   const [currentWordsList, setCurrentWordsList] =
