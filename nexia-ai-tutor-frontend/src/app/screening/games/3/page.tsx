@@ -20,12 +20,37 @@ const FirstScreeningGamePage = () => {
   const [hits, setHits] = useState(0);
   const [misses, setMisses] = useState(0);
 
-  const wordsLists: string[] = ["e", "u", "u", "a", "e", "u", "i", "e", "a"];
-
+  const wordsLists: string[] = [
+    "b",
+    "o",
+    "b",
+    "w",
+    "b",
+    "p",
+    "i",
+    "b",
+    "t",
+    "l",
+    "r",
+    "a",
+    "q",
+    "x",
+    "b",
+    "u",
+    "b",
+    "e",
+    "b",
+    "f",
+    "b",
+    "y",
+    "b",
+    "z",
+    "b",
+  ];
   const [currentWordsList, setCurrentWordsList] =
     useState<string[]>(wordsLists);
 
-  const [goalLetter, setGoalLetter] = useState("e");
+  const [goalLetter, setGoalLetter] = useState("b");
 
   let goalLetterSound = "";
 
@@ -91,7 +116,7 @@ const FirstScreeningGamePage = () => {
       onClick={handleClicks}
     >
 
-      <div>Game 1: Find the word</div>
+      <div>Game 3: Find the word</div>
       <div>Click on the word that starts with the letter {goalLetter}</div>
 
       <div>

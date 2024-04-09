@@ -1,20 +1,17 @@
 "use client";
-import GameTwoComponent from "@/components/games/screening-games/2/2";
+import GameOneComponent from "@/components/games/screening-games/1/1";
+import EndScreenGameComponent from "@/components/games/screening-games/endScreenGame";
+import { getTextSound } from "@/services/text-to-speech/textSound";
 import TimerComponent from "@/shared/components/progress/timer";
-import React, { useEffect, useState } from "react";
-import Swal from "sweetalert2";
+import { useScreeningGamesStore } from "@/shared/state/screening-games";
+import { useEffect, useState } from "react";
 
-type SecondScreeningGameLetter = {
-  letter: string;
-  otherLetter: string;
-};
-
-const SecondScreeningGamePage = () => {
+const FirstScreeningGamePage = () => {
+  const gamesStore = useScreeningGamesStore();
   /*
     (Clicks)   = number of Clicks;  done
     (Hits)     = number of correct answers; done
     (Misses)   = number of incorrect answers; done
-    (Score)    = sum of Hits per set of exercises;
     (Accuracy) = Hits / Clicks;
     (Missrate) = Misses / Clicks;
   */
@@ -23,68 +20,62 @@ const SecondScreeningGamePage = () => {
   const [hits, setHits] = useState(0);
   const [misses, setMisses] = useState(0);
 
-  const wordsLists: SecondScreeningGameLetter[] = [
-    { letter: "e", otherLetter: "a" },
-    { letter: "F", otherLetter: "E" },
-    { letter: "n", otherLetter: "u" },
-    { letter: "p", otherLetter: "d" },
+  const wordsLists: string[] = [
+    "g",
+    "a",
+    "g",
+    "t",
+    "g",
+    "h",
+    "i",
+    "g",
+    "r",
+    "g",
+    "t",
+    "g",
+    "h",
+    "i",
+    "g",
+    "r",
   ];
+  const [currentWordsList, setCurrentWordsList] =
+    useState<string[]>(wordsLists);
 
-  const [currentWordsListIndex, setCurrentWordsListIndex] = useState(0);
-  const [currentWordsList, setCurrentWordsList] = useState<string[]>([]);
-  const [goalLetter, setGoalLetter] = useState("");
+  const [goalLetter, setGoalLetter] = useState("g");
+
+  let goalLetterSound = "";
+
+  const [finished, setFinished] = useState(false);
 
   useEffect(() => {
-    let otherLettersArray = Array(24).fill(
-      wordsLists[currentWordsListIndex].otherLetter
-    );
+    // get the sound of the goal letter
+    getGoalLetterSound();
+  }, []);
 
-    let wordList = [
-      wordsLists[currentWordsListIndex].letter,
-      ...otherLettersArray,
-    ];
-    wordList.sort(() => Math.random() - 0.5);
-    setCurrentWordsList(wordList);
+  const shuffleWordsList = () => {
+    setCurrentWordsList((prevList) => {
+      const newList = [...prevList];
+      newList.sort(() => Math.random() - 0.5);
+      return newList;
+    });
+  };
 
-    setGoalLetter(wordsLists[currentWordsListIndex].letter);
-  }, [currentWordsListIndex]);
-
-  const goToNextWordsList = () => {
-    setCurrentWordsListIndex(currentWordsListIndex + 1);
+  const getGoalLetterSound = async () => {
+    const sound = await getTextSound(goalLetter);
+    console.log(sound);
+    goalLetterSound = sound;
   };
 
   const handleSuccess = () => {
-    if (checkFinished()) {
-      Swal.fire({
-        title: "Good job!",
-        text: "You have successfully completed Game 1",
-        icon: "success",
-        confirmButtonText: "OK",
-      });
-      return;
-    }
-
     setHits((prevHits) => prevHits + 1);
-    handleResetTimer();
 
-    goToNextWordsList();
+    shuffleWordsList();
   };
 
   const handleFailure = () => {
     setMisses((prevMisses) => prevMisses + 1);
 
-    Swal.fire({
-      title: "Oops! Try again.",
-      text: "You clicked the wrong word. Try again!",
-      icon: "error",
-      confirmButtonText: "OK",
-    });
-  };
-
-  const checkFinished = () => {
-    if (currentWordsListIndex === wordsLists.length - 1) {
-      return true;
-    }
+    shuffleWordsList();
   };
 
   const handleClicks = () => {
@@ -92,44 +83,51 @@ const SecondScreeningGamePage = () => {
   };
 
   const [resetKey, setResetKey] = useState(0);
-  const handleResetTimer = () => {
-    setResetKey((prevKey) => prevKey + 1);
-  };
 
   const handleOnTimeEnd = () => {
-    if (checkFinished()) {
-      return;
-    }
-    goToNextWordsList();
-    handleResetTimer();
+    setFinished(true);
   };
+
+  useEffect(() => {
+    // calculate the accuracy and missrate
+    const accuracy = hits / clicks;
+    const missrate = misses / clicks;
+    const gameStats = [clicks, hits, misses, accuracy, missrate];
+
+    // add game stats to the store
+    gamesStore.append(gameStats);
+    console.log(gameStats);
+  }, [finished]);
+
+  // ENd screen
+
   return (
     <div
       className="flex flex-col items-center justify-center h-screen"
       onClick={handleClicks}
     >
-      <div>
-        Clicks: {clicks} | Hits: {hits} | Misses: {misses}
-      </div>
-      <div>Game 2: Find the Diffrent Letter</div>
-      <div>
-        Phase {currentWordsListIndex + 1} / {wordsLists.length}
-      </div>
+      <div>Game 2: Find the word</div>
+      <div>Click on the word that starts with the letter {goalLetter}</div>
+
       <div>
         <TimerComponent
           onTimeEnd={handleOnTimeEnd}
-          timeOnSeconds={15}
+          timeOnSeconds={5}
           key={resetKey}
         />
       </div>
-      <GameTwoComponent
+
+      <GameOneComponent
         goalLetter={goalLetter}
+        goalLetterSound={goalLetterSound}
         wordsList={currentWordsList}
         handleSuccess={handleSuccess}
         handleFailure={handleFailure}
       />
+
+      <div>{finished && <EndScreenGameComponent nextGameLink="2" />}</div>
     </div>
   );
 };
 
-export default SecondScreeningGamePage;
+export default FirstScreeningGamePage;
