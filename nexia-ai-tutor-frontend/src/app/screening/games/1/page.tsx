@@ -61,7 +61,7 @@ const FirstScreeningGamePage = () => {
     if (checkFinished()) {
       Swal.fire({
         title: "Good job!",
-        text: "You have successfully completed the screening games.",
+        text: "You have successfully completed Game 1",
         icon: "success",
         confirmButtonText: "OK",
       });
@@ -107,15 +107,14 @@ const FirstScreeningGamePage = () => {
     goToNextWordsList();
     handleResetTimer();
   };
-
+  // <div>
+  //       Clicks: {clicks} | Hits: {hits} | Misses: {misses}
+  //     </div>
   return (
     <div
       className="flex flex-col items-center justify-center h-screen"
       onClick={handleClicks}
     >
-      <div>
-        Clicks: {clicks} | Hits: {hits} | Misses: {misses}
-      </div>
       <div>Game 1: Find the word</div>
       <div>
         Phase {currentWordsListIndex + 1} / {wordsLists.length}
@@ -123,7 +122,7 @@ const FirstScreeningGamePage = () => {
       <div>
         <TimerComponent
           onTimeEnd={handleOnTimeEnd}
-          timeOnSeconds={10}
+          timeOnSeconds={15}
           key={resetKey}
         />
       </div>
