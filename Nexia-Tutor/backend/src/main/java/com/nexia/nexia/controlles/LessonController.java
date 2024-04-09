@@ -12,7 +12,7 @@ import com.nexia.nexia.services.LessonService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/lessons/json")
+@RequestMapping("/nexia-tutor/api/lessons/json")
 public class LessonController {
 
     @Autowired
@@ -79,7 +79,7 @@ public class LessonController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> editLesson( @RequestBody Lesson updatedLesson) {
+    public ResponseEntity<String> editLesson(@RequestBody Lesson updatedLesson) {
         try {
             lessonService.updateEntity(updatedLesson);
             return new ResponseEntity<>("Lesson edited successfully", HttpStatus.OK);

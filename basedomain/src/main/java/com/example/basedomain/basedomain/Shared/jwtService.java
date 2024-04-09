@@ -1,6 +1,5 @@
 package com.example.basedomain.basedomain.Shared;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

@@ -14,7 +14,6 @@ import org.springframework.messaging.support.MessageBuilder;
 
 import com.example.basedomain.basedomain.dto.DyslexiaTypeEvent;
 import com.example.basedomain.basedomain.dto.DyslexiaTypesDTO;
-import com.example.basedomain.basedomain.dto.UserEvent;
 import com.example.report_generation.report_generation.models.DyslexiaCategory;
 
 @Service
