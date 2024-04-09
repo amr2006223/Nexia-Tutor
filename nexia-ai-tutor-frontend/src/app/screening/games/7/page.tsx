@@ -115,7 +115,7 @@ const FirstScreeningGamePage = () => {
       className="flex flex-col items-center justify-center h-screen"
       onClick={handleClicks}
     >
-      <div>Game 4: Find the word</div>
+      <div>Game 7: Find the word</div>
       <div>Click on the word that starts with the letter {goalLetter}</div>
 
       <div>
