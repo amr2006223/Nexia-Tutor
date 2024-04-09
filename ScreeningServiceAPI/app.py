@@ -10,8 +10,8 @@ from classification.data_preprocessor import DataPreProcessing
 from classification.model_trainer import RandomForestModelTrainer
 from datetime import datetime
 import pandas as pd
-from service_init import register_with_eureka
-register_with_eureka()
+# from service_init import register_with_eureka
+
 
 Dataset = "assets/data/Dyt-desktop.csv"
 UserWithAlphabeticAwarness = "assets/data/importantUser.csv"
@@ -24,6 +24,7 @@ dataManipulator = DataManipulator()
 
 dekstopData = None
 
+# register_with_eureka()
 app = Flask(__name__)
 CORS(app)
 with app.app_context():
@@ -44,9 +45,8 @@ with app.app_context():
 
 
 
-@app.route("/sample")
+@app.route("/screening/sample")
 def sample():
-    global deskrtop
     # Get a random with dyslexia sample
     randomUserWithDyslexia = dataManipulator.getSampleUser(1, desktopData)
     # Get a random user without dyslexia sample
@@ -58,7 +58,7 @@ def sample():
     result =f"User with Dyslexia was predicted {'with Dyslexia' if predictionUserWithDyslexia[0] == 1 else 'without Dyslexia' }<br>User without Dyslexia was predicted {'with Dyslexi' if predictionUserWithoutDyslexia[0] == 1 else 'without Dyslexia'}"
     return result
 
-@app.route("/mockUser")
+@app.route("/screening/mockUser")
 def getAlphabeticAwarnessUser():
     # get sample that has alphabetic awarness and dyslexia issues
     record = dataLoader.csvToDataframe()
@@ -102,7 +102,7 @@ def getAlphabeticAwarnessUser():
 #         error_message = f"Error processing the request: {str(e)}"
 #         return jsonify({"error": error_message}), 400  # Return a 400 Bad Request status
 
-@app.route("/average")
+@app.route("/screening/average")
 def getAverage():
     columns = dataPreProcessing.SeparateColumns(Dataset)
     desktopData = dataManipulator.DictToDataframe(columns)
@@ -142,7 +142,7 @@ async def make_async_request(api_url, data):
         async with session.post(api_url, json=data) as response:
             return response
         
-@app.route("/predict",methods=["POST"])
+@app.route("/screening/predict",methods=["POST"])
 async def predict():
     try:
         # Attempt to access JSON data from the request
@@ -196,4 +196,4 @@ async def predict():
             
     # return json.dumps(data)
 if(__name__ == "__main__"):
-    app.run(debug=True, port=5002)
+    app.run(debug=True, port=8000)

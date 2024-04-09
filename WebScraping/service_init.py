@@ -1,5 +1,4 @@
 # service_init.py
-
 from eureka import Client
 
 def register_with_eureka():

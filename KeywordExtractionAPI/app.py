@@ -2,8 +2,10 @@ from keybert import KeyBERT
 from flask import Flask, request, jsonify
 import utils
 from flask_cors import CORS
+# from service_init import register_with_eureka
 import os
 app = Flask(__name__)
+# register_with_eureka()
 CORS(app)
 # Download NLTK stopwords
 
@@ -19,7 +21,7 @@ CORS(app)
 #     keywords = kw_model.extract_keywords(cleaned_text, keyphrase_ngram_range=(1, 1),highlight=True)
 #     return keywords 
 
-@app.route("/extract-pdf-info")
+@app.route("/extracting/extract-pdf-info")
 def extract_pdf_info():
     cleaned_text = utils.preprocess_text(utils.extract_text_from_pdf("Sentences.pdf"))
     sentences = utils.tokenize_sentences(cleaned_text)
@@ -29,7 +31,7 @@ def extract_pdf_info():
     top_scored_words = utils.get_top_scored_words(tfidf_matrix, tfidf_vectorizer)
     return {"top words":top_scored_words}
   
-@app.route('/upload_pdf', methods=['POST'])
+@app.route('/extracting/upload_pdf', methods=['POST'])
 def upload_pdf():
     if 'file' not in request.files:
         return jsonify({'error': 'No file part in the request'}), 400
@@ -53,9 +55,11 @@ def upload_pdf():
         return jsonify({'keywords': keywords}), 200
     else:
         return jsonify({'error': 'Invalid file type, only PDF files are allowed'}), 400
-
+@app.route('/extracting/test', methods=['GET'])
+def test():
+    return "test complete"
 with app.app_context():
     kw_model = KeyBERT()
     
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True,port=5000)

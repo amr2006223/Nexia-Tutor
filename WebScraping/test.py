@@ -1,9 +1,9 @@
 from flask import Flask, jsonify
 import random
-from service_init import register_with_eureka
+
 
 app = Flask(__name__)
-register_with_eureka()
+
 class WordGenerator:
     @staticmethod
     def load_words():

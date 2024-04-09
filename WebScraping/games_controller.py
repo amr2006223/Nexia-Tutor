@@ -6,10 +6,11 @@ from services.rhyme_scraper import RhymeScraper
 from services.word_generator import WordGenerator
 from services.text_to_speech import TextToSpeech
 from services.open_ai import OpenAI
-import queue
 import threading
+# from service_init import register_with_eureka
 
 app = Flask(__name__)
+# register_with_eureka()
 CORS(
     app,
     resources={r"/*": {"origins": "*"}},
@@ -71,7 +72,7 @@ def getNotRhymesForWord(queue):
         not_rhymes[i] = {'text': not_rhymes[i], 'image': image[0]['image_link'], 'rhyme': False, 'sound': word_sound}
     queue["not_rhymes"] = not_rhymes
 
-@app.route('/get_rhymes_game_data', methods=['GET'])
+@app.route('/scraping/get_rhymes_game_data', methods=['GET'])
 def get_rhymes_and_images():
     result = {}
      # Get a word from the person who is asking for rhymes and images
@@ -96,7 +97,7 @@ def get_rhymes_and_images():
         return jsonify({'error': 'Failed to retrieve rhymes or images'}), 500
         
 
-@app.route('/get_memory_game_data', methods=['GET'])
+@app.route('/scraping/get_memory_game_data', methods=['GET'])
 def get_memory_game():
     # Get a word from the person who is asking for a memory game
     word = request.args.get('word')
@@ -141,26 +142,26 @@ def get_memory_game():
 
 
 
-@app.route('/web/get_image_word', methods=['GET'])
+@app.route('/scraping/web/get_image_word', methods=['GET'])
 def get_image_word():
     word = request.args.get('word')
     iamge = imageScraper.get_image_links(word)
     return jsonify({'image': iamge[0]['image_link']})
 
-@app.route('/get_audio_word', methods=['GET'])
+@app.route('/scraping/get_audio_word', methods=['GET'])
 def get_audio_word():
     word = request.args.get('word')
     sound = textToSpeech.get_audio(word)
     return jsonify({'sound': sound})
 
-@app.route('/test', methods=['GET'])
+@app.route('/scraping/test', methods=['GET'])
 def test():
     word = request.args.get('word')
     rhymes = rhymeScraper.fetch_rhymes(word)
     return jsonify({'rhymes': rhymes})
 
 # Define a route for generating images based on a word
-@app.route('/get_image_word', methods=['GET'])
+@app.route('/scraping/get_image_word', methods=['GET'])
 def generate_image():
     # Retrieve parameters from the request URL
     word = request.args.get('word', default='', type=str)
@@ -188,7 +189,9 @@ def generate_image():
         # Handle unexpected errors and return an error response
         print(f"Unexpected error: {e}")
         return jsonify({'error': 'Unexpected error occurred.'}), 500
-
+@app.route('/scraping/test2', methods=['GET'])
+def test3():
+    return "test complete"
 
 # Run the Flask app
 if __name__ == '__main__':
