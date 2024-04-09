@@ -1,6 +1,6 @@
 // "use client";
 import React, { useEffect } from "react";
-import BoxesMatrixToFindWordComponent from "./BoxesMatrixToFindWord";
+import BoxesMatrixToFindWordComponent from "../BoxesMatrixToFindWord";
 import SpeakerButtonComponent from "@/shared/components/buttons/speakerButtonComponent";
 
 type GameOneProps = {

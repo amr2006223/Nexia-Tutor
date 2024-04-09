@@ -1,6 +1,6 @@
 // "use client";
 import React from "react";
-import WordBoxComponent from "../wordBox";
+import WordBoxComponent from "./wordBox";
 
 type BoxesMatrixComponentProps = {
   wordList: string[];
