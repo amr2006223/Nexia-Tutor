@@ -5,6 +5,9 @@ import { getTextSound } from "@/services/text-to-speech/textSound";
 import TimerComponent from "@/shared/components/progress/timer";
 import { useScreeningGamesStore } from "@/shared/state/screening-games";
 import { useEffect, useState } from "react";
+import CounterComponent from "@/shared/components/counter/CounterComponent";
+import CloseIcon from "@mui/icons-material/Close";
+import CheckIcon from "@mui/icons-material/Check";
 
 const FirstScreeningGamePage = () => {
   const gamesStore = useScreeningGamesStore();
@@ -84,7 +87,15 @@ const FirstScreeningGamePage = () => {
 
   const [resetKey, setResetKey] = useState(0);
 
+  const handleResetTimer = () => {
+    setResetKey((prevKey) => prevKey + 1);
+  };
+
   const handleOnTimeEnd = () => {
+    if (hits === 0 && misses === 0) {
+      handleResetTimer();
+      return;
+    }
     setFinished(true);
   };
 
@@ -124,6 +135,21 @@ const FirstScreeningGamePage = () => {
         handleSuccess={handleSuccess}
         handleFailure={handleFailure}
       />
+
+      <div
+        style={{
+          position: "fixed",
+          bottom: 0,
+          width: "100%",
+          backgroundColor: "#fff",
+          padding: "10px",
+          borderTop: "2px solid #3e4772",
+        }}
+        className="flex flex-row justify-evenly items-center mt-3"
+      >
+        <CounterComponent count={misses} color="red" icon={CloseIcon} />
+        <CounterComponent count={hits} color="green" icon={CheckIcon} />
+      </div>
 
       <div>{finished && <EndScreenGameComponent nextGameLink="3" />}</div>
     </div>
