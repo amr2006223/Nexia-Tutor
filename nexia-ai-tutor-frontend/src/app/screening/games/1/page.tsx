@@ -90,14 +90,13 @@ const FirstScreeningGamePage = () => {
       className="flex flex-col items-center justify-center h-screen"
       onClick={handleClicks}
     >
-
       <div>Game 1: Find the word</div>
       <div>Click on the word that starts with the letter {goalLetter}</div>
 
       <div>
         <TimerComponent
           onTimeEnd={handleOnTimeEnd}
-          timeOnSeconds={5}
+          timeOnSeconds={15}
           key={resetKey}
         />
       </div>

@@ -121,7 +121,7 @@ const FirstScreeningGamePage = () => {
       <div>
         <TimerComponent
           onTimeEnd={handleOnTimeEnd}
-          timeOnSeconds={5}
+          timeOnSeconds={15}
           key={resetKey}
         />
       </div>
@@ -134,7 +134,7 @@ const FirstScreeningGamePage = () => {
         handleFailure={handleFailure}
       />
 
-      <div>{finished && <EndScreenGameComponent nextGameLink="2" />}</div>
+      <div>{finished && <EndScreenGameComponent nextGameLink="10" />}</div>
     </div>
   );
 };

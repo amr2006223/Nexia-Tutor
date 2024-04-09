@@ -115,14 +115,13 @@ const FirstScreeningGamePage = () => {
       className="flex flex-col items-center justify-center h-screen"
       onClick={handleClicks}
     >
-
       <div>Game 3: Find the word</div>
       <div>Click on the word that starts with the letter {goalLetter}</div>
 
       <div>
         <TimerComponent
           onTimeEnd={handleOnTimeEnd}
-          timeOnSeconds={5}
+          timeOnSeconds={15}
           key={resetKey}
         />
       </div>
@@ -135,7 +134,7 @@ const FirstScreeningGamePage = () => {
         handleFailure={handleFailure}
       />
 
-      <div>{finished && <EndScreenGameComponent nextGameLink="2" />}</div>
+      <div>{finished && <EndScreenGameComponent nextGameLink="4" />}</div>
     </div>
   );
 };
