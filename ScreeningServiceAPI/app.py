@@ -10,6 +10,8 @@ from classification.data_preprocessor import DataPreProcessing
 from classification.model_trainer import RandomForestModelTrainer
 from datetime import datetime
 import pandas as pd
+from service_init import register_with_eureka
+register_with_eureka()
 
 Dataset = "assets/data/Dyt-desktop.csv"
 UserWithAlphabeticAwarness = "assets/data/importantUser.csv"
@@ -19,6 +21,7 @@ dataPreProcessing = DataPreProcessing()
 randomForestModelTrainer = RandomForestModelTrainer()
 dataManipulator = DataManipulator()
 # Preprocess our data
+
 dekstopData = None
 
 app = Flask(__name__)
