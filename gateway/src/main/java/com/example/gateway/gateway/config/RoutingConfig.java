@@ -18,7 +18,7 @@ public class RoutingConfig {
 
                 .route("nexia-tutor", r -> r.path("/nexia-tutor/**").uri("lb://nexia-tutor")) // Route to Nexia-Tutor
                                                                                               // service
-                .route("screening", r -> r.path("/screening/**").uri("http://localhost:8000"))// Route to screening
+                .route("screening", r -> r.path("/screening/**").uri("http://localhost:5002"))// Route to screening
                                                                                               // service
                 .route("scraping", r -> r.path("/scraping/**").uri("http://localhost:5001"))// Route to webscraping
                 .route("extracting", r -> r.path("/extracting/**").uri("http://localhost:5000")) // service

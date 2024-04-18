@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { getReport } from "@/services/report/downloadReport";
 import { getTokenValue } from "@/services/auth/auth";
 import { useScreeningGamesStore } from "@/shared/state/screening-games";
+import axios from "axios";
 interface FormData {
   record: string;
 }
@@ -66,19 +67,18 @@ const FormInterface: React.FC = () => {
     console.log("Form submitted:", record2);
     // You can perform further actions here
     try {
-      const response = await fetch(`${process.env.SCREENING_API}predict`, {
-        method: "POST",
+      const response = await axios.post(`http://localhost:5002/screening/predict`, JSON.stringify(record2),{
+
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(record2),
       });
 
-      if (!response.ok) {
+      if (response.status != 200) {
         throw new Error("API request failed");
       }
 
-      const responseData = await response.json();
+      const responseData = await response.data;
       console.log("API response:", responseData);
 
       playAnimations();

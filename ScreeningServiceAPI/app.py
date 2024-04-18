@@ -144,7 +144,7 @@ async def make_async_request(api_url, data):
         
 @app.route("/screening/predict",methods=["POST"])
 async def predict():
-    try:
+    # try:
         # Attempt to access JSON data from the request
         data = request.get_json()
         # print(without_spaces = data["record"].replace(" ", ""))
@@ -179,7 +179,7 @@ async def predict():
             ]  
         }
         #Api Url
-        api_url = 'http://localhost:8081/add'
+        api_url = 'http://localhost:8080/report-generation/add'
         response = await make_async_request(api_url, result)
         if response.status == 200:
             return jsonify({'message': 'POST request successful',"prediction":int(prediction[0])})
@@ -188,12 +188,12 @@ async def predict():
             return jsonify({'error': f'Error in POST request: {response}'})
     # Return a JSON response
 
-    except Exception as e:
-        # Handle the exception (print or log the error)
-        error_message = f"Error processing the request: {str(e)}"
-        return jsonify({"error": error_message}), 500  # Return a 400 Bad Request status
+    # except Exception as e:
+    #     # Handle the exception (print or log the error)
+    #     error_message = f"Error processing the request: {str(e)}"
+    #     return jsonify({"error": error_message}), 500  # Return a 400 Bad Request status
     
             
     # return json.dumps(data)
 if(__name__ == "__main__"):
-    app.run(debug=True, port=8000)
+    app.run(debug=True, port=5002)
