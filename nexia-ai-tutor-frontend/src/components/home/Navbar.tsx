@@ -72,7 +72,7 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
           <Link className="navbar__link relative" href="/myLearning">
             My Learning
           </Link>
-          <Link className="navbar__link relative" href="/FormInterface">
+          <Link className="navbar__link relative" href="/screening/games/1">
             Test
           </Link>
         </div>
