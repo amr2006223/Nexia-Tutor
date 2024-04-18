@@ -8,16 +8,19 @@ import { useEffect, useState } from "react";
 import CounterComponent from "@/shared/components/counter/CounterComponent";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
+import { useTimer } from "use-timer";
 
 const FirstScreeningGamePage = () => {
   const gamesStore = useScreeningGamesStore();
-  /*
-    (Clicks)   = number of Clicks;  done
-    (Hits)     = number of correct answers; done
-    (Misses)   = number of incorrect answers; done
-    (Accuracy) = Hits / Clicks;
-    (Missrate) = Misses / Clicks;
-  */
+
+  const { time, start } = useTimer({
+    initialTime: 2,
+    endTime: 0,
+    timerType: "DECREMENTAL",
+    onTimeOver: () => {
+      handleOnTimeEnd();
+    },
+  });
 
   const [clicks, setClicks] = useState(0);
   const [hits, setHits] = useState(0);
@@ -62,6 +65,7 @@ const FirstScreeningGamePage = () => {
   useEffect(() => {
     // get the sound of the goal letter
     getGoalLetterSound();
+    start();
   }, []);
 
   const shuffleWordsList = () => {
@@ -94,30 +98,30 @@ const FirstScreeningGamePage = () => {
     setClicks((prevClicks) => prevClicks + 1);
   };
 
-  const [resetKey, setResetKey] = useState(0);
-
-  const handleResetTimer = () => {
-    setResetKey((prevKey) => prevKey + 1);
-  };
-
   const handleOnTimeEnd = () => {
     if (hits === 0 && misses === 0) {
-      handleResetTimer();
+      // handleResetTimer();
+      start();
       return;
     }
+
     setFinished(true);
+    handleFinishGame();
   };
 
-  useEffect(() => {
+  const handleFinishGame = () => {
+    console.log("Game finished");
     // calculate the accuracy and missrate
+    const score = hits;
     const accuracy = hits / clicks;
     const missrate = misses / clicks;
-    const gameStats = [clicks, hits, misses, accuracy, missrate];
+
+    const gameStats = [clicks, hits, misses, score, accuracy, missrate];
 
     // add game stats to the store
     gamesStore.append(gameStats);
     console.log(gameStats);
-  }, [finished]);
+  };
 
   // ENd screen
 
@@ -130,11 +134,7 @@ const FirstScreeningGamePage = () => {
       <div>Click on the word that starts with the letter {goalLetter}</div>
 
       <div>
-        <TimerComponent
-          onTimeEnd={handleOnTimeEnd}
-          timeOnSeconds={15}
-          key={resetKey}
-        />
+        <TimerComponent timeOnSeconds={time} />
       </div>
 
       <GameOneComponent

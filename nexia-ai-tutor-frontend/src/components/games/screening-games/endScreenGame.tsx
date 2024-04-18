@@ -3,6 +3,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 type EndScreenGameComponentProps = {
   nextGameLink: string;
+  lastGame?: boolean;
 };
 
 const EndScreenGameComponent = (props: EndScreenGameComponentProps) => {
@@ -32,7 +33,12 @@ const EndScreenGameComponent = (props: EndScreenGameComponentProps) => {
         }}
       >
         <button
+          className="btn btn-primary select-none"
           onClick={() => {
+            if (props.lastGame) {
+              router.push(`/FormInterface`);
+              return;
+            }
             router.push(`/screening/games/${props.nextGameLink}`);
           }}
         >
