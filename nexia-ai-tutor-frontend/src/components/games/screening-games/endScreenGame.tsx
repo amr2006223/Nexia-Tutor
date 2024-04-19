@@ -3,7 +3,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 type EndScreenGameComponentProps = {
   nextGameLink: string;
-  lastGame?: boolean;
+  lastGame: boolean;
 };
 
 const EndScreenGameComponent = (props: EndScreenGameComponentProps) => {
