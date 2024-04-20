@@ -20,7 +20,6 @@ const FormInterface: React.FC = () => {
   const gamesData = useScreeningGamesStore();
   const router = useRouter();
   const [record2, setRecord] = useState('{"record":{}}');
-  const [isScrolled, setIsScrolled] = useState(false);
   const [conductor, setConductor] = useState<TConductorInstance>();
   let record = "";
   const [formData, setFormData] = useState<FormData>({
@@ -67,12 +66,15 @@ const FormInterface: React.FC = () => {
     console.log("Form submitted:", record2);
     // You can perform further actions here
     try {
-      const response = await axios.post(`http://localhost:5002/screening/predict`, JSON.stringify(record2),{
-
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.post(
+        `http://localhost:5002/screening/predict`,
+        JSON.stringify(record2),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (response.status != 200) {
         throw new Error("API request failed");
@@ -92,6 +94,7 @@ const FormInterface: React.FC = () => {
     if (token) await getReport(token);
     else console.error("Token is undefined");
   };
+
   const playAnimations = () => {
     firewroks();
     Swal.fire({
@@ -145,23 +148,11 @@ const FormInterface: React.FC = () => {
     conductor?.pause();
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      setIsScrolled(scrollTop > 0);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   return (
     <>
-      <Navbar isScrolled={isScrolled} />
-      <Container component="main" maxWidth="xs">
+      <Navbar />
+
+      <Container component="main" maxWidth="xs" className="pt-14">
         <Typography
           component="h1"
           variant="h5"

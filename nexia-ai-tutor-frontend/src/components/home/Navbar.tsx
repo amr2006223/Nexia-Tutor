@@ -6,11 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-interface NavbarProps {
-  isScrolled: boolean;
-}
-
-const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
+const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
   const router = useRouter();
@@ -46,9 +42,10 @@ const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
 
   return (
     <div
-      className={`hidden lg:flex lg:justify-between w-full bg-[#3E4772] shadow-md ${
-        isScrolled && "z-40 fixed top-0"
-      }`}
+      className={`lg:fixed lg:justify-between w-full flex bg-[#3E4772] shadow-md items-center`}
+      style={{
+        zIndex: 999,
+      }}
     >
       {/* left */}
       <div className="flex items-center pl-4">
