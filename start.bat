@@ -29,7 +29,7 @@ timeout /t 5
 REM Change directory to "Nexia-Tutor", Open new Terminal, start spring boot application
 cd ..
 cd Nexia-Tutor
-cd back
+cd backend
 start cmd /k call mvn spring-boot:run
 
 @REM wait for kafka to start before starting other services
