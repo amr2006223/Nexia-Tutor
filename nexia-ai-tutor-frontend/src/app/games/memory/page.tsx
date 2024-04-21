@@ -2,8 +2,7 @@
 import { getMemoryGameData } from "@/services/games/memory/getMemoryGameData";
 import ProgressBarComponent from "@/shared/components/progress/progressBar";
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-
+import useWordSearchParams from "@/shared/hooks/useWordSearchParams";
 type Boxes = {
   id: number;
   image: string;
@@ -17,8 +16,7 @@ type selectedImage = {
 };
 
 const page = () => {
-  const searchParams = useSearchParams();
-  const keywordValue = searchParams.get("word");
+  const { keywordParams } = useWordSearchParams();
   const [loading, setLoading] = useState<boolean>(true);
   const [progress, setProgress] = useState<number>(0);
   const [infoText, setInfoText] = useState<string>("Memorize the Pictures");
@@ -27,8 +25,7 @@ const page = () => {
   const [changeColor, setChangeColor] = useState<boolean>(false);
 
   const loadingImages = async () => {
-    const keyText = keywordValue as string;
-    const response = await getMemoryGameData(keyText);
+    const response = await getMemoryGameData(keywordParams);
     console.log(response);
 
     const { keyword, other_words } = response;
@@ -51,7 +48,7 @@ const page = () => {
     setBoxes(_boxes);
 
     const _selectedId = allWords.find(
-      (word: any) => word.query === keyText
+      (word: any) => word.query === keywordParams
     )!.id;
 
     // console.log(_selectedId);

@@ -2,14 +2,11 @@
 import React from "react";
 import BingoBoard from "@/components/games/tutoring-games/bingo/board";
 import { Paper } from "@mui/material";
-import { useSearchParams } from "next/navigation";
+import useWordSearchParams from "@/shared/hooks/useWordSearchParams";
 
 const BingoGamePage = () => {
-  const searchParams = useSearchParams();
-  const keywordValue = searchParams.get("word");
-
-  const uppercaseKeyWord = keywordValue ? keywordValue.toUpperCase() : "";
-  const keyWord = uppercaseKeyWord ? uppercaseKeyWord.split("") : [];
+  const { keywordParams } = useWordSearchParams();
+  const keyWord = keywordParams.split("");
 
   const size = keyWord.length;
   const EnglishAlphabet: string[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");

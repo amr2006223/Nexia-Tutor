@@ -5,33 +5,32 @@ import {
   getTextSound,
   getTextSoundFemale,
 } from "@/services/text-to-speech/textSound";
-import { Box, Button, IconButton, Snackbar } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import CloseIcon from "@mui/icons-material/Close";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { getWordImage } from "@/services/images/getWordImage";
 import Swal from "sweetalert2";
+import useWordSearchParams from "@/shared/hooks/useWordSearchParams";
 
 const LetterHuntPage = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const keywordValue = searchParams.get("word");
-
-  const keyword = keywordValue ? keywordValue.toUpperCase() : "";
+  const { keywordParams } = useWordSearchParams();
   const [keywordSound, setKeywordSound] = useState("");
   const [keywordImage, setKeywordImage] = useState("");
   const [congratsSound, setCongratsSound] = useState("");
+  const [open, setOpen] = useState(false);
 
   const getKeywordSound = async () => {
-    const response = await getTextSound(keyword);
+    const response = await getTextSound(keywordParams);
     const congratsResponse = await getTextSoundFemale(
-      "Congratulations! You found the letter " + keyword[0]
+      "Congratulations! You found the letter " + keywordParams[0]
     );
-    const image = await getWordImage(keyword);
+    const image = await getWordImage(keywordParams);
 
     setKeywordSound(response);
     setCongratsSound(congratsResponse);
     setKeywordImage(image);
+    setOpen(true);
   };
 
   useEffect(() => {
@@ -40,10 +39,10 @@ const LetterHuntPage = () => {
   }, []);
 
   const handleOnClickLetter = (letter: string) => {
-    if (letter === keyword[0]) {
+    if (letter === keywordParams[0]) {
       Swal.fire({
         title: "Congratulations!",
-        text: "You found the letter " + keyword[0],
+        text: "You found the letter " + keywordParams[0],
         icon: "success",
       });
       handleCongrats();
@@ -77,7 +76,7 @@ const LetterHuntPage = () => {
 
   return (
     <div>
-      {keywordSound.length > 0 ? (
+      {open ? (
         <div className="flex flex-col items-center justify-center h-screen">
           <div>
             <Button
@@ -103,7 +102,7 @@ const LetterHuntPage = () => {
               maxHeight: { xs: 250, md: 250 },
               maxWidth: { xs: 250, md: 250 },
             }}
-            alt={keyword}
+            alt={keywordParams}
             src={keywordImage}
           />
 
