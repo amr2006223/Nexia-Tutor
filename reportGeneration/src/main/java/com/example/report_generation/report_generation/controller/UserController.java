@@ -14,10 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.report_generation.report_generation.models.User;
+import com.example.report_generation.report_generation.service.JwtService;
 import com.example.report_generation.report_generation.service.PDFGeneratorService;
-import com.example.report_generation.report_generation.service.ScreeningService;
 import com.example.report_generation.report_generation.service.UserService;
-import com.example.basedomain.basedomain.Shared.jwtService;
 
 
 
@@ -26,13 +25,11 @@ import com.example.basedomain.basedomain.Shared.jwtService;
 @RequestMapping("/report-generation")
 public class UserController {
     @Autowired
-    ScreeningService _screeningService;
+    private PDFGeneratorService _pdfGeneratorService;
     @Autowired
-    PDFGeneratorService _pdfGeneratorService;
+    private UserService _userService;
     @Autowired
-    UserService _userService;
-    @Autowired
-    jwtService _JwtService;
+    private JwtService _JwtService;
     
     String filePath = "reportGeneration\\src\\main\\resources\\json\\ImportantUser.json";
     @PostMapping("/add")

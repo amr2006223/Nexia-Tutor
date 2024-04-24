@@ -12,8 +12,8 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
-import com.example.basedomain.basedomain.dto.UserDTO;
-import com.example.basedomain.basedomain.dto.UserEvent;
+import com.nexia.nexia.dto.UserDTO;
+import com.nexia.nexia.dto.UserEvent;
 import com.nexia.nexia.models.User;
 
 

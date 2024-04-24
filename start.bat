@@ -6,7 +6,7 @@ del /q *.*
 for /d %%i in (*) do rmdir /s /q "%%i"
 
 REM wait for kafka logs to be deleted
-timeout /t 5
+timeout /t 2
 
 REM Change directory to the directory containing this batch file
 cd /d "%~dp0"
@@ -15,14 +15,32 @@ REM Change directory to "kafka", Open new Terminal, start zookeeper
 cd kafka
 start cmd /k call .\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
 
-REM wait for zookeeper to start before starting other services
+REM wait for kafka logs to be deleted
 timeout /t 10
+
+REM delete kafka logs 
+cd /d "D:\mono-repo\kafka\logs\metadata"
+del /q *.*
+for /d %%i in (*) do rmdir /s /q "%%i"
+
+REM wait for kafka logs to be deleted
+timeout /t 2
+
+REM Change directory to the directory containing this batch file
+cd /d "%~dp0"
+
+REM Open new Terminal, start kafka
+cd kafka
+start cmd /k call .\bin\windows\kafka-server-start.bat .\config\server.properties
+
+REM wait for kafka to start before starting other services
+timeout /t 20
 
 REM Open new Terminal, start kafka
 start cmd /k call .\bin\windows\kafka-server-start.bat .\config\server.properties
 
 REM wait for kafka to start before starting other services
-timeout /t 10
+timeout /t 20
 
 REM Change directory to configserver, Open new Terminal, start spring boot application
 cd ..
@@ -30,7 +48,7 @@ cd configserver
 start cmd /k call mvn spring-boot:run
 
 @REM must wait for configserver to start before starting other services
-timeout /t 10
+timeout /t 20
 
 REM Change directory to "eurekaserver", Open new Terminal, start spring boot application
 cd ..
@@ -38,7 +56,7 @@ cd eurekaserver
 start cmd /k call mvn spring-boot:run
 
 REM must wait for eureka server to start before starting other services
-timeout /t 10
+timeout /t 20
 
 REM Change directory to "gateway", Open new Terminal, start spring boot application
 cd ..
@@ -58,6 +76,7 @@ start cmd /k call mvn spring-boot:run
 timeout /t 10
 
 REM Change directory to "reportGeneration", Open new Terminal, start spring boot application
+cd ..
 cd ..
 cd reportGeneration
 start cmd /k call mvn spring-boot:run

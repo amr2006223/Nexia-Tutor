@@ -2,9 +2,10 @@ package com.nexia.nexia.controlles;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.RestController;
+
 import com.nexia.nexia.models.User;
+import com.nexia.nexia.services.JwtService;
 import com.nexia.nexia.services.UserService;
-import com.example.basedomain.basedomain.Shared.jwtService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class AuthController {
     @Autowired
     private UserService userService;
     @Autowired
-    private jwtService jwtService;
+    private JwtService jwtService;
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user) {

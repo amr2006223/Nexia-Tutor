@@ -3,19 +3,18 @@ package com.nexia.nexia.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.example.basedomain.basedomain.dto.UserEvent;
+import com.nexia.nexia.dto.UserEvent;
 import com.nexia.nexia.kafka.UserProducer;
 import com.nexia.nexia.models.User;
 import com.nexia.nexia.repositories.UserRepository;
 import com.nexia.nexia.services.iservices.IUserService;
-import com.example.basedomain.basedomain.Shared.jwtService;
 @Service
 public class UserService extends CrudOperations<User, String, UserRepository> implements IUserService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
-    private jwtService jwtService;
+    private JwtService jwtService;
     @Autowired
     private UserRepository userRepository;
     @Autowired

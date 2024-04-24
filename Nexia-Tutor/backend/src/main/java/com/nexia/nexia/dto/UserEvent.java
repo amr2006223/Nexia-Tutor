@@ -1,4 +1,4 @@
-package com.example.basedomain.basedomain.dto;
+package com.nexia.nexia.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

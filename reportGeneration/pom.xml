@@ -26,11 +26,11 @@
    			 <artifactId>java-jwt</artifactId>
     		 <version>4.4.0</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.example.basedomain</groupId>
 			<artifactId>basedomain</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -88,9 +88,9 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<image>
+					<!-- <image>
 						<builder>paketobuildpacks/builder-jammy-base:latest</builder>
-					</image>
+					</image> -->
 				</configuration>
 			</plugin>
 		</plugins>

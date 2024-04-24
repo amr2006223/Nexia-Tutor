@@ -1,5 +1,6 @@
-package com.example.basedomain.basedomain.Shared;
+package com.nexia.nexia.services;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -12,13 +13,13 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 @Service
-public class jwtService {
+public class JwtService {
     private final String jwtSecret;
     private final Algorithm algorithm;
     private final String validity;
 
-    public jwtService(String _jwtSecret,
-            String _validity) {
+    public JwtService(@Value("${jwt.secret}") String _jwtSecret,
+            @Value("${jwt.validity}") String _validity) {
         this.jwtSecret = _jwtSecret;
         this.algorithm = Algorithm.HMAC256(jwtSecret);
         this.validity = _validity;
