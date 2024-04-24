@@ -40,7 +40,7 @@ const FindLetterGame = (props: FindLetterGameProps) => {
 
   const goalLetter = props.goalLetter;
 
-  let goalLetterSound = "";
+  const [goalLetterSound, setGoalLetterSound] = useState("");
 
   const [finished, setFinished] = useState(false);
 
@@ -59,8 +59,7 @@ const FindLetterGame = (props: FindLetterGameProps) => {
 
   const getGoalLetterSound = async () => {
     const sound = await getTextSound(goalLetter);
-    console.log(sound);
-    goalLetterSound = sound;
+    setGoalLetterSound(sound);
   };
 
   const handleSuccess = () => {
