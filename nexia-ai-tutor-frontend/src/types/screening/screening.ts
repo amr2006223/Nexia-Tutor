@@ -10,7 +10,7 @@ export type GameData = {
 export type ScreeningData = {
   id: string;
   username: string;
-  record: GameData[][];
+  record: GameData[];
 };
 
 /*

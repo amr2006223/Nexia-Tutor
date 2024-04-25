@@ -7,16 +7,33 @@ const recordRest = `"Clicks10":"6","Hits10":"6","Misses10":"0","Score10":"6","Ac
 
 export const predictScreening = async (games_result: number[][]) => {
   const data = await getScreeningRecord(games_result);
+// try {
+//   const response = await fetch('http://localhost:5002/screening/prediciton', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'Access-Control-Allow-Origin':'*'
+//     },
+//     body: JSON.stringify(data),
+//   });
 
+//   if (!response.ok) {
+//     console.log('API request failed:', response.status);
+//     throw new Error(`API request failed with status: ${response.status}`);
+//   }
+
+//   const responseData = await response.json();
+//   console.log('API response:', responseData);
+
+//   return responseData;
+// } catch (error) {
+//   console.error('Error making API request:', error);
+// }
+let data2 = "ay 7aga"
   try {
     const response = await axios.post(
       `http://localhost:8080/screening/predict`,
-      data,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+      JSON.stringify(data),
     );
 
     if (response.status != 200) {
@@ -34,10 +51,11 @@ export const predictScreening = async (games_result: number[][]) => {
 const getScreeningRecord = async (games_result: number[][]) => {
   const token = await getTokenValue();
   const user = await getUserDetailsService();
-  let gamseData: GameData[][] = [];
+  let gamseData: GameData[] = [];
 
-  let record: GameData[] = [];
+  let record: GameData;
   for (let i = 0; i < games_result.length; i++) {
+    console.log(i)
     let clicks = games_result[i][0];
     let hits = games_result[i][1];
     let misses = games_result[i][2];
@@ -45,17 +63,18 @@ const getScreeningRecord = async (games_result: number[][]) => {
     let accuracy = games_result[i][4];
     let missrate = games_result[i][5];
 
-    record.push({
+    record = {
       clicks: `${clicks}`,
       hits: `${hits}`,
       misses: `${misses}`,
       score: `${score}`,
       accuracy: `${accuracy}`,
       missrate: `${missrate}`,
-    });
+    };
 
     gamseData.push(record);
   }
+
   let screeningDataRecord: ScreeningData = {
     id: token as string,
     username: user.username,

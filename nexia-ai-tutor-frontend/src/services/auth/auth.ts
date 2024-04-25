@@ -6,8 +6,7 @@ import { cookies } from "next/headers";
 export const register = async (data: RegisterData) => {
   try {
     const response = await axios.post(
-      `${process.env.NEXIA_API}api/auth/register`,
-      data
+      `${process.env.NEXIA_API}api/auth/register`
     );
     // Save token to local storage
     // localStorage.setItem("token", response.data.token);
