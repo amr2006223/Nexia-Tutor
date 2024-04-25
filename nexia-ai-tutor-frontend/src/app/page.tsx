@@ -1,7 +1,16 @@
+"use client";
+import Footer from "@/components/home/Footer";
+import Hero from "@/components/home/Hero";
+import Map from "@/components/home/map";
+import Navbar from "@/components/home/Navbar";
+
 export default function Home() {
   return (
     <main>
-      <h2>Dashboard</h2>
+      <Navbar />
+      <Hero />
+      <Map />
+      <Footer />
     </main>
   );
 }
