@@ -10,9 +10,10 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+
 import com.nexia.nexia.models.User;
 import com.nexia.nexia.repositories.UserRepository;
-import com.example.basedomain.basedomain.Shared.jwtService;
+import com.nexia.nexia.services.JwtService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -23,7 +24,7 @@ import jakarta.servlet.http.HttpServletResponse;
 // han3mel custom made filter and use it for only one time
 public class AuthenticationFilter extends OncePerRequestFilter {
     @Autowired
-    private jwtService jwtService;
+    private JwtService jwtService;
     @Autowired
     private UserRepository userRepository;
 

@@ -1,13 +1,15 @@
 import json
 import uuid
 # import requests
+import asyncio
 import aiohttp
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from flask import Flask, jsonify, request
 from classification.data_loader import DataLoader
 from classification.data_manipulation import DataManipulator
 from classification.data_preprocessor import DataPreProcessing
 from classification.model_trainer import RandomForestModelTrainer
+from classification.record_handler import RecordHandler
 from datetime import datetime
 import pandas as pd
 # from service_init import register_with_eureka
@@ -20,13 +22,21 @@ dataLoader = DataLoader(UserWithAlphabeticAwarness)
 dataPreProcessing = DataPreProcessing()
 randomForestModelTrainer = RandomForestModelTrainer()
 dataManipulator = DataManipulator()
+recordHandler = RecordHandler()
 # Preprocess our data
 
 dekstopData = None
 
 # register_with_eureka()
 app = Flask(__name__)
-CORS(app)
+CORS(
+    app,
+    resources={r"/*": {"origins": "*"}},
+    headers={
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type",
+    },
+)
 with app.app_context():
     #global dataLoader,dataPreProcessing,randomForestModelTrainer,dataManipulator,desktopData
     columns = dataPreProcessing.SeparateColumns(Dataset)
@@ -142,24 +152,72 @@ async def make_async_request(api_url, data):
         async with session.post(api_url, json=data) as response:
             return response
         
+# @app.route("/screening/predict",methods=["POST"])
+# def predict():
+#     data = request.get_json()
+#     print(data)
+#     # try:
+#     #     # Attempt to access JSON data from the request
+#     #     data = request.get_json()
+#     #     # print(without_spaces = data["record"].replace(" ", ""))
+#     #     if data is None:
+#     #         raise ValueError("No JSON data in the request")
+#     #     #Predict Data
+#     #     # df = pd.read_json(json_data)
+#     #     json_data = json.loads(data)
+#     #     list_of_dicts = [json_data["record"]]
+#     #     print(type(json_data["record"]))
+#     #     # print(list_of_dicts)
+#     #     df = pd.DataFrame.from_dict(list_of_dicts)
+#     #     # print(df)
+#     #     prediction = randomForestModelTrainer.predictData(df)
+#     #     print(prediction[0])
+       
+    
+#     #     # Process the data (replace this with your logic)
+#     #     current_datetime = datetime.now()
+#     #     serialized_datetime = current_datetime.isoformat()
+#     #     generated_uuid = uuid.uuid4()
+#     #     result = {
+#     #         "id": json_data["id"],
+#     #         "data": 
+#     #         [
+#     #             {
+#     #             "id": str(generated_uuid),
+#     #             "prediction":int(prediction[0]),
+#     #             "record":json_data["record"],
+#     #             "date": serialized_datetime,
+#     #             }
+#     #         ]  
+#     #     }
+#     #     #Api Url
+#     #     api_url = 'http://localhost:8080/report-generation/add'
+#     #     response = await make_async_request(api_url, result)
+#     #     if response.status == 200:
+#     #         return jsonify({'message': 'POST request successful',"prediction":int(prediction[0])})
+#     #     else:
+#     #         print(response)
+#     #         return jsonify({'error': f'Error in POST request: {response}'})
+#     # # Return a JSON response
+
+#     # except Exception as e:
+#     #     # Handle the exception (print or log the error)
+#     #     error_message = f"Error processing the request: {str(e)}"
+#     #     return jsonify({"error": error_message}), 500  # Return a 400 Bad Request status
 @app.route("/screening/predict",methods=["POST"])
-async def predict():
+@cross_origin()
+def prediction():
     try:
-        # Attempt to access JSON data from the request
-        data = request.get_json()
-        # print(without_spaces = data["record"].replace(" ", ""))
+        data = recordHandler.ConvertJsonRecordToString(request.get_data())
         if data is None:
             raise ValueError("No JSON data in the request")
+        
         #Predict Data
-        # df = pd.read_json(json_data)
         json_data = json.loads(data)
         list_of_dicts = [json_data["record"]]
-        print(type(json_data["record"]))
-        # print(list_of_dicts)
         df = pd.DataFrame.from_dict(list_of_dicts)
-        # print(df)
         prediction = randomForestModelTrainer.predictData(df)
-        print(prediction[0])
+
        
     
         # Process the data (replace this with your logic)
@@ -178,22 +236,20 @@ async def predict():
                 }
             ]  
         }
+        print("result",result)
         #Api Url
-        api_url = 'http://localhost:8081/add'
-        response = await make_async_request(api_url, result)
+        api_url = 'http://localhost:8080/report-generation/add'
+        response = asyncio.run(make_async_request(api_url, result))
         if response.status == 200:
             return jsonify({'message': 'POST request successful',"prediction":int(prediction[0])})
         else:
             print(response)
             return jsonify({'error': f'Error in POST request: {response}'})
     # Return a JSON response
-
     except Exception as e:
-        # Handle the exception (print or log the error)
-        error_message = f"Error processing the request: {str(e)}"
-        return jsonify({"error": error_message}), 500  # Return a 400 Bad Request status
-    
-            
-    # return json.dumps(data)
+            # Handle the exception (print or log the error)
+            error_message = f"Error processing the request: {str(e)}"
+            return jsonify({"error": error_message}), 500  # Return a 400 Bad Request status
+
 if(__name__ == "__main__"):
-    app.run(debug=True, port=8000)
+    app.run(debug=True, port=5002)

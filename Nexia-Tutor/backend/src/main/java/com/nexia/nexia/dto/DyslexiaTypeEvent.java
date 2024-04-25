@@ -1,8 +1,8 @@
-package com.example.basedomain.basedomain.dto;
+package com.nexia.nexia.dto;
 
 import java.util.List;
 
-import com.example.basedomain.basedomain.dto.UserEvent.Status;
+import com.nexia.nexia.dto.UserEvent.Status;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -3,9 +3,10 @@ package com.nexia.nexia.controlles;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.nexia.nexia.models.Game;
 import com.nexia.nexia.services.GameService;
-import com.example.basedomain.basedomain.Shared.jwtService;
+import com.nexia.nexia.services.JwtService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class GameController {
     @Autowired
     private GameService gameService;
     @Autowired
-    private jwtService jwtService;
+    private JwtService jwtService;
 
     @PostMapping("/{lessonName}")
     public ResponseEntity<?> getGamesForLesson(@PathVariable String lessonName,

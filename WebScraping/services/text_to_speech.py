@@ -18,7 +18,7 @@ class TextToSpeech:
         # Adding custom headers
         headers = {
             'Content-Type': 'application/json',
-            'x-goog-api-key': 'AIzaSyAlv1V9BfOvpUu9uVAbET4LJ9CmILlKirs'
+            'x-goog-api-key': 'AIzaSyDZeuCMi8U4ZJqB19mu5GnnlACi6app3b4'
         }
         res = requests.post(url, json=dict_to_send, headers=headers)
         audio = json.loads(res.text)

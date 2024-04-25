@@ -1,4 +1,4 @@
-package com.example.basedomain.basedomain.dto;
+package com.example.report_generation.report_generation.dto;
 
 import java.util.Date;
 

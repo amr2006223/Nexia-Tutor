@@ -1,17 +1,17 @@
-package com.nexia.nexia.util;
+// package com.nexia.nexia.util;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+// import org.springframework.beans.factory.annotation.Value;
+// import org.springframework.context.annotation.Bean;
+// import org.springframework.context.annotation.Configuration;
 
-import com.example.basedomain.basedomain.Shared.jwtService;
 
-@Configuration
-public class JwtServiceConfig {
 
-    @Bean
-    public jwtService jwtService(@Value("${jwt.secret}") String jwtSecret,
-            @Value("${jwt.validity}") String validity) {
-        return new jwtService(jwtSecret, validity);
-    }
-}
+// @Configuration
+// public class JwtServiceConfig {
+
+//     @Bean
+//     public jwtService jwtService(@Value("${jwt.secret}") String jwtSecret,
+//             @Value("${jwt.validity}") String validity) {
+//         return new jwtService(jwtSecret, validity);
+//     }
+// }

@@ -3,11 +3,12 @@ package com.example.report_generation.report_generation.controller;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 
+
 import com.example.report_generation.report_generation.models.User;
 import com.example.report_generation.report_generation.models.UserData;
+import com.example.report_generation.report_generation.service.JwtService;
 import com.example.report_generation.report_generation.service.PDFGeneratorService;
 import com.example.report_generation.report_generation.service.UserService;
-import com.example.basedomain.basedomain.Shared.jwtService;
 
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Map;
@@ -28,7 +29,7 @@ public class PDFGeneratorController {
     @Autowired
     private UserService _userService;
     @Autowired
-    private jwtService _JwtService;
+    private JwtService _JwtService;
 
     public PDFGeneratorController(PDFGeneratorService PdfGeneratorService) {
         this._pdfGeneratorService = PdfGeneratorService;

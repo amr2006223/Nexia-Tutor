@@ -11,7 +11,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import CounterComponent from "@/shared/components/counter/CounterComponent";
 import FlagIcon from "@mui/icons-material/Flag";
 import { getKeywordDataForRhymeGame } from "@/services/games/rhyme/getKeywordData";
-import { useSearchParams } from "next/navigation";
+import useWordSearchParams from "@/shared/hooks/useWordSearchParams";
 
 type RhymingGameProps = {
   keyword: RhymingWord;
@@ -20,8 +20,7 @@ type RhymingGameProps = {
 };
 
 const RhymingGamePage = () => {
-  const searchParams = useSearchParams();
-  const keywordValue = searchParams.get("word");
+  const { keywordParams } = useWordSearchParams();
   const [response, setResponse] = React.useState<RhymingGameProps | null>(null);
   const [loading, setLoading] = React.useState(true);
   const [startGame, setStartGame] = React.useState(false);
@@ -32,7 +31,7 @@ const RhymingGamePage = () => {
     try {
       // await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      const response = await getKeywordDataForRhymeGame(keywordValue as string);
+      const response = await getKeywordDataForRhymeGame(keywordParams);
       // console.log(response);
       const { keyWord, not_rhymes, rhymes } = response;
       // console.log("keyWordResponse", keyWord);
