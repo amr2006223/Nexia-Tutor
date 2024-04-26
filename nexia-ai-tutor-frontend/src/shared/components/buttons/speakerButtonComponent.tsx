@@ -32,7 +32,6 @@ const SpeakerButtonComponent = ({
       className="cursor-pointer "
       onClick={() => playSound()}
       style={{ color: iconColor, fontSize: "2rem" }}
-      
     />
   );
 };

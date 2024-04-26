@@ -1,5 +1,4 @@
 import EndScreenGameComponent from "@/components/games/screening-games/endScreenGame";
-import { getTextSound } from "@/services/text-to-speech/textSound";
 import TimerComponent from "@/shared/components/progress/timer";
 import { useScreeningGamesStore } from "@/shared/state/screening-games";
 import { useEffect, useState } from "react";
@@ -7,6 +6,7 @@ import { useTimer } from "use-timer";
 import SpeakerButtonComponent from "@/shared/components/buttons/speakerButtonComponent";
 import BoxesMatrixToFindWordComponent from "../BoxesMatrixToFindWord";
 import FooterCounter from "@/shared/components/games/footerCounter";
+import { playSoundFromGoogle } from "@/shared/utils/play-sounds";
 
 type FindLetterGameProps = {
   goalLetter: string;
@@ -14,6 +14,7 @@ type FindLetterGameProps = {
   nextGameLink: string;
   isLastGame: boolean;
   gameNumber: number;
+  goalLetterSound: string;
 };
 
 const FindLetterGame = (props: FindLetterGameProps) => {
@@ -36,14 +37,23 @@ const FindLetterGame = (props: FindLetterGameProps) => {
     props.wordsList
   );
 
-  const [goalLetterSound, setGoalLetterSound] = useState("");
-
   const [finished, setFinished] = useState(false);
 
   useEffect(() => {
-    getGoalLetterSound();
     start();
   }, []);
+
+  const [hasFirstMouseMove, setHasFirstMouseMove] = useState(false);
+  const handleFirstPlay = async () => {
+    if (!hasFirstMouseMove) {
+      try {
+        await playSoundFromGoogle(props.goalLetterSound);
+      } catch (e) {
+        console.error(e);
+      }
+      setHasFirstMouseMove(true);
+    }
+  };
 
   const shuffleWordsList = () => {
     setCurrentWordsList((prevList) => {
@@ -51,11 +61,6 @@ const FindLetterGame = (props: FindLetterGameProps) => {
       newList.sort(() => Math.random() - 0.5);
       return newList;
     });
-  };
-
-  const getGoalLetterSound = async () => {
-    const sound = await getTextSound(props.goalLetter);
-    setGoalLetterSound(sound);
   };
 
   const handleSuccess = () => {
@@ -98,6 +103,7 @@ const FindLetterGame = (props: FindLetterGameProps) => {
     <div
       className="flex flex-col items-center justify-center h-screen"
       onClick={handleClicks}
+      onMouseOverCapture={handleFirstPlay}
     >
       <div
         className="
@@ -121,7 +127,7 @@ const FindLetterGame = (props: FindLetterGameProps) => {
         <div className="text-3xl font-bold text-center mb-4">
           Listen{" "}
           <SpeakerButtonComponent
-            sound={goalLetterSound}
+            sound={props.goalLetterSound}
             from_google={true}
             theme="dark"
           />

@@ -1,7 +1,8 @@
 "use client";
 import FindLetterGame from "@/components/games/screening-games/games-types/findLetterGame";
+import { getTextSound } from "@/services/text-to-speech/textSound";
 
-const SeventhScreeningGamePage = () => {
+const SeventhScreeningGamePage = async () => {
   const wordsLists: string[] = [
     "pla",
     "ple",
@@ -36,8 +37,11 @@ const SeventhScreeningGamePage = () => {
 
   const gameNumber = 7;
 
+  const goalLetterSound = await getTextSound(goalLetter);
+
   return (
     <FindLetterGame
+      goalLetterSound={goalLetterSound}
       gameNumber={gameNumber}
       goalLetter={goalLetter}
       wordsList={wordsLists}

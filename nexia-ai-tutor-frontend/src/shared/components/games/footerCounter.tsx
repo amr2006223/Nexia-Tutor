@@ -11,14 +11,18 @@ const FooterCounter = (props: FooterCounterProps) => {
   return (
     <div
       style={{
-        position: "fixed",
-        bottom: 0,
-        width: "100%",
-        backgroundColor: "#fff",
-        padding: "10px",
         borderTop: "2px solid #3e4772",
+        justifyContent: "space-around",
+        display: "flex",
+        flexDirection: "row",
+        position: "fixed",
+        alignItems: "center",
+        marginTop: "3px",
+        padding: "0.75rem",
+        backgroundColor: "white",
+        width: "100%",
+        bottom: "0",
       }}
-      className="flex flex-row justify-evenly items-center mt-3"
     >
       <CounterComponent
         count={props.redCounterNumber}
