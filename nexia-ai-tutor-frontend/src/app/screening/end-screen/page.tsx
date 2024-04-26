@@ -1,4 +1,3 @@
-// FormInterface.tsx
 "use client";
 import React, { useState } from "react";
 import { Button, Container, Typography } from "@mui/material";
@@ -13,7 +12,7 @@ import { getTokenValue } from "@/services/auth/auth";
 import { useScreeningGamesStore } from "@/shared/state/screening-games";
 import { predictScreening } from "@/services/screening/screening";
 
-const FormInterface: React.FC = () => {
+const ScreeningEndScreenPage: React.FC = () => {
   const gamesData = useScreeningGamesStore();
   const router = useRouter();
   const [conductor, setConductor] = useState<TConductorInstance>();
@@ -127,4 +126,4 @@ const FormInterface: React.FC = () => {
   );
 };
 
-export default FormInterface;
+export default ScreeningEndScreenPage;

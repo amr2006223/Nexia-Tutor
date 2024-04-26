@@ -36,7 +36,7 @@ const EndScreenGameComponent = (props: EndScreenGameComponentProps) => {
           className="btn btn-primary select-none"
           onClick={() => {
             if (props.lastGame) {
-              router.push(`/FormInterface`);
+              router.push(`/screening/end-screen`);
               return;
             }
             router.push(`/screening/games/${props.nextGameLink}`);

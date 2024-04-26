@@ -32,7 +32,7 @@ export default function Login() {
 
     const response = await login(result);
     if (response) {
-      router.push("/home");
+      router.push("/");
     }else{
         Swal.fire({
           title: "Login Failed",

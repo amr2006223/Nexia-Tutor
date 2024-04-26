@@ -49,7 +49,7 @@ const Navbar = () => {
     >
       {/* left */}
       <div className="flex items-center pl-4">
-        <Link href="/home">
+        <Link href="/">
           <img
             src="/assets/images/logo.png"
             alt="logo"
@@ -60,7 +60,7 @@ const Navbar = () => {
       <div className="bg-[#3E4772] flex-grow flex justify-center">
         {/* Center */}
         <div className="flex gap-10 font-medium py-4 text-[#CDEBC5]">
-          <Link className="navbar__link relative" href="/home">
+          <Link className="navbar__link relative" href="/">
             Home
           </Link>
           {/* <Link className="navbar__link relative" href="#">
