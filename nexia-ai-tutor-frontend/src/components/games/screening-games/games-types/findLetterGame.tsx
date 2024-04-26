@@ -3,18 +3,17 @@ import { getTextSound } from "@/services/text-to-speech/textSound";
 import TimerComponent from "@/shared/components/progress/timer";
 import { useScreeningGamesStore } from "@/shared/state/screening-games";
 import { useEffect, useState } from "react";
-import CounterComponent from "@/shared/components/counter/CounterComponent";
-import CloseIcon from "@mui/icons-material/Close";
-import CheckIcon from "@mui/icons-material/Check";
 import { useTimer } from "use-timer";
 import SpeakerButtonComponent from "@/shared/components/buttons/speakerButtonComponent";
 import BoxesMatrixToFindWordComponent from "../BoxesMatrixToFindWord";
+import FooterCounter from "@/shared/components/games/footerCounter";
 
 type FindLetterGameProps = {
   goalLetter: string;
   wordsList: string[];
   nextGameLink: string;
   isLastGame: boolean;
+  gameNumber: number;
 };
 
 const FindLetterGame = (props: FindLetterGameProps) => {
@@ -33,12 +32,9 @@ const FindLetterGame = (props: FindLetterGameProps) => {
   const [hits, setHits] = useState(0);
   const [misses, setMisses] = useState(0);
 
-  const wordsLists: string[] = props.wordsList;
-
-  const [currentWordsList, setCurrentWordsList] =
-    useState<string[]>(wordsLists);
-
-  const goalLetter = props.goalLetter;
+  const [currentWordsList, setCurrentWordsList] = useState<string[]>(
+    props.wordsList
+  );
 
   const [goalLetterSound, setGoalLetterSound] = useState("");
 
@@ -58,7 +54,7 @@ const FindLetterGame = (props: FindLetterGameProps) => {
   };
 
   const getGoalLetterSound = async () => {
-    const sound = await getTextSound(goalLetter);
+    const sound = await getTextSound(props.goalLetter);
     setGoalLetterSound(sound);
   };
 
@@ -103,16 +99,27 @@ const FindLetterGame = (props: FindLetterGameProps) => {
       className="flex flex-col items-center justify-center h-screen"
       onClick={handleClicks}
     >
-      <div>Game 1: Find the word</div>
-      <div>Click on the word that starts with the letter {goalLetter}</div>
+      <div
+        className="
+        flex
+        flex-row
+        items-center
+        justify-between
+        w-full
+        my-3
+        px-5
+        "
+      >
+        <div className="text-3xl font-bold text-center">
+          Game {props.gameNumber}: Listen & Find
+        </div>
 
-      <div>
         <TimerComponent timeOnSeconds={time} />
       </div>
 
       <div className="flex flex-col items-center justify-center h-screen">
-        <div className="text-2xl font-bold text-center mb-4">
-          Listen and find:{" "}
+        <div className="text-3xl font-bold text-center mb-4">
+          Listen{" "}
           <SpeakerButtonComponent
             sound={goalLetterSound}
             from_google={true}
@@ -121,35 +128,20 @@ const FindLetterGame = (props: FindLetterGameProps) => {
         </div>
         <BoxesMatrixToFindWordComponent
           wordList={currentWordsList}
-          goalLetter={goalLetter}
+          goalLetter={props.goalLetter}
           handleSuccess={handleSuccess}
           handleFailure={handleFailure}
         />
       </div>
 
-      <div
-        style={{
-          position: "fixed",
-          bottom: 0,
-          width: "100%",
-          backgroundColor: "#fff",
-          padding: "10px",
-          borderTop: "2px solid #3e4772",
-        }}
-        className="flex flex-row justify-evenly items-center mt-3"
-      >
-        <CounterComponent count={misses} color="red" icon={CloseIcon} />
-        <CounterComponent count={hits} color="green" icon={CheckIcon} />
-      </div>
+      <FooterCounter greenCounterNumber={hits} redCounterNumber={misses} />
 
-      <div>
-        {finished && (
-          <EndScreenGameComponent
-            nextGameLink={props.nextGameLink}
-            lastGame={props.isLastGame}
-          />
-        )}
-      </div>
+      {finished && (
+        <EndScreenGameComponent
+          nextGameLink={props.nextGameLink}
+          lastGame={props.isLastGame}
+        />
+      )}
     </div>
   );
 };

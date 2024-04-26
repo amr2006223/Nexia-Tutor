@@ -34,8 +34,11 @@ const SixthScreeningGamePage = () => {
 
   const nextGameLink = "7";
 
+  const gameNumber = 6;
+
   return (
     <FindLetterGame
+      gameNumber={gameNumber}
       goalLetter={goalLetter}
       wordsList={wordsLists}
       nextGameLink={nextGameLink}
