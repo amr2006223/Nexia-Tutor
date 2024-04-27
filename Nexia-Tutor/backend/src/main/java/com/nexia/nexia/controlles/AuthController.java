@@ -41,7 +41,7 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
         User user = userService.login(body.get("username"), body.get("password"));
         if(user == null){
-            return new ResponseEntity<String>("User Not Found", HttpStatus.OK);
+            return new ResponseEntity<String>("User Not Found", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }

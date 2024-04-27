@@ -20,7 +20,7 @@ const TimerComponent: React.FC<TimerComponentProps> = ({ timeOnSeconds }) => {
 
   return (
     <div
-      className={`px-4 py-2 rounded-xl text-5xl font-bold text-center items-center border-4 border-[${ColorCodes.purple}] bg-[${ColorCodes.lightGreen}]`}
+      className={`px-4 py-2 rounded-xl text-3xl font-bold text-center items-center border-4 border-[${ColorCodes.purple}] bg-[${ColorCodes.lightGreen}]`}
     >
       {displayTime}
     </div>

@@ -6,18 +6,14 @@ export async function middleware(request: NextRequest) {
   if (token) {
     return NextResponse.next();
   } else {
-    return NextResponse.redirect(new URL("/home", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 }
 
 export const config = {
   matcher: [
-    "/",
-    "/FormInterface",
-    "/games/:path*",
-    "/lessons/:path*",
-    "/myLearning",
     "/screening/:path*",
-    "/TodayLesson",
+    "/tutoring/:path*",
+    "/auth/:path*",
   ],
 };

@@ -1,10 +1,11 @@
 import axios from "axios";
+import { getTokenValue } from "../auth/auth";
 
 export const getReport = async (
-  user_id: string
 ) => {
   try {
-    const response = await axios.get(`${process.env.REPORT_API}pdf/down/${user_id}`, {
+    const token = await getTokenValue();
+    const response = await axios.get(`${process.env.REPORT_API}pdf/down/${token}`, {
       responseType: 'blob' // Set responseType to 'blob' for binary data
     });
     

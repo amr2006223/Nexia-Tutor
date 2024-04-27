@@ -1,3 +1,4 @@
+"use client";
 import Head from "next/head";
 import { FiFileText, FiPlay, FiPlus, FiSearch, FiTrash2 } from "react-icons/fi";
 import { useEffect, useState } from "react";
@@ -33,7 +34,7 @@ export default function LearningPage(): JSX.Element {
     try {
       await lessonState.setLessonDetails(fileData.name, fileData.keywords);
       // console.log("Keywords:", keywords);
-      router.push("/TodayLesson");
+      router.push("/tutoring/TodayLesson");
     } catch (error) {
       console.error("Error uploading PDF:", error);
     }
@@ -96,7 +97,9 @@ export default function LearningPage(): JSX.Element {
             <title>MyLearning</title>
           </Head>
           <div className="flex items-center">
-            <h1 className="text-2xl font-bold mr-4">Welcome Back, {userState.user.username}</h1>
+            <h1 className="text-2xl font-bold mr-4">
+              Welcome Back, {userState.user.username}
+            </h1>
             <img
               src="/assets/images/potato-heart.png"
               alt="Potato Heart"

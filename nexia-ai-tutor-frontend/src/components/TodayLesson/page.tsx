@@ -49,7 +49,7 @@ const handleGames = async () => {
         <>
           <Link
             className=" bg-[#3E4772] font-bold text-base p-3 m-2"
-            href={"/myLearning"}
+            href={"/tutoring/myLearning"}
             style={{
               backgroundColor: "#3E4772",
               color: "#CDEBC5",

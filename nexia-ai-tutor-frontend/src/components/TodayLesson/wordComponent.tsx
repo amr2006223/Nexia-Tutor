@@ -26,24 +26,7 @@ const WordComponent = ({ word }: props) => {
     };
     const handlePlay = (game_name:String) => {
       handleMenuClose();
-      router.push(`/games/${game_name}?word=${word}`);
-    };
-    const handlePlayBingo = () => {
-      handleMenuClose();
-      router.push(`/games/bingo?word=${word}`);
-    };
-
-    const handlePlayHunt = () => {
-      handleMenuClose();
-      router.push(`/games/hunt?word=${word}`);
-    };
-    const handlePlayMemory = () => {
-      handleMenuClose();
-      router.push(`/games/memory?word=${word}`);
-    };
-    const handlePlayRhyme = () => {
-      handleMenuClose();
-      router.push(`/games/rhyme?word=${word}`);
+      router.push(`tutoring/games/${game_name}?word=${word}`);
     };
     return (
       <div>

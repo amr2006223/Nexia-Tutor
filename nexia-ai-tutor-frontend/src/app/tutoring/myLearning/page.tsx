@@ -1,20 +1,14 @@
-import Footer from "@/components/home/Footer";
-import Hero from "@/components/home/Hero";
-import Map from "@/components/home/map";
 import Navbar from "@/components/home/Navbar";
+import LearningPage from "@/components/myLearning/page";
 import { checkLoginAndGetUserName } from "@/services/auth/auth";
 
-const HomePage = async () => {
+export default async function TodayLesson() {
   const { isLoggedIn, userName } = await checkLoginAndGetUserName();
 
   return (
-    <div>
+    <main>
       <Navbar isLoggedIn={isLoggedIn} userName={userName} />
-      <Hero />
-      <Map />
-      <Footer />
-    </div>
+      <LearningPage />
+    </main>
   );
-};
-
-export default HomePage;
+}
