@@ -47,7 +47,7 @@ const FindLetterGame = (props: FindLetterGameProps) => {
   const handleFirstPlay = async () => {
     if (!hasFirstMouseMove) {
       try {
-        await playSoundFromGoogle(props.goalLetterSound);
+        playSoundFromGoogle(props.goalLetterSound);
       } catch (e) {
         console.error(e);
       }

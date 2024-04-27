@@ -1,19 +1,13 @@
-"use client";
-
-// import HeaderMain from "@/components/home/HeaderMain";
-// import MobNavbar from "@/components/home/MobNavbar";
 import Navbar from "@/components/home/Navbar";
-// import Learn from "@/components/myLearning/learn";
 import LearningPage from "@/components/myLearning/page";
+import { checkLoginAndGetUserName } from "@/services/auth/auth";
 
-export default function TodayLesson() {
-
+export default async function TodayLesson() {
+  const { isLoggedIn, userName } = await checkLoginAndGetUserName();
 
   return (
     <main>
-      <Navbar />
-      {/* <HeaderMain />
-      <MobNavbar /> */}
+      <Navbar isLoggedIn={isLoggedIn} userName={userName} />
       <LearningPage />
     </main>
   );
