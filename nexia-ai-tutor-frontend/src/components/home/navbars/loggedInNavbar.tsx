@@ -11,7 +11,7 @@ const LoggedInNavbar = (props: LoggedInNavbarProps) => {
   const handleLogout = () => {
     logoutService();
     router.refresh();
-    router.push("/login");
+    router.push("/auth/login");
   };
 
   return (

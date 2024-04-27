@@ -75,7 +75,7 @@ export default function Home() {
 
     const response = await register(result);
     if (response) {
-      router.push("/login");
+      router.push("/auth/login");
     } else {
       Swal.fire({
         icon: "error",

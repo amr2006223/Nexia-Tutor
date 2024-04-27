@@ -50,10 +50,10 @@ const useFireworksForReport = () => {
       allowEscapeKey: false,
     }).then(async (result) => {
       if (result.isConfirmed) {
-        router.push("/myLearning");
+        router.push("/tutoring/myLearning");
       } else {
         await getReport();
-        router.push("/myLearning");
+        router.push("/tutoring/myLearning");
       }
       onPause();
     });

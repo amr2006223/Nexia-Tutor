@@ -12,10 +12,8 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/games/:path*",
-    "/lessons/:path*",
-    "/myLearning",
     "/screening/:path*",
-    "/TodayLesson",
+    "/tutoring/:path*",
+    "/auth/:path*",
   ],
 };

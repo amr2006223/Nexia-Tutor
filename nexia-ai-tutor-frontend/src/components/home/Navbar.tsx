@@ -31,7 +31,7 @@ const Navbar = (props: NavbarProps) => {
       <div className="bg-[#3E4772] flex-grow flex justify-center">
         {props.isLoggedIn && (
           <div className="flex gap-10 font-medium py-4 text-[#CDEBC5]">
-            <Link className="navbar__link relative" href="/myLearning">
+            <Link className="navbar__link relative" href="/tutoring/myLearning">
               My Learning
             </Link>
             <Link className="navbar__link relative" href="/screening/games/1">

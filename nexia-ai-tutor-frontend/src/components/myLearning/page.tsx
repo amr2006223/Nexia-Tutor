@@ -34,7 +34,7 @@ export default function LearningPage(): JSX.Element {
     try {
       await lessonState.setLessonDetails(fileData.name, fileData.keywords);
       // console.log("Keywords:", keywords);
-      router.push("/TodayLesson");
+      router.push("/tutoring/TodayLesson");
     } catch (error) {
       console.error("Error uploading PDF:", error);
     }

@@ -117,7 +117,7 @@ export default function Login() {
             <div className="border-2 w-10 border-white inline-block mb-2 "></div>
             <p className="mb-2 text-[#D9DEFF]">Create an account</p>
             <Link
-              href="/register"
+              href="/auth/register"
               className="border-2 border-white rounded-full px-12 py-2 inline-block font-semibold hover:bg-gray-100 hover:text-[#2A304D]"
             >
               Sign Up
