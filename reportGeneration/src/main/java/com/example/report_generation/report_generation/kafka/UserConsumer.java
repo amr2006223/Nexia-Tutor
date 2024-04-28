@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-import com.example.report_generation.report_generation.dto.UserDTO;
-import com.example.report_generation.report_generation.dto.UserEvent;
+import com.basedomain.basedomain.dto.UserDTO;
+import com.basedomain.basedomain.dto.UserEvent;
 import com.example.report_generation.report_generation.models.User;
 @Service
 public class UserConsumer {
