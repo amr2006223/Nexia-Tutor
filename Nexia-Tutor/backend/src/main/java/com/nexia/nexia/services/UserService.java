@@ -3,7 +3,7 @@ package com.nexia.nexia.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.nexia.nexia.dto.UserEvent;
+import com.basedomain.basedomain.dto.UserEvent;
 import com.nexia.nexia.kafka.UserProducer;
 import com.nexia.nexia.models.User;
 import com.nexia.nexia.repositories.UserRepository;

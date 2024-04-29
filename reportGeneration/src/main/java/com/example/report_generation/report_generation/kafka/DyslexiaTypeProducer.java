@@ -12,8 +12,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 
-import com.example.report_generation.report_generation.dto.DyslexiaTypeEvent;
-import com.example.report_generation.report_generation.dto.DyslexiaTypesDTO;
+import com.basedomain.basedomain.dto.DyslexiaTypeEvent;
+import com.basedomain.basedomain.dto.DyslexiaTypesDTO;
 
 import com.example.report_generation.report_generation.models.DyslexiaCategory;
 
