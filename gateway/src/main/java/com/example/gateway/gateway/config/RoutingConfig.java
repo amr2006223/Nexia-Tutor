@@ -16,12 +16,15 @@ public class RoutingConfig {
                 .route("report-generation", r -> r.path("/report-generation/**").uri("lb://report-generation"))
                 // Route to Nexia-Tutor service
                 .route("nexia-tutor", r -> r.path("/nexia-tutor/**").uri("lb://nexia-tutor"))
+                // Route to AuthenticationService service
+                .route("identity-service", r -> r.path("/identity-service/**").uri("lb://identity-service"))
                 // Route to screening service
                 .route("screening", r -> r.path("/screening/**").uri("http://localhost:5002"))
                 // Route to scraping service
                 .route("scraping", r -> r.path("/scraping/**").uri("http://localhost:5001"))
                 // Route to extracting service
                 .route("extracting", r -> r.path("/extracting/**").uri("http://localhost:5000"))
+                
 
                 .build();
     }
