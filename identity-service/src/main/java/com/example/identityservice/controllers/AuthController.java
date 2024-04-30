@@ -1,6 +1,13 @@
 package com.example.identityservice.controllers;
 
+
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -8,7 +15,6 @@ import com.example.identityservice.dto.AuthRequest;
 import com.example.identityservice.models.UserCredentials;
 import com.example.identityservice.services.AuthService;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -30,13 +36,19 @@ public class AuthController {
         return authService.login(authRequest);
     }
     @PostMapping("/generate")
-    public String getToken(@RequestBody String uuid) {
-        return authService.generateToken(uuid);
+    public ResponseEntity<String> getToken(@RequestBody String uuid) {
+        return new ResponseEntity<>( authService.generateToken(uuid),HttpStatus.OK);
     }
     
     @PostMapping("/validate")
-    public boolean validate(@RequestBody String token) {
-        return authService.validate(token);
+    public ResponseEntity<Map<String, String>> validate(@RequestBody String token) {
+        Map<String, String> response = new HashMap<>();
+        if (authService.validate(token)) {
+            response.put("status", "valid");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        response.put("status", "invalid");
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
     
 }
