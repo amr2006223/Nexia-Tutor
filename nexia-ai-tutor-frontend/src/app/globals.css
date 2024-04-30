@@ -6,6 +6,18 @@
   body {
     overflow-x: hidden;
   }
+
+  html {
+    --color-primary: #3e4772;
+    --color-secondary: #a8e38b;
+    --color-background: #d0ebc3;
+    --color-light: #f2ffec;
+    --color-success: #8ac53e;
+    --color-info: #427be6;
+    --color-warning: #ffd233;
+    --color-danger: #ea2114;
+    --color-blackish: #1b1b1b;
+  }
 }
 
 @layer components {
@@ -35,44 +47,32 @@
     scale: 1;
   }
 }
-/* :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-} */
 @font-face {
-  font-family: 'OpenDyslexic-Regular';
-  src: url('/assets/fonts/OpenDyslexic-Regular.otf') format('opentype');
+  font-family: "OpenDyslexic-Regular";
+  src: url("/assets/fonts/OpenDyslexic-Regular.otf") format("opentype");
 }
 
 @font-face {
-  font-family: 'OpenDyslexic-Bold';
-  src: url('/assets/fonts/OpenDyslexic-Bold.otf') format('opentype');
+  font-family: "OpenDyslexic-Bold";
+  src: url("/assets/fonts/OpenDyslexic-Bold.otf") format("opentype");
 }
 
 body {
-  color: #3e4772;
-  background-color: #cdebc5;
-  font-family: 'OpenDyslexic-Regular'; /* Fallback fonts */
+  color: var(--color-primary);
+  background-color: var(--color-background);
+  font-family: "OpenDyslexic-Regular"; /* Fallback fonts */
 }
 
 /* Apply bold font to specific elements */
 .bold-text {
-  font-family: 'OpenDyslexic-Bold';
+  font-family: "OpenDyslexic-Bold";
 }
-
 
 /* CSS for smooth transitions */
 #hero-container {
-  transition: height 0.3s ease-in-out, padding-top 0.3s ease-in-out, padding-bottom 0.3s ease-in-out;
+  transition: height 0.3s ease-in-out, padding-top 0.3s ease-in-out,
+    padding-bottom 0.3s ease-in-out;
 }
 
 #girl-container {
@@ -101,7 +101,11 @@ body {
 }
 
 .light-circle {
-  background: radial-gradient(circle at center, rgba(255, 255, 0, 0.5) 40%, rgba(255, 255, 0, 0) 95%);
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 0, 0.5) 40%,
+    rgba(255, 255, 0, 0) 95%
+  );
   width: 100%;
   height: 80%;
   filter: blur(40px); /* Add a 40% blur filter */
@@ -132,7 +136,6 @@ body {
   max-width: 47rem;
 }
 
-
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -148,7 +151,6 @@ body {
   animation: fadeInUp 1s ease forwards;
 }
 
-
 @keyframes zoomInAnimation {
   from {
     transform: scale(0);
@@ -159,5 +161,3 @@ body {
     opacity: 1;
   }
 }
-
-
