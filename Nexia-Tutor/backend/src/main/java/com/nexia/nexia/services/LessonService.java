@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Service
 public class LessonService extends CrudOperations<Lesson, String, LessonRepository> implements ILessonService {
 
-    private final String filePath = "Nexia-Tutor\\backend\\src\\main\\resources\\json\\lessons.json";
+    private final String filePath = "backend\\src\\main\\resources\\json\\lessons.json";
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public LessonService(LessonRepository repository) {

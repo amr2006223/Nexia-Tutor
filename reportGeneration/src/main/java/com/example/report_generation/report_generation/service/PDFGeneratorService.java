@@ -37,8 +37,8 @@ import java.awt.Color;
 
 @Service
 public class PDFGeneratorService {
-    String pdfFilePath = "reportGeneration\\src\\main\\resources\\pdf\\";
-    String userFilePath = "reportGeneration\\src\\main\\resources\\json\\ImportantUser.json";
+    String pdfFilePath = "src\\main\\resources\\pdf\\";
+    String userFilePath = "src\\main\\resources\\json\\ImportantUser.json";
     Color defaultColor = new Color(0x3E4772);
     String defalutFont = FontFactory.HELVETICA;
     String defaultTitleFont = FontFactory.HELVETICA_BOLD;

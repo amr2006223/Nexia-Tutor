@@ -35,8 +35,8 @@ public class PDFGeneratorController {
         this._pdfGeneratorService = PdfGeneratorService;
     }
 
-    String filePath = "reportGeneration\\src\\main\\resources\\pdf\\";
-    String userFilePath = "reportGeneration\\src\\main\\resources\\json\\ImportantUser.json";
+    String filePath = "src\\main\\resources\\pdf\\";
+    String userFilePath = "src\\main\\resources\\json\\ImportantUser.json";
 
     // String jsonFilePath = "src\\main\\resources\\json\\ImportantUser.json";
     @GetMapping("/pdf/down/{userId}")
