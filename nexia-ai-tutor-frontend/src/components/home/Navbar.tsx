@@ -1,7 +1,8 @@
 "use client";
-import Link from "next/link";
 import LoggedInNavbar from "./navbars/loggedInNavbar";
 import NotLoggedInNavbar from "./navbars/notLoggedInNavbar";
+import LogoButton from "@/shared/components/buttons/logoButton";
+import NavbarLink from "./navbars/navbarLink";
 
 type NavbarProps = {
   isLoggedIn: boolean;
@@ -11,32 +12,20 @@ type NavbarProps = {
 const Navbar = (props: NavbarProps) => {
   return (
     <div
-      className={`lg:fixed lg:justify-between w-full flex bg-[#3E4772] shadow-md items-center`}
+      className="lg:fixed lg:justify-between w-full flex bg-[#3E4772] shadow-md items-center"
       style={{
         zIndex: 999,
       }}
     >
       {/* left */}
-      <div className="flex items-center pl-4">
-        <Link href="/">
-          <img
-            src="/assets/images/logo.png"
-            alt="logo"
-            className="cursor-pointer h-12 w-12"
-          />
-        </Link>
-      </div>
+      <LogoButton />
 
       {/* Center */}
-      <div className="bg-[#3E4772] flex-grow flex justify-center">
+      <div className="flex-grow flex justify-center">
         {props.isLoggedIn && (
           <div className="flex gap-10 font-medium py-4 text-[#CDEBC5]">
-            <Link className="navbar__link relative" href="/tutoring/myLearning">
-              My Learning
-            </Link>
-            <Link className="navbar__link relative" href="/screening/games/1">
-              Test
-            </Link>
+            <NavbarLink href="/tutoring/myLearning">My Learning</NavbarLink>
+            <NavbarLink href="/screening/games/1">Test</NavbarLink>
           </div>
         )}
       </div>

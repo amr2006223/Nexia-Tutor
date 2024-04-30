@@ -31,7 +31,7 @@ public class UserController {
     @Autowired
     private JwtService _JwtService;
     
-    String filePath = "reportGeneration\\src\\main\\resources\\json\\ImportantUser.json";
+    String filePath = "src\\main\\resources\\json\\ImportantUser.json";
     @PostMapping("/add")
     public ResponseEntity<User> addUser(@RequestBody User newUser) throws IOException {
         String token = newUser.getId();
