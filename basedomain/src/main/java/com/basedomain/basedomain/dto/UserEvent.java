@@ -1,9 +1,11 @@
-package com.nexia.nexia.dto;
+package com.basedomain.basedomain.dto;
+
+import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+@Component
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,12 +13,14 @@ public class UserEvent {
     private String message;
     private Status status;
     private UserDTO user;
-    public static enum Status{
+
+    public static enum Status {
         ADD,
         UPDATE,
         DELETE,
 
     }
+
     public static enum Topics {
         USER("USER"),
         DYSLEXIATYPE("DYSLEXIATYPE"),
@@ -33,4 +37,3 @@ public class UserEvent {
         }
     }
 }
-

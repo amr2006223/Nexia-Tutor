@@ -6,12 +6,15 @@ import { getUserDetailsService } from "../user/userDetails";
 
 export const register = async (data: RegisterData) => {
   try {
-    const response = await axios.post(
-      `${process.env.NEXIA_API}api/auth/register`
+    await axios.post(
+      `${process.env.NEXIA_API}api/auth/register`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
     );
-    // Save token to local storage
-    // localStorage.setItem("token", response.data.token);
-    // cookies().set("token", response.data.token);
     return true;
   } catch (error) {
     console.error(error);

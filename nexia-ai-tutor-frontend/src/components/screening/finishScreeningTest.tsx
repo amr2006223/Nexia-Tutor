@@ -7,9 +7,9 @@ import Pride from "react-canvas-confetti/dist/presets/pride";
 
 const FinishScreeningTest = () => {
   const { playAnimations, onInit } = useFireworksForReport();
+  const gamesData = useScreeningGamesStore();
 
   const handleSubmit = async () => {
-    const gamesData = useScreeningGamesStore();
     const response = await predictScreening(gamesData.games_result);
     console.log(response);
 

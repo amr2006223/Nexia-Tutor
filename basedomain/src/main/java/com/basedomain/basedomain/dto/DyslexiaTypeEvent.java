@@ -1,13 +1,15 @@
-package com.nexia.nexia.dto;
+package com.basedomain.basedomain.dto;
 
 import java.util.List;
 
-import com.nexia.nexia.dto.UserEvent.Status;
+import org.springframework.stereotype.Component;
+
+import com.basedomain.basedomain.dto.UserEvent.Status;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+@Component
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

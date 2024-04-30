@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-import com.nexia.nexia.dto.DyslexiaTypeEvent;
-import com.nexia.nexia.dto.DyslexiaTypesDTO;
+import com.basedomain.basedomain.dto.DyslexiaTypeEvent;
+import com.basedomain.basedomain.dto.DyslexiaTypesDTO;
 import com.nexia.nexia.models.DyslexiaType;
 import com.nexia.nexia.models.User;
 import com.nexia.nexia.repositories.DyslexiaTypeRepository;
