@@ -3,6 +3,7 @@ package com.example.report_generation.report_generation.controller;
 import java.io.IOException;
 import java.util.Map;
 
+import org.apache.http.protocol.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,6 @@ import com.example.report_generation.report_generation.service.JwtService;
 import com.example.report_generation.report_generation.service.PDFGeneratorService;
 import com.example.report_generation.report_generation.service.UserService;
 
-
-
-
 @RestController
 @RequestMapping("/report-generation")
 public class UserController {
@@ -32,7 +30,7 @@ public class UserController {
     private UserService _userService;
     @Autowired
     private JwtService _JwtService;
-    
+
     String filePath = "src\\main\\resources\\json\\ImportantUser.json";
 
     @PostMapping("/add")
@@ -40,11 +38,11 @@ public class UserController {
         String token = newUser.getId();
         newUser.setId(_JwtService.extractUUID(token));
         User user = _userService.InsertUser(newUser, filePath);
-        
+
         _pdfGeneratorService.generateDocumentInServer(user);
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
-    
+
     @GetMapping("/get/{id}")
     public ResponseEntity<User> getUser(@PathVariable String id) throws IOException {
         User user = _userService.getUserById(id, filePath);
@@ -53,17 +51,24 @@ public class UserController {
 
     @DeleteMapping("/delete/{userId}")
     public ResponseEntity<User> deleteUserById(@PathVariable String userId) throws IOException {
-        return new ResponseEntity<User>(_userService.deleteUserById(userId,filePath),HttpStatus.OK);
+        return new ResponseEntity<User>(_userService.deleteUserById(userId, filePath), HttpStatus.OK);
     }
-    
+
     @PostMapping("/isTested")
-    public ResponseEntity<Boolean> isTested(@RequestBody Map<String,String> body) {
-            return new ResponseEntity<Boolean>(_userService.checkIfUserGotTested(body.get("token"), filePath), HttpStatus.OK);
+    public ResponseEntity<?> isTested(@RequestBody Map<String, String> body) {
+        String token = body.get("token");
+        Map<String, String> validation = _JwtService.validate(token);
+        if (validation.containsKey("error"))
+            return new ResponseEntity<>("Error while converting json" + validation.get("error"),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        if (validation.get("status").equals("invalid"))
+            return new ResponseEntity<>("Token is not valid", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(_userService.checkIfUserGotTested(token, filePath), HttpStatus.OK);
     }
 
     @GetMapping("/test")
     public ResponseEntity<String> getMethodName() {
-        return new ResponseEntity<String>("test",HttpStatus.OK);
+        return new ResponseEntity<String>("test", HttpStatus.OK);
     }
- 
+
 }
