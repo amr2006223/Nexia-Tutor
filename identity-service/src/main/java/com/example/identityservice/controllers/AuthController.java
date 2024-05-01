@@ -49,14 +49,14 @@ public class AuthController {
         return new ResponseEntity<String>(authService.generateToken(uuid),HttpStatus.OK);
     }
     @PostMapping("/validate")
-    public ResponseEntity<Map<String, String>> validate(@RequestBody String token) {
+    public ResponseEntity<Map<String, String>> validate(@RequestBody Map<String,String> body) {
         Map<String, String> response = new HashMap<>();
-        if (authService.validate(token)) {
+        if (authService.validate(body.get("token"))) {
             response.put("status", "valid");
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
         response.put("status", "invalid");
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @PostMapping("/token/getPayload")
     public String getPayload(@RequestBody Map<String,String> body) {
