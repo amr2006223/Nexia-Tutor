@@ -19,4 +19,6 @@ public class UserDTO {
     private String nationality;
     private boolean gender;
     private String token;
+    private String role;
+    private String parentPin;
 }

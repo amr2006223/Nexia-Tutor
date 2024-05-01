@@ -7,7 +7,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.basedomain.basedomain.dto.UserDTO;
+import com.basedomain.basedomain.dto.UserEvent;
 import com.example.identityservice.dto.AuthRequest;
+import com.example.identityservice.kafka.UserProducer;
 import com.example.identityservice.models.UserCredentials;
 import com.example.identityservice.repository.UserCredentialsRepository;
 
@@ -21,6 +24,8 @@ public class AuthService {
     private JwtService jwtService;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private UserProducer userProducer;
 
     public String saveUser(UserCredentials credentials){
         credentials.setPassword(passwordEncoder.encode(credentials.getPassword()));
@@ -43,7 +48,25 @@ public class AuthService {
             UserCredentials user = (UserCredentials) authenticate.getPrincipal();
             return generateToken(user.getId());
         }else{
-            throw new RuntimeException("invalid access");
+            return null;
+        }
+    }
+    
+    public UserDTO register(UserDTO userDTO) {
+        try{
+            userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+            UserCredentials credentials = new UserCredentials();
+            credentials.setUsername(userDTO.getUsername());
+            credentials.setPassword(userDTO.getPassword());
+            credentials.setRole("USER");
+            credentials = repository.save(credentials);
+            userDTO.setId(credentials.getId());
+            if(!userProducer.broadcastUser(userDTO, UserEvent.Status.ADD, "Adding Users")){
+                return null;
+            }
+            return userDTO;
+        }catch(Exception e){
+            return null;
         }
     }
 }

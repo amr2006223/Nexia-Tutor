@@ -11,9 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.basedomain.basedomain.dto.UserDTO;
 import com.example.identityservice.dto.AuthRequest;
-import com.example.identityservice.models.UserCredentials;
 import com.example.identityservice.services.AuthService;
+import com.example.identityservice.services.JwtService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,22 +25,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class AuthController {
     @Autowired
     private AuthService authService;
+    @Autowired
+    private JwtService jwtService;
+
+
 
     @PostMapping("/register")
-    public String register(@RequestBody UserCredentials credentials) {
-        authService.saveUser(credentials);
-        return "added User";
+    public ResponseEntity<?> register(@RequestBody UserDTO userDTO) {
+        userDTO = authService.register(userDTO);
+        if(userDTO == null) return new ResponseEntity<>("Error While Adding Users",HttpStatus.OK);
+        return new ResponseEntity<>(userDTO,HttpStatus.OK);
     }
-    
     @PostMapping("/login")
-    public String login(@RequestBody AuthRequest authRequest) {
-        return authService.login(authRequest);
+    public ResponseEntity<String> login(@RequestBody AuthRequest authRequest) {
+        String token = authService.login(authRequest);
+        if(token == null) return  new ResponseEntity<String>("Invalid Credentials",HttpStatus.OK);
+        return new ResponseEntity<String>(token,HttpStatus.OK);
     }
     @PostMapping("/generate")
     public ResponseEntity<String> getToken(@RequestBody String uuid) {
-        return new ResponseEntity<>( authService.generateToken(uuid),HttpStatus.OK);
+        return new ResponseEntity<String>(authService.generateToken(uuid),HttpStatus.OK);
     }
-    
     @PostMapping("/validate")
     public ResponseEntity<Map<String, String>> validate(@RequestBody String token) {
         Map<String, String> response = new HashMap<>();
@@ -49,6 +55,11 @@ public class AuthController {
         }
         response.put("status", "invalid");
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+    @PostMapping("/token/getPayload")
+    public String getPayload(@RequestBody Map<String,String> body) {
+        String token = body.get("token");
+        return jwtService.extractUUID(token);
     }
     
 }

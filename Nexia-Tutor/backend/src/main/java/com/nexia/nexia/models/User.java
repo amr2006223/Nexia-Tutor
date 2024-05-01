@@ -40,7 +40,7 @@ public class User implements UserDetails {
     private String token;
     private String parentPin;
 
-  
+    
     @ManyToMany(targetEntity = DyslexiaType.class, fetch = FetchType.EAGER)
     @JoinTable(name = "user_dyslexia_types", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "dyslexia_type_id"))
     private Set<DyslexiaType> dyslexiaTypes;

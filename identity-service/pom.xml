@@ -22,6 +22,15 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+			<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+    	</dependency>
+			<dependency>
+			<groupId>com.basedomain</groupId>
+			<artifactId>basedomain</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>

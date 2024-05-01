@@ -1,52 +1,40 @@
 package com.nexia.nexia.services;
+import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.Date;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.DecodedJWT;
 
 @Service
 public class JwtService {
-    private final String jwtSecret;
-    private final Algorithm algorithm;
-    private final String validity;
+    
+    @Autowired
+    private RestTemplate restTemplate;
 
-    public JwtService(@Value("${jwt.secret}") String _jwtSecret,
-            @Value("${jwt.validity}") String _validity) {
-        this.jwtSecret = _jwtSecret;
-        this.algorithm = Algorithm.HMAC256(jwtSecret);
-        this.validity = _validity;
-    }
+    public String extractUUID(String token) {
+        // Define the URL of the microservice endpoint
+        String microserviceUrl = "http://localhost:9898/identity-service/auth/token/getPayload";
 
-    public String generateToken(String uuid) {
-        Date expiresAt = new Date(System.currentTimeMillis() + Long.parseLong(this.validity));
-        return JWT.create()
-                .withSubject(uuid)
-                .withExpiresAt(expiresAt)
-                .sign(this.algorithm);
-    }
-
-    public boolean isTokenExpired(String token) {
-        try {
-            DecodedJWT decodedJWT = JWT.decode(token);
-            Date expiresAt = decodedJWT.getExpiresAt();
-            return expiresAt != null && expiresAt.before(new Date());
-        } catch (JWTDecodeException exception) {
-            // Invalid token format or unable to decode
-            return true; // Treat as expired
-        }
-    }
-
-    public String extractUUID(String token) throws JWTVerificationException {
-        JWTVerifier jwtVerifier = JWT.require(this.algorithm).build();
-        DecodedJWT decodedJWT = jwtVerifier.verify(token);
-        return decodedJWT.getSubject();
+        // Create the request headers and set the content type to application/json
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        
+        // Create the request body
+        Map<String, String> requestBody = Map.of("token", token);
+        
+        // Create an HttpEntity with the request body and headers
+        HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(requestBody, headers);
+        
+        // Send a POST request and retrieve the response
+        ResponseEntity<String> response = restTemplate.postForEntity(microserviceUrl, requestEntity, String.class);
+        
+        // Return the UUID from the response body
+        return response.getBody();
     }
 }

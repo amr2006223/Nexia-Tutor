@@ -1,7 +1,4 @@
-package com.nexia.nexia.kafka;
-
-
-
+package com.example.identityservice.kafka;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,15 +11,11 @@ import org.springframework.stereotype.Service;
 
 import com.basedomain.basedomain.dto.UserDTO;
 import com.basedomain.basedomain.dto.UserEvent;
-import com.nexia.nexia.models.User;
-
-
 
 @Service
 public class UserProducer {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserProducer.class);
 
-    
     private KafkaTemplate<String, UserEvent> kafkaTemplate;
     @Value("${topics.user}")
     private String usertopic;
@@ -30,29 +23,28 @@ public class UserProducer {
     public UserProducer(KafkaTemplate<String, UserEvent> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
-    
 
-    public void sendMessage(UserEvent event){
+    public void sendMessage(UserEvent event) {
         LOGGER.info(String.format("Sending User Event => %s", event.toString()));
-        //create a message 
+        // Create a message
         Message<UserEvent> message = MessageBuilder
-            .withPayload(event)
-            .setHeader(KafkaHeaders.TOPIC, 
+                .withPayload(event)
+                .setHeader(KafkaHeaders.TOPIC,
                         usertopic)
-            .build();
-            kafkaTemplate.send(message);
+                .build();
+        kafkaTemplate.send(message);
     }
 
-    public boolean broadcastUser(User user,UserEvent.Status status,String message){
-        try{
+    public boolean broadcastUser(UserDTO user, UserEvent.Status status, String message) {
+        try {
             UserEvent userEvent = new UserEvent();
             userEvent.setStatus(status);
             userEvent.setMessage(message);
-            userEvent.setUser(new UserDTO(user.getId(), user.getUsername(), user.getPassword(), user.getBirthDate(), user.getNationality(), user.isGender(), user.getToken()));
+            userEvent.setUser(user);
             sendMessage(userEvent);
             System.err.println(user.toString());
             return true;
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.toString());
             return false;
         }
