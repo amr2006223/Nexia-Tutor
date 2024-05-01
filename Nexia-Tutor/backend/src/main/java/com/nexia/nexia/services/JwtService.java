@@ -49,4 +49,18 @@ public class JwtService {
         DecodedJWT decodedJWT = jwtVerifier.verify(token);
         return decodedJWT.getSubject();
     }
+    
+    public boolean validateToken(String token) {
+        try {
+            // Create a JWTVerifier with the same algorithm as used to generate the token
+            JWTVerifier jwtVerifier = JWT.require(this.algorithm).build();
+            // Verify the token using the verifier
+            jwtVerifier.verify(token);
+            // If the token is verified successfully, it is valid
+            return true;
+        } catch (JWTVerificationException exception) {
+            // The token is invalid (e.g., expired, malformed, or signature mismatch)
+            return false;
+        }
+    }
 }

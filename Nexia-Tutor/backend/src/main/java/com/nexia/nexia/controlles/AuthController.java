@@ -32,6 +32,12 @@ public class AuthController {
         return new ResponseEntity<User>(addedUser, HttpStatus.OK);
 
     }
+    @PostMapping("/token/validate")
+    public ResponseEntity<Boolean> validate(@RequestBody Map<String,String> body) {
+        String token = body.get("token");
+        return new ResponseEntity<Boolean>(jwtService.validateToken(token),HttpStatus.OK) ;
+
+    }
     @GetMapping("/genToken/{id}")
     public ResponseEntity<String> getToken(@PathVariable String id) {
         return new ResponseEntity<String>(jwtService.generateToken(id),HttpStatus.OK);

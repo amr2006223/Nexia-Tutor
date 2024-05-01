@@ -1,6 +1,7 @@
 package com.example.report_generation.report_generation.controller;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.report_generation.report_generation.models.User;
@@ -32,6 +34,7 @@ public class UserController {
     private JwtService _JwtService;
     
     String filePath = "src\\main\\resources\\json\\ImportantUser.json";
+
     @PostMapping("/add")
     public ResponseEntity<User> addUser(@RequestBody User newUser) throws IOException {
         String token = newUser.getId();
@@ -52,12 +55,15 @@ public class UserController {
     public ResponseEntity<User> deleteUserById(@PathVariable String userId) throws IOException {
         return new ResponseEntity<User>(_userService.deleteUserById(userId,filePath),HttpStatus.OK);
     }
+    
+    @PostMapping("/isTested")
+    public ResponseEntity<Boolean> isTested(@RequestBody Map<String,String> body) {
+            return new ResponseEntity<Boolean>(_userService.checkIfUserGotTested(body.get("token"), filePath), HttpStatus.OK);
+    }
+
     @GetMapping("/test")
     public ResponseEntity<String> getMethodName() {
         return new ResponseEntity<String>("test",HttpStatus.OK);
     }
-    
-
-   
  
 }
