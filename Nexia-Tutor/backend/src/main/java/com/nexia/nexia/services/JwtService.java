@@ -37,4 +37,5 @@ public class JwtService {
         // Return the UUID from the response body
         return response.getBody();
     }
+    
 }

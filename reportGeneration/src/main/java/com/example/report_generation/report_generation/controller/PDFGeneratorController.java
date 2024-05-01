@@ -56,6 +56,7 @@ public class PDFGeneratorController {
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=DyslexiaReport " + formatedDate + ".pdf";
         response.setHeader(headerKey, headerValue);
+        response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
         this._pdfGeneratorService.downloadDocument(response,user);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

@@ -10,7 +10,11 @@ export const getReport = async (
     });
     
     const blob = new Blob([response.data]);
-    const filename = response.headers['content-disposition'].split('filename=')[1];
+    const content = response.headers['content-disposition'];
+    let filename = "Dyslexia Report.pdf"
+    if(content){
+       filename = content.split('filename=')[1];
+    }
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     document.body.appendChild(link); // Append before setting href

@@ -26,14 +26,19 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 @Service
 public class UserService {
 
+    @Autowired
+    private DyslexiaCategoryRepository _dyslexiaCategoryRepository;
+    @Autowired
+    private JwtService jwtService;
+
     private ObjectMapper objectMapper = new ObjectMapper();
     private DyslexiaTypeProducer dyslexiaTypeProducer;
-    @Autowired
-    DyslexiaCategoryRepository _dyslexiaCategoryRepository;
 
     public UserService(DyslexiaTypeProducer _dyslexiaTypeProducer) {
         dyslexiaTypeProducer = _dyslexiaTypeProducer;
     }
+
+    //implementation error maybe check if user adds test after taking them the first time
     public User InsertUser(User newUser, String filePath) throws IOException {
         try {
 
@@ -59,7 +64,6 @@ public class UserService {
     }
 
     public User getUserById(String userId, String filePath) {
-
         try {
             // Read the JSON file and parse it into a list of User objects
             ObjectMapper objectMapper = new ObjectMapper();
@@ -72,7 +76,6 @@ public class UserService {
                     return user;
                 }
             }
-
             return null;
         } catch (Exception e) {
             e.printStackTrace();
@@ -138,7 +141,6 @@ public class UserService {
                 found = true;
                 break;
             }
-
         }
         return found;
 
@@ -198,5 +200,11 @@ public class UserService {
         dyslexiaTypeProducer.broadcastDyslexiaType(userCategories, "Categorizing User",user.getId());
         return userCategories;
 
+    }
+    public boolean checkIfUserGotTested(String token, String filePath){
+        String id = jwtService.extractUUID(token);
+        User user = getUserById(id, filePath);
+        if(user == null || user.getData() == null) return false;
+        else return true;
     }
 }

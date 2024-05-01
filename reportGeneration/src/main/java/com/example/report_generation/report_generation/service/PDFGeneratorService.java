@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.report_generation.report_generation.models.DyslexiaCategory;
 import com.example.report_generation.report_generation.models.User;
+import com.example.report_generation.report_generation.repository.UserRepository;
 import com.example.report_generation.report_generation.utils.Constants;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
@@ -43,13 +44,15 @@ public class PDFGeneratorService {
     String defalutFont = FontFactory.HELVETICA;
     String defaultTitleFont = FontFactory.HELVETICA_BOLD;
     @Autowired
-    UserService _userService;
+    private UserService _userService;
+    @Autowired
+    private UserRepository userRepository;
 
     public void downloadDocument(HttpServletResponse response, User user) throws IOException {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MMM_yyyy HHmm");
             String currentDate = dateFormat.format(user.getData().get(0).getDate());
-            PdfReader reader = new PdfReader(pdfFilePath +"\\" +  user.getId() +"\\"+ currentDate + ".pdf");
+            PdfReader reader = new PdfReader(pdfFilePath + "\\" + user.getId() + "\\" + currentDate + ".pdf");
             int numberOfPages = reader.getNumberOfPages();
             Document document = new Document();
             // Replace "output.pdf" with the path for your output PDF file
@@ -68,10 +71,12 @@ public class PDFGeneratorService {
 
     public boolean generateDocumentInServer(User user) throws IOException {
         // User user = _userService.getUserById(id, userFilePath);
-        if (user == null){
+        if (user == null) {
             return false;
         }
         try {
+            User databaseUser = userRepository.findById(user.getId()).orElse(null);
+            user.setUsername(databaseUser.getUsername());
             writeDocument(user);
             return true;
         } catch (Exception e) {
@@ -83,6 +88,11 @@ public class PDFGeneratorService {
     private void writeDocument(User user) throws DocumentException, FileNotFoundException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MMM_yyyy HHmm");
         String currentDate = dateFormat.format(user.getData().get(0).getDate());
+        int prediction = user.getData().get(0).getPrediction();
+        String username = user.getUsername();
+        String result = username + " Have Dyslexia";
+        if (prediction == 0)
+            result = username + " Doesn't Have Dyslexia";
         Document document = new Document(PageSize.A4);
         PdfWriter writer = openPDFWriter(document, user.getId(), currentDate);
         document.open();
@@ -90,18 +100,20 @@ public class PDFGeneratorService {
         document.add(generateParagraph(defaultTitleFont, defaultColor,
                 18.0f, Constants.reportTitle, Paragraph.ALIGN_CENTER));
         // Date
-        
         document.add(generateParagraph(defalutFont, defaultColor, 12, "Date: " + currentDate,
                 Paragraph.ALIGN_CENTER));
-        // Result report for
+        // Report For
         document.add(generateParagraph(defalutFont, defaultColor, 12,
-                Constants.reportSubTitle + user.getUsername(), Paragraph.ALIGN_CENTER, 12, 0));
+                Constants.reportSubTitle + username, Paragraph.ALIGN_CENTER, 0, 0));
+        // Result
+        document.add(generateParagraph(defalutFont, defaultColor, 12,
+                Constants.reportResult + result, Paragraph.ALIGN_CENTER, 12, 0));
         // Main Paragraph
         document.add(generateParagraph(defalutFont, defaultColor, 12,
                 Constants.mainText,
                 Paragraph.ALIGN_JUSTIFIED, 10, 0));
         // Adding a styled "div"
-       java.util.List<DyslexiaCategory> list = _userService.categoryDetection(user);
+        java.util.List<DyslexiaCategory> list = _userService.categoryDetection(user);
         document.add(generateCustomDiv(list));
         // Title for subtext
         document.add(generateParagraph(
@@ -122,12 +134,14 @@ public class PDFGeneratorService {
         writer.close();
     }
 
-    private PdfWriter openPDFWriter(Document document, String id,String date) throws DocumentException, FileNotFoundException {
+    private PdfWriter openPDFWriter(Document document, String id, String date)
+            throws DocumentException, FileNotFoundException {
         File directory = new File(pdfFilePath + "\\" + id);
         if (!directory.exists()) {
             directory.mkdirs(); // Make directories recursively
         }
-        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pdfFilePath +"\\"+ id +"\\"+ date +".pdf"));
+        PdfWriter writer = PdfWriter.getInstance(document,
+                new FileOutputStream(pdfFilePath + "\\" + id + "\\" + date + ".pdf"));
         writer.setPageEvent(new PdfPageEventHelper() {
             @Override
             public void onStartPage(PdfWriter writer, Document document) {
@@ -175,7 +189,7 @@ public class PDFGeneratorService {
         }
         Font fontListItem = FontFactory.getFont(defalutFont, 12, Color.RED);
         // Add items to the list with the word "red" beside each bullet point
-        System.out.println("userCategories has " + userCategories.size()  +" Categories");
+        System.out.println("userCategories has " + userCategories.size() + " Categories");
         for (DyslexiaCategory category : userCategories) {
             list.add(new ListItem(new Chunk(" " + category.getName(), fontListItem)));
         }
