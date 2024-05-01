@@ -1,9 +1,14 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 const RectanglePage = () => {
-  const isSmallScreen = window.innerWidth <= 767;
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsSmallScreen(window.innerWidth <= 767);
+      return;
+    }
     const observerOptions = {
       root: null,
       rootMargin: "0px",
@@ -144,7 +149,7 @@ const RectanglePage = () => {
 
           {/* Small rectangle at bottom right */}
           <div
-            className=" hover:scale-125 transform -translate-x-[-50%] -translate-y-[-50%] bg-[#CDEBC5] w-56 h-32 rounded-3xl absolute bottom-0 right-0 border border-solid border-[#3E4772] flex justify-center items-center hover:scale-125"
+            className="transform -translate-x-[-50%] -translate-y-[-50%] bg-[#CDEBC5] w-56 h-32 rounded-3xl absolute bottom-0 right-0 border border-solid border-[#3E4772] flex justify-center items-center hover:scale-125"
             style={{
               zIndex: 1,
               maxWidth: "25%",
@@ -269,7 +274,7 @@ const RectanglePage = () => {
         <div
           className={`${isSmallScreen ? "ml-[4px]" : "ml-[-25px]"} ${
             isSmallScreen ? "h-[32%]" : "h-[55%]"
-          } absolute top-1/2 left-1/2  transform -translate-x-1/2 -translate-y-1/2 h-[60%] w-[62%] border-dashed border-solid border-[#CDEBC5] border-l-0 `}
+          } absolute top-1/2 left-1/2  transform -translate-x-1/2 -translate-y-1/2 h-[60%] w-[62%] border-dashed border-[#CDEBC5] border-l-0 `}
           style={{
             maxWidth: "80%",
             minWidth: "100px",
