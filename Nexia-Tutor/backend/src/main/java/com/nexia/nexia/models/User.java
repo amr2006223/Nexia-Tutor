@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -24,8 +23,6 @@ import jakarta.persistence.ManyToMany;
 @Entity
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
     @Column(unique = true)
     private String username;
@@ -40,7 +37,7 @@ public class User implements UserDetails {
     private String token;
     private String parentPin;
 
-  
+    
     @ManyToMany(targetEntity = DyslexiaType.class, fetch = FetchType.EAGER)
     @JoinTable(name = "user_dyslexia_types", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "dyslexia_type_id"))
     private Set<DyslexiaType> dyslexiaTypes;

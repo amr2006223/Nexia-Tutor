@@ -2,7 +2,8 @@ package com.example.report_generation.report_generation.utils;
 
 public class Constants {
     public static String reportTitle = "Screening Test Report";
-    public static String reportSubTitle = "Result report for: ";
+    public static String reportSubTitle = "Report for: ";
+    public static String reportResult="Result of report is: ";
     public static String mainText = "The following report presents the outcomes of the dyslexia screening test, designed to identify potential challenges in reading, spelling, and memory for children aged 5 to 11. It is important to note that this screening is not a diagnostic tool but serves as an initial step in creating a tailored educational environment within a language leading learning system.";
     public static String resultAndRecomTitle = "Results and Recommendations:";
     public static String resultAndRecomText = "Upon completion of the screening test, if a child is identified at risk, it is advisable to seek professional assistance. Referrals can be made to educational center experts or external health professionals in specialized centers. For those located in Egypt, we can provide recommendations for suitable services.\n\n"

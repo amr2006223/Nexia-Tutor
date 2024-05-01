@@ -149,7 +149,9 @@ def getAverage():
     
 async def make_async_request(api_url, data):
     async with aiohttp.ClientSession() as session:
-        async with session.post(api_url, json=data) as response:
+        async with session.post(api_url, json=data, headers={
+                'Authorization': f'Bearer {data["id"]}',  # Add JWT token in the header
+            }) as response:
             return response
         
 # @app.route("/screening/predict",methods=["POST"])

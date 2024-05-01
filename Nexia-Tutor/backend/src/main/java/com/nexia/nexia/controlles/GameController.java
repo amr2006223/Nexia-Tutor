@@ -47,11 +47,6 @@ public class GameController {
         // return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/gen/{token}")
-    public String test(@PathVariable String token) {
 
-        String id = jwtService.generateToken(token);
-        return id;
-    }
 
 }

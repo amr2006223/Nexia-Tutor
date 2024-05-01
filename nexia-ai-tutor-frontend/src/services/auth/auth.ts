@@ -7,7 +7,7 @@ import { getUserDetailsService } from "../user/userDetails";
 export const register = async (data: RegisterData) => {
   try {
     await axios.post(
-      `${process.env.NEXIA_API}api/auth/register`,
+      `${process.env.IDENTITY_API}auth/register`,
       data,
       {
         headers: {
@@ -25,7 +25,7 @@ export const register = async (data: RegisterData) => {
 export const login = async (data: LoginData) => {
   try {
     const response = await axios.post(
-      `${process.env.NEXIA_API}api/auth/login`,
+      `${process.env.IDENTITY_API}auth/login`,
       data
     );
     // Save token to local storage

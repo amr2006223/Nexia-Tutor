@@ -8,6 +8,7 @@ const nextConfig = {
     KEYWORD_EXTRACTION_API: "http://localhost:8080/extracting/",
     WEB_SCRAPING_API: "http://localhost:8080/scraping/",
     SCREENING_API: "http://localhost:8080/screening/",
+    IDENTITY_API: "http://localhost:8080/identity-service/"
   },
 };
 

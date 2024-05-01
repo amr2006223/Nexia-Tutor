@@ -19,10 +19,15 @@ const Hero = () => {
     buttonPadding: "4px 8px",
     lineHeight: 1.5,
     textMarginLeft: "ml-6",
+    left: "auto",
+    right: "10%",
   });
 
   useEffect(() => {
     const adjustContainerSize = () => {
+      if (typeof window === "undefined") {
+        return;
+      }
       const heroContainer = document.getElementById("hero-container");
       const girlImage = girlRef.current;
       const textContainer = textRef.current;
@@ -41,6 +46,8 @@ const Hero = () => {
           buttonFontSize: windowWidth <= 767 ? 12 : 14,
           buttonPadding: windowWidth <= 767 ? "2px 4px" : "4px 8px",
           textMarginLeft: windowWidth <= 767 ? "4px" : "64px",
+          left: windowWidth <= 767 ? "45%" : "auto",
+          right: windowWidth <= 767 ? "0%" : "10%",
         };
         setResponsiveValues(responsiveValuesUpdated);
       }
@@ -48,11 +55,13 @@ const Hero = () => {
 
     adjustContainerSize();
 
-    window.addEventListener("resize", adjustContainerSize);
+    if (typeof window !== "undefined") {
+      window.addEventListener("resize", adjustContainerSize);
 
-    return () => {
-      window.removeEventListener("resize", adjustContainerSize);
-    };
+      return () => {
+        window.removeEventListener("resize", adjustContainerSize);
+      };
+    }
   }, []);
 
   return (
@@ -106,11 +115,8 @@ const Hero = () => {
           style={{
             maxWidth: "25%",
             minWidth: "200px",
-            right: "10%",
-            left: window.innerWidth <= 767 ? "45%" : "auto",
-            ...(window.innerWidth <= 767 && {
-              right: "0%",
-            }),
+            right: responsiveValues.right,
+            left: responsiveValues.left,
           }}
         />
 
