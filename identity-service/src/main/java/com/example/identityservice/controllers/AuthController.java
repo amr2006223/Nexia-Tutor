@@ -37,10 +37,12 @@ public class AuthController {
         return new ResponseEntity<>(userDTO,HttpStatus.OK);
     }
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AuthRequest authRequest) {
+    public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
         String token = authService.login(authRequest);
-        if(token == null) return  new ResponseEntity<String>("Invalid Credentials",HttpStatus.OK);
-        return new ResponseEntity<String>(token,HttpStatus.OK);
+        if(token == null) return  new ResponseEntity<>("Invalid Credentials",HttpStatus.OK);
+        Map<String,String> responseBody = new HashMap<>();
+        responseBody.put("token", token);
+        return new ResponseEntity<>(responseBody,HttpStatus.OK);
     }
     @PostMapping("/generate")
     public ResponseEntity<String> getToken(@RequestBody String uuid) {

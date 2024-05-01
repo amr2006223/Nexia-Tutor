@@ -28,6 +28,8 @@ public class RoutingConfig {
 
                 .route("identity-service", r -> r
                         .path("/identity-service/**")
+                        // .filters(f -> f.filter(authenticationFilter.apply(new
+                                        // AuthenticationFilter.Config())))
                         .uri("lb://identity-service"))
 
                 .route("screening", r -> r

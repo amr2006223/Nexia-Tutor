@@ -7,33 +7,15 @@ const recordRest = `"Clicks10":"6","Hits10":"6","Misses10":"0","Score10":"6","Ac
 
 export const predictScreening = async (games_result: number[][]) => {
   const data = await getScreeningRecord(games_result);
-// try {
-//   const response = await fetch('http://localhost:5002/screening/prediciton', {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json',
-//       'Access-Control-Allow-Origin':'*'
-//     },
-//     body: JSON.stringify(data),
-//   });
-
-//   if (!response.ok) {
-//     console.log('API request failed:', response.status);
-//     throw new Error(`API request failed with status: ${response.status}`);
-//   }
-
-//   const responseData = await response.json();
-//   console.log('API response:', responseData);
-
-//   return responseData;
-// } catch (error) {
-//   console.error('Error making API request:', error);
-// }
-let data2 = "ay 7aga"
   try {
     const response = await axios.post(
       `http://localhost:8080/screening/predict`,
       JSON.stringify(data),
+      //  {
+        // headers: {
+        //   'Authorization': `Bearer ${data.id}`
+        // },
+    // }
     );
 
     if (response.status != 200) {

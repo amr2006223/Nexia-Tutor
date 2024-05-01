@@ -61,6 +61,7 @@ public class AuthService {
             credentials.setRole("USER");
             credentials = repository.save(credentials);
             userDTO.setId(credentials.getId());
+            userDTO.setToken(jwtService.generateToken(credentials.getId()));
             if(!userProducer.broadcastUser(userDTO, UserEvent.Status.ADD, "Adding Users")){
                 return null;
             }
