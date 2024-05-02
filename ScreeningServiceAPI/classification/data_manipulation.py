@@ -1,7 +1,13 @@
 import pandas as pd
-
+import json
+import uuid
+from classification.record_handler import RecordHandler
+from classification.model_trainer import RandomForestModelTrainer
 class DataManipulator:
-    
+    def __init__(self):
+        self.recordHandler = RecordHandler()
+        self.randomForestModelTrainer = RandomForestModelTrainer()
+        
     def getSampleUser(self, label:int, data):
         data[data['Dyslexia'] == label].sample(n=1, random_state=42)
         return data.drop(['Dyslexia'],axis=1)
@@ -25,6 +31,6 @@ class DataManipulator:
         print("Accuracy Average of Q" + str(start) + " to Q" + str(end) + " " + str(average/count))
         return average/count
     
-    def filter_data_by_age(data, start_age, end_age):
+    def filter_data_by_age(self,data, start_age, end_age):
         filtered_data = data[(data['Age'] >= start_age) & (data['Age'] <= end_age)].copy()
         return filtered_data

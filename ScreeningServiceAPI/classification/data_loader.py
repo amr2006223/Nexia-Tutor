@@ -11,6 +11,7 @@ class DataLoader:
     def excel_to_dataframe(self):
         df = pd.read_excel(self.file_path)
         return df
+    
     def csvToDataframe(self):
         columns = self.dataPreProcessing.SeparateColumns(self.file_path)
         df = self.dataManipulator.DictToDataframe(columns)
