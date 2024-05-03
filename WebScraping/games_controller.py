@@ -147,8 +147,12 @@ def get_memory_game():
 @app.route('/scraping/web/get_image_word', methods=['GET'])
 def get_image_word():
     word = request.args.get('word')
-    iamge = imageScraper.get_image_links(word)
-    return jsonify({'image': iamge[0]['image_link']})
+    image = None
+    while True:
+         image = imageScraper.get_image_links(word)
+         if image:
+             break
+    return jsonify({'image': image[0]['image_link']})
 
 @app.route('/scraping/get_audio_word', methods=['GET'])
 def get_audio_word():

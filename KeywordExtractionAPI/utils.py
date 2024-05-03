@@ -6,10 +6,17 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import networkx as nx
 import re
+import nltk
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 from nltk.stem import SnowballStemmer
 from nltk.stem import WordNetLemmatizer
+
+# Download NLTK stopwords
+nltk.download('stopwords')
+# Download the 'punkt' tokenizer data
+nltk.download('punkt')
+
 stop_words = set(stopwords.words('english'))
 def get_top_scored_words(tfidf_matrix, tfidf_vectorizer, top_n=5):
     feature_names = tfidf_vectorizer.get_feature_names_out()
@@ -37,7 +44,7 @@ def preprocess_text(text):
     text = re.sub(r'^[•●∙‣⁃◦⦿⦾◯◉⚫⚬⚪◼◻⬤⚆⚇✴️⦁⚈]+|\d+\.\s+', '', text)
     # Remove stop words
     punctuation = set(string.punctuation)
-    text = ' '.join([word.lower() for word in text.split() if word.lower() not in stop_words and word.lower() not in punctuation])
+    text = ' '.join([word.lower() for word in tokenize_words(text) if word.lower() not in stop_words and word.lower() not in punctuation])
     # Remove code-related content using regex
     text = re.sub(r'\b\S+\.py\S*\b', '', text)
     text = re.sub(r'\b\S+\.html?\S*\b', '', text)
@@ -48,8 +55,8 @@ def preprocess_text(text):
     return text
 
 # Step 3: Tokenization
-def tokenize_sentences(text):
-    return sent_tokenize(text)
+def tokenize_words(text):
+    return word_tokenize(text)
 
 # Step 4: TF-IDF Vectorization
 def apply_tfidf(sentences):

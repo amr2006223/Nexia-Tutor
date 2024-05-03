@@ -2,35 +2,11 @@ from keybert import KeyBERT
 from flask import Flask, request, jsonify
 import utils
 from flask_cors import CORS
-# from service_init import register_with_eureka
 import os
+
 app = Flask(__name__)
-# register_with_eureka()
 CORS(app)
-# Download NLTK stopwords
 
-# @app.route("/bert")
-# def bert():
-#     cleaned_text = utils.preprocess_text(utils.extract_text_from_pdf("Sentences.pdf"))
-#     keywords = kw_model.extract_keywords(utils.extract_text_from_pdf("Sentences.pdf"), keyphrase_ngram_range=(1, 1),highlight=True)
-#     return keywords
-
-# @app.route("/bert2")
-# def bert2():
-#     cleaned_text = utils.preprocess_text(utils.extract_text_from_pdf("Sentences.pdf"))
-#     keywords = kw_model.extract_keywords(cleaned_text, keyphrase_ngram_range=(1, 1),highlight=True)
-#     return keywords 
-
-@app.route("/extracting/extract-pdf-info")
-def extract_pdf_info():
-    cleaned_text = utils.preprocess_text(utils.extract_text_from_pdf("Sentences.pdf"))
-    sentences = utils.tokenize_sentences(cleaned_text)
-    tfidf_matrix, tfidf_vectorizer = utils.apply_tfidf(sentences)
-    # keywords = utils.extract_keywords(tfidf_matrix, tfidf_vectorizer)
-    # summary = utils.summarize_text(sentences)
-    top_scored_words = utils.get_top_scored_words(tfidf_matrix, tfidf_vectorizer)
-    return {"top words":top_scored_words}
-  
 @app.route('/extracting/upload_pdf', methods=['POST'])
 def upload_pdf():
     if 'file' not in request.files:
@@ -41,12 +17,20 @@ def upload_pdf():
     if file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
 
+    if not os.path.exists("uploads"):
+        # Create the directory
+        os.makedirs("uploads")
+
+    # Now you can proceed with your existing code
     if file and file.filename.endswith('.pdf'):
         filename = 'temp.pdf'  # Specify the desired filename
-        filePath = os.path.join('uploads', filename)
+        filePath = os.path.join("uploads", filename)
         file.save(filePath)
+        # Extract and process text from the PDF
         cleaned_text = utils.preprocess_text(utils.extract_text_from_pdf(filePath))
+        # Extract keywords
         keywords = kw_model.extract_keywords(cleaned_text, keyphrase_ngram_range=(1, 1))
+        # Remove the PDF file after processing
         os.remove(filePath)
         
         for i in range(len(keywords)):
@@ -55,9 +39,7 @@ def upload_pdf():
         return jsonify({'keywords': keywords}), 200
     else:
         return jsonify({'error': 'Invalid file type, only PDF files are allowed'}), 400
-@app.route('/extracting/test', methods=['GET'])
-def test():
-    return "test complete"
+
 with app.app_context():
     kw_model = KeyBERT()
     
