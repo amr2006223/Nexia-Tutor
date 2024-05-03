@@ -1,16 +1,18 @@
+import re
+import os
+import nltk
 import string
 import numpy as np
-from PyPDF2 import PdfReader
-from nltk.tokenize import sent_tokenize,word_tokenize
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
 import networkx as nx
-import re
-import nltk
+from PyPDF2 import PdfReader
+from flask import jsonify
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 from nltk.stem import SnowballStemmer
 from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import word_tokenize
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 # Download NLTK stopwords
 nltk.download('stopwords')
@@ -18,6 +20,7 @@ nltk.download('stopwords')
 nltk.download('punkt')
 
 stop_words = set(stopwords.words('english'))
+
 def get_top_scored_words(tfidf_matrix, tfidf_vectorizer, top_n=5):
     feature_names = tfidf_vectorizer.get_feature_names_out()
     scores = np.asarray(tfidf_matrix.mean(axis=0)).flatten()
@@ -87,3 +90,29 @@ def build_similarity_matrix(sentences):
     tfidf_matrix, _ = apply_tfidf(sentences)
     similarity_matrix = cosine_similarity(tfidf_matrix, tfidf_matrix)
     return similarity_matrix
+
+def extractWordsFromPDF(file, kw_model):
+    # Now you can proceed with your existing code
+    createDirectoryIfNotExits()
+    if file and file.filename.endswith('.pdf'):
+        filename = 'temp.pdf'  # Specify the desired filename
+        filePath = os.path.join("uploads", filename)
+        file.save(filePath)
+        # Extract and process text from the PDF
+        cleaned_text = preprocess_text(extract_text_from_pdf(filePath))
+        # Extract keywords
+        keywords = kw_model.extract_keywords(cleaned_text, keyphrase_ngram_range=(1, 1))
+        # Remove the PDF file after processing
+        os.remove(filePath)
+        
+        for i in range(len(keywords)):
+            keywords[i] = keywords[i][0]
+        print(keywords)
+        return jsonify({'keywords': keywords}), 200
+    else:
+        return jsonify({'error': 'Invalid file type, only PDF files are allowed'}), 400
+    
+def createDirectoryIfNotExits():
+    if not os.path.exists("uploads"):
+        # Create the directory
+        os.makedirs("uploads")
