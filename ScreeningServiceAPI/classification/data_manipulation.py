@@ -1,6 +1,4 @@
 import pandas as pd
-import json
-import uuid
 from classification.record_handler import RecordHandler
 from classification.model_trainer import RandomForestModelTrainer
 class DataManipulator:

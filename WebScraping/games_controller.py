@@ -110,22 +110,6 @@ def get_memory_game():
 
     # Use the ImageService to get a list of images for the memory game
     wrodImage = imageScraper.get_image_links(word)
-    # 
-    
-    
-    # sha8al
-    # nemberOfWords = 3
-    # otherWords = []
-    # i = 0
-    # while len(otherWords) < nemberOfWords:
-    #     word = wordGenerator.generate_words(1)
-    #     image = imageScraper.get_image_links(word)
-    #     if image:
-    #         otherWords.append({'query': word, 'image_link': image[0]['image_link']})
-    #         i += 1
-    #     else: 
-    #         print('No image found for word: ', word)
-            
     otherWords = wordGenerator.generate_words(3)
     # get the images for the other words
     for i in range(len(otherWords)):
