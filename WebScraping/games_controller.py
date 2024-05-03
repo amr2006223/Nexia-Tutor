@@ -39,7 +39,7 @@ def getUserWordImage(queue,word):
     while not word_image_links:
         word_image_links = imageScraper.get_image_links(word) 
     # 0. get the word and its image and sound
-    word_sound = textToSpeech.get_audio(word)
+    word_sound = textToSpeech.ElevenLabsAudio(word)
     
     keyWord = {'text': word, 'image': word_image_links[0]['image_link'], 'sound': word_sound}
     
@@ -47,6 +47,7 @@ def getUserWordImage(queue,word):
 
 def getRhymesForWord(queue,word):
     rhymes = rhymeScraper.fetch_rhymes(word)
+    print(rhymes)
 
     # 1. words that rhyme with the word
     for i in range(len(rhymes)):
@@ -84,11 +85,12 @@ def get_rhymes_and_images():
     thread1.start()
     thread2.start()
     thread3.start()
+    
     thread1.join()
     thread2.join()
     thread3.join()
     
-    print(result)
+    # print(result)
     try:
         response =  jsonify(result)
         response.headers.add('Access-Control-Allow-Origin', '*')
