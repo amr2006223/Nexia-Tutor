@@ -2,15 +2,12 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from openai import OpenAIError
 from services.image_scraper import ImageScraper
-from services.rhyme_scraper import RhymeScraper
-from services.word_generator import WordGenerator
 from services.text_to_speech import TextToSpeech
 from services.open_ai import OpenAI
-import threading
-# from service_init import register_with_eureka
+from services.utils import Utils
+from services.threading import Threading
 
 app = Flask(__name__)
-# register_with_eureka()
 CORS(
     app,
     resources={r"/*": {"origins": "*"}},
@@ -20,135 +17,112 @@ CORS(
     },
 )
 with app.app_context():
-    rhymeScraper = RhymeScraper()
     imageScraper = ImageScraper()
     textToSpeech = TextToSpeech()
-    wordGenerator = WordGenerator()
+    utils = Utils()
+    threads = Threading()
     openAI = OpenAI()
-
-    
- 
-
-def getUserWordImage(queue,word):
-    # Check if the person forgot to provide a word; if they did, tell them it's needed
-    if not word:
-        return jsonify({'error': 'Word parameter is missing'}), 400
-
-    # Use services to find rhymes and images for the provided word and rhyme words
-    word_image_links = None
-    while not word_image_links:
-        word_image_links = imageScraper.get_image_links(word) 
-    # 0. get the word and its image and sound
-    word_sound = textToSpeech.ElevenLabsAudio(word)
-    
-    keyWord = {'text': word, 'image': word_image_links[0]['image_link'], 'sound': word_sound}
-    
-    queue['keyWord'] = keyWord
-
-def getRhymesForWord(queue,word):
-    rhymes = rhymeScraper.fetch_rhymes(word)
-    print(rhymes)
-
-    # 1. words that rhyme with the word
-    for i in range(len(rhymes)):
-        image = None
-        while not image:
-            image = imageScraper.get_image_links(rhymes[i])
-        word_sound = textToSpeech.get_audio(rhymes[i])
-        rhymes[i] = {'text': rhymes[i], 'image': image[0]['image_link'], 'rhyme': True, 'sound': word_sound}
-    queue['rhymes'] = rhymes
-
-def getNotRhymesForWord(queue):
-     # Create an instance of WordGenerator
-    word_generator = WordGenerator()
-    
-    # 2. get words that do not rhyme with the word
-    not_rhymes = word_generator.generate_words(3)
-    
-    for i in range(len(not_rhymes)):
-        image = None
-        while not image:
-            image = imageScraper.get_image_links(not_rhymes[i])
-        word_sound = textToSpeech.get_audio(not_rhymes[i])
-        not_rhymes[i] = {'text': not_rhymes[i], 'image': image[0]['image_link'], 'rhyme': False, 'sound': word_sound}
-    queue["not_rhymes"] = not_rhymes
 
 @app.route('/scraping/get_rhymes_game_data', methods=['GET'])
 def get_rhymes_and_images():
+    # Initialize an empty dictionary to hold the results.
     result = {}
-     # Get a word from the person who is asking for rhymes and images
+    
+    # Retrieve the 'word' parameter from the GET request. This is the word the user wants rhymes and images for.
     word = request.args.get('word')
-    thread1 = threading.Thread(target = getUserWordImage, args = (result,word))
-    thread2 = threading.Thread(target = getRhymesForWord, args = (result,word))
-    thread3 = threading.Thread(target = getNotRhymesForWord, args = (result,))
     
-    thread1.start()
-    thread2.start()
-    thread3.start()
+    # Define a list of functions to be executed concurrently. Each function takes 'result' and 'word' as arguments:
+    functions = [
+        (utils.getUserWordImage, (result, word)),
+        (utils.getRhymesForWord, (result, word)),
+        (utils.getNotRhymesForWord, (result,))
+    ]
     
-    thread1.join()
-    thread2.join()
-    thread3.join()
+    # Execute the functions concurrently using the 'executeThread' method from the 'threads' module.
+    threads.executeThread(functions)
     
-    # print(result)
     try:
-        response =  jsonify(result)
+        # Convert the 'result' dictionary into a JSON response.
+        response = jsonify(result)
+        
+        # Add a header to the response to allow cross-origin resource sharing (CORS).
         response.headers.add('Access-Control-Allow-Origin', '*')
+        
+        # Return the response object.
         return response
-    except: 
+    except:
+        # In case of any exception, return an error message as a JSON response with a 500 status code.
         return jsonify({'error': 'Failed to retrieve rhymes or images'}), 500
         
 
 @app.route('/scraping/get_memory_game_data', methods=['GET'])
 def get_memory_game():
-    # Get a word from the person who is asking for a memory game
+    # Retrieve the 'word' parameter from the GET request.
     word = request.args.get('word')
-
-    # Check if the person forgot to provide a word; if they did, tell them it's needed
+    
+    # Validate the input word. If the 'word' parameter is missing, return an error response.
     if not word:
         return jsonify({'error': 'Word parameter is missing'}), 400
 
-    # Use the ImageService to get a list of images for the memory game
-    wrodImage = imageScraper.get_image_links(word)
-    otherWords = wordGenerator.generate_words(3)
-    # get the images for the other words
-    for i in range(len(otherWords)):
-        image = None
-        while not image:
-            image = imageScraper.get_image_links(otherWords[i])
-            if image:
-                otherWords[i] = {'query': otherWords[i], 'image_link': image[0]['image_link']}
-                break
-            else:
-                print('No image found for word: ', otherWords[i])
+    # Use a utility function to retrieve image links for the provided word.
+    word_images = utils.get_images_for_word(word)
     
-    response = jsonify({'keyword': wrodImage, 'other_words': otherWords})
+    # Use a utility function to generate a list of other words and their corresponding images.
+    other_words = utils.generate_other_words_and_images()
+
+    # Create a dictionary to hold the response data, including the image links for the provided word
+    # and the list of other words with their images.
+    response_data = {
+        'keyword': word_images,
+        'other_words': other_words
+    }
+    
+    # Convert the response data dictionary to a JSON response object.
+    response = jsonify(response_data)
+    
+    # Add a header to the response to allow cross-origin resource sharing (CORS).
     response.headers.add('Access-Control-Allow-Origin', '*')
+
+    # Return the response object.
     return response
-
-
 
 @app.route('/scraping/web/get_image_word', methods=['GET'])
 def get_image_word():
+    # Retrieve the 'word' parameter from the GET request.
     word = request.args.get('word')
+    
+    # Initialize a variable for the image. It will hold the first image link found.
     image = None
+    
+    # Use a loop to repeatedly attempt to find an image link for the provided word.
+    # This will continue indefinitely until an image link is found (if any).
     while True:
-         image = imageScraper.get_image_links(word)
-         if image:
-             break
+        # Use the imageScraper to retrieve image links for the provided word.
+        image = imageScraper.get_image_links(word)
+        
+        # If an image link is found (image is not empty), exit the loop.
+        if image:
+            break
+    
+    # Return a JSON response containing the first image link found.
     return jsonify({'image': image[0]['image_link']})
 
 @app.route('/scraping/get_audio_word', methods=['GET'])
 def get_audio_word():
+    # Retrieve the 'word' parameter from the GET request.
     word = request.args.get('word')
+    
+    # Use a utility function from the text-to-speech module to get an audio representation of the provided word.
     sound = textToSpeech.get_audio(word)
+    
+    # Return a JSON response containing the audio data (or link) for the provided word.
     return jsonify({'sound': sound})
 
-@app.route('/scraping/test', methods=['GET'])
-def test():
-    word = request.args.get('word')
-    rhymes = rhymeScraper.fetch_rhymes(word)
-    return jsonify({'rhymes': rhymes})
+# @app.route('/scraping/test', methods=['GET'])
+# def test():
+#     word = request.args.get('word')
+#     rhymes = rhymeScraper.fetch_rhymes(word)
+#     return jsonify({'rhymes': rhymes})
 
 # Define a route for generating images based on a word
 @app.route('/scraping/get_image_word', methods=['GET'])
@@ -179,14 +153,7 @@ def generate_image():
         # Handle unexpected errors and return an error response
         print(f"Unexpected error: {e}")
         return jsonify({'error': 'Unexpected error occurred.'}), 500
-@app.route('/scraping/test2', methods=['GET'])
-def test3():
-    return "test complete"
 
 # Run the Flask app
 if __name__ == '__main__':
     app.run(debug=True,port=5001)
-
-#http://127.0.0.1:5000/get_rhymes_game_data?word=cat
-#http://127.0.0.1:5000/get_memory_game_data?word=cat
-#http://localhost:5000/get_image_word?word=batman
