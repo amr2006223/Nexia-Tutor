@@ -37,7 +37,7 @@ public class UserController {
     public ResponseEntity<User> addUser(@RequestBody User newUser) throws IOException {
         String token = newUser.getId();
         newUser.setId(_JwtService.extractUUID(token));
-        User user = _userService.InsertUser(newUser, filePath);
+        User user = _userService.insertUser(newUser, filePath);
 
         _pdfGeneratorService.generateDocumentInServer(user);
         return new ResponseEntity<User>(user, HttpStatus.OK);
@@ -63,7 +63,7 @@ public class UserController {
                     HttpStatus.INTERNAL_SERVER_ERROR);
         if (validation.get("status").equals("invalid"))
             return new ResponseEntity<>("Token is not valid", HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(_userService.checkIfUserGotTested(token, filePath), HttpStatus.OK);
+        return new ResponseEntity<>(_userService.hasUserTakenTest(token, filePath), HttpStatus.OK);
     }
 
     @GetMapping("/test")
