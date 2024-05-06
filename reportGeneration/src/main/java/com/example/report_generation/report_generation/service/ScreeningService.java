@@ -1,109 +1,69 @@
 package com.example.report_generation.report_generation.service;
 
+import java.io.IOException;
 import java.util.List;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.report_generation.report_generation.models.DyslexiaCategory;
-import com.example.report_generation.report_generation.repository.DyslexiaCategoryRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class ScreeningService {
-    private final RestTemplate restTemplate;
-    private final DyslexiaCategoryRepository _categoryRepository;
-    // String filePath = "src\\main\\resources\\json\\ImportantUser.json";
-    public ScreeningService(RestTemplate restTemplate, DyslexiaCategoryRepository categoryRepository) {
-        this.restTemplate = restTemplate;
-        _categoryRepository = categoryRepository;
-    }
+   private static final String AVERAGE_URL = "http://127.0.0.1:5000/average";
+    
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private DyslexiaCategoryService dyslexiaCategoryService;
 
     public List<DyslexiaCategory> getAverageFromScreeningService() {
-        String url = "http://127.0.0.1:5000/average";
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-
-        // Process the response as needed
-        String responseBody = response.getBody();
-        System.out.println("Response: " + responseBody);
-
-        ObjectMapper objectMapper = new ObjectMapper();
         try {
-            TypeReference<List<DyslexiaCategory>> typeReference = new TypeReference<List<DyslexiaCategory>>() {
-            };
-            List<DyslexiaCategory> categories = objectMapper.readValue(responseBody, typeReference);
-            for (DyslexiaCategory dyslexiaCategory : categories) {
-                DyslexiaCategory newDyslexiaCategory = _categoryRepository.findCategoryByName(dyslexiaCategory.getName());
-                if(newDyslexiaCategory == null)
-                    saveCategory(dyslexiaCategory);
-                else{
-                    newDyslexiaCategory.setAverage(dyslexiaCategory.getAverage());
-                    saveCategory(newDyslexiaCategory);
-                }
-            }
+            // Make a GET request to fetch the average dyslexia categories
+            ResponseEntity<String> response = restTemplate.getForEntity(AVERAGE_URL, String.class);
+            String responseBody = response.getBody();
+            System.out.println("Response: " + responseBody);
+
+            // Parse the JSON response to a list of DyslexiaCategory objects
+            List<DyslexiaCategory> categories = parseResponseToCategories(responseBody);
+            updateDyslexiaCategories(categories);
             return categories;
+        } catch (IOException e) {
+            // Handle parsing errors and log the exception
+            System.err.println("Failed to parse response: " + e.getMessage());
+            return null;
         } catch (Exception e) {
-            // Handle the exception, e.g., log it or throw a custom exception
-            e.printStackTrace();
+            // Handle any other exceptions and log the error
+            System.err.println("Error fetching averages: " + e.getMessage());
             return null;
         }
-
     }
-    
-    // public User getUserWithAlphaAwarness(String userId) {
-    //     String url = "http://127.0.0.1:5000/mockUser";
-    //     ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
-    //     // Process the response as needed
-    //     String responseBody = response.getBody();
-    //     System.out.println("Response: " + responseBody);
-
-    //     ObjectMapper objectMapper = new ObjectMapper();
-    //     try {
-    //         User user = objectMapper.readValue(responseBody, User.class);
-    //         user.setId(userId);
-    //        _userService.InsertUser(user,filePath);
-
-    //         return user;
-    //     } catch (Exception e) {
-    //         // Handle the exception, e.g., log it or throw a custom exception
-    //         e.printStackTrace();
-    //         return null;
-    //     }
-
-    // }
-
-    // public String postSomethingAndGetResponse() {
-    //     String url = "http://127.0.0.1:5000/average";
-    //     HttpHeaders headers = new HttpHeaders();
-    //     headers.setContentType(MediaType.APPLICATION_JSON);
-
-    //     // Create your request object, if needed
-    //     String requestBody = "{\"key\":\"value\"}";
-    //     HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
-
-    //     // Perform the POST request
-    //     ResponseEntity<String> response = restTemplate.exchange(
-    //             url,
-    //             HttpMethod.POST,
-    //             requestEntity, // Pass your request entity here if needed
-    //             String.class);
-
-    //     // Process the response as needed
-    //     String responseBody = response.getBody();
-    //     System.out.println("Response: " + responseBody);
-
-    //     return responseBody;
-    // }
-
-    public DyslexiaCategory saveCategory(DyslexiaCategory dyslexiaCategory) {
-        return _categoryRepository.save(dyslexiaCategory);
+    private List<DyslexiaCategory> parseResponseToCategories(String responseBody) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        TypeReference<List<DyslexiaCategory>> typeReference = new TypeReference<List<DyslexiaCategory>>() {};
+        return objectMapper.readValue(responseBody, typeReference);
     }
-    
-    public DyslexiaCategory getCategoryByName(String categoryName) {
-        return _categoryRepository.findCategoryByName(categoryName);
+
+    private void updateDyslexiaCategories(List<DyslexiaCategory> categories) {
+        for (DyslexiaCategory dyslexiaCategory : categories) {
+            // Check if the category already exists in the database
+            DyslexiaCategory existingCategory = dyslexiaCategoryService.getCategoryByName(dyslexiaCategory.getName());
+
+            if (existingCategory == null) {
+                // Save the new category if it doesn't exist
+                dyslexiaCategoryService.saveCategory(dyslexiaCategory);
+            } else {
+                // Update the average value of the existing category and save
+                existingCategory.setAverage(dyslexiaCategory.getAverage());
+                dyslexiaCategoryService.saveCategory(existingCategory);
+            }
+        }
     }
+
 }

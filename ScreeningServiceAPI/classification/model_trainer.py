@@ -1,6 +1,6 @@
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-
+from classification.data_preprocessor import DataPreProcessing
 class RandomForestModelTrainer:
     model = ""
     X_train = ""
@@ -10,10 +10,19 @@ class RandomForestModelTrainer:
     
     def __init__(self):
         self.model = RandomForestClassifier()
-    
-    def trainData(self):
-        self.model.fit(self.X_train, self.y_train)
-        
+     
+    def prepareDataForTraining(self,dataset,dataManipulator):
+        dataPreProcessing = DataPreProcessing()
+        # Preprocess our data
+        columns = dataPreProcessing.SeparateColumns(dataset)
+        desktopData = dataManipulator.DictToDataframe(columns)
+        dataPreProcessing.cleanData(desktopData)
+        desktopData = dataPreProcessing.removeErroredAccuracy(desktopData)
+        cleanedDesktopData = desktopData
+        # Split and Train Data
+        self.splitData(desktopData)
+        return cleanedDesktopData
+
     def splitData(self,dataframe):
         y = dataframe['Dyslexia']
         X = dataframe.loc[:, dataframe.columns != 'Dyslexia']
@@ -24,6 +33,9 @@ class RandomForestModelTrainer:
         self.y_test = y_test
         return X_train, X_test, y_train, y_test
     
+    def trainData(self):
+        self.model.fit(self.X_train, self.y_train)
+        
     def predictData(self,record):
         prediction =  self.model.predict(record)
         return prediction
