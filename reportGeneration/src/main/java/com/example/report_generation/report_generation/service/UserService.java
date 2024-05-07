@@ -20,6 +20,7 @@ public class UserService {
     @Autowired
     private JwtService jwtService;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
     private UserRepository userRepository;
     public User insertUser(User newUser, String filePath) throws IOException {
         User user = userRepository.findById(newUser.getId()).orElse(null);

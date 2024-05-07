@@ -4,4 +4,5 @@ export const ColorCodes = {
 
   purple: "#3E4772",
   lightGreen: "#adcfbf",
+  white: '#94ffbb', 
 };
