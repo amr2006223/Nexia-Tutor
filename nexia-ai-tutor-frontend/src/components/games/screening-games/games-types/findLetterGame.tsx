@@ -21,7 +21,7 @@ const FindLetterGame = (props: FindLetterGameProps) => {
   const gamesStore = useScreeningGamesStore();
 
   const { time, start } = useTimer({
-    initialTime: 2,
+    initialTime: 10,
     endTime: 0,
     timerType: "DECREMENTAL",
     onTimeOver: () => {
