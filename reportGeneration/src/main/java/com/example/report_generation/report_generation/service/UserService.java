@@ -1,10 +1,8 @@
 package com.example.report_generation.report_generation.service;
 
-import com.example.report_generation.report_generation.kafka.DyslexiaTypeProducer;
-import com.example.report_generation.report_generation.models.DyslexiaCategory;
+
 import com.example.report_generation.report_generation.models.User;
 import com.example.report_generation.report_generation.models.UserData;
-import com.example.report_generation.report_generation.repository.DyslexiaCategoryRepository;
 import com.example.report_generation.report_generation.repository.UserRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +18,7 @@ public class UserService {
     @Autowired
     private JwtService jwtService;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
     private UserRepository userRepository;
     public User insertUser(User newUser, String filePath) throws IOException {
         User user = userRepository.findById(newUser.getId()).orElse(null);

@@ -28,8 +28,7 @@ public class PDFUtils {
     private final Color defaultColor = new Color(0x3E4772);
     private final String defaultTitleFont = FontFactory.HELVETICA_BOLD;
     private final String defalutFont = FontFactory.HELVETICA;
-    @Autowired
-    private UserService _userService;
+
     @Autowired
     private DyslexiaCategoryService dyslexiaCategoryService;
 

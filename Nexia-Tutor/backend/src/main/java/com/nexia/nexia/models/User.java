@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Set;
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

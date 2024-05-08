@@ -7,8 +7,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.basedomain.basedomain.dto.Constants;
 import com.basedomain.basedomain.dto.UserDTO;
-import com.basedomain.basedomain.dto.UserEvent;
 import com.example.identityservice.dto.AuthRequest;
 import com.example.identityservice.kafka.UserProducer;
 import com.example.identityservice.models.UserCredentials;
@@ -62,7 +62,7 @@ public class AuthService {
             credentials = repository.save(credentials);
             userDTO.setId(credentials.getId());
             userDTO.setToken(jwtService.generateToken(credentials.getId()));
-            if(!userProducer.broadcastUser(userDTO, UserEvent.Status.ADD, "Adding Users")){
+            if(!userProducer.broadcastUser(userDTO, Constants.Status.ADD, "Adding Users")){
                 return null;
             }
             return userDTO;
