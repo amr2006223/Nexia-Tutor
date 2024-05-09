@@ -27,12 +27,6 @@ public class AuthService {
     @Autowired
     private UserProducer userProducer;
 
-    public String saveUser(UserCredentials credentials){
-        credentials.setPassword(passwordEncoder.encode(credentials.getPassword()));
-        repository.save(credentials);
-        return "User saved";
-    }
-
     public String generateToken(String uuid){
         return jwtService.generateToken(uuid);
     }

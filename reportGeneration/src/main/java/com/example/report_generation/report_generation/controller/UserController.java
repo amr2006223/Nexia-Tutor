@@ -63,10 +63,4 @@ public class UserController {
             return new ResponseEntity<>("Token is not valid", HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(_userService.hasUserTakenTest(token, filePath), HttpStatus.OK);
     }
-
-    @GetMapping("/test")
-    public ResponseEntity<String> getMethodName() {
-        return new ResponseEntity<String>("test", HttpStatus.OK);
-    }
-
 }
