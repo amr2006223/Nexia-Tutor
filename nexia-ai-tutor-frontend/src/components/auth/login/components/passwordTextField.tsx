@@ -1,22 +1,21 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
-import useUsernameSpeechRecognition from "@/shared/hooks/speech-recognition/useUsernameSpeechRecognition";
+import usePasswordSpeechRecognition from "@/shared/hooks/speech-recognition/usePasswordSpeechRecognition";
 import VoiceListenScreen from "./voiceListenScreen";
 import { useEffect } from "react";
 
-type LoginTextfieldProps = {
+type PasswordTextfieldProps = {
   name: string;
   field: string;
   icon: IconProp;
-  isPassword?: boolean;
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleVoiceInput: (name: string, textValue: string) => void;
 };
 
-const LoginTextfield = (props: LoginTextfieldProps) => {
+const PasswordTextfield = (props: PasswordTextfieldProps) => {
   const { stopListening, isListening, startListening, text } =
-  useUsernameSpeechRecognition();
+    usePasswordSpeechRecognition();
 
   useEffect(() => {
     console.log("props.name: ", props.name);
@@ -32,8 +31,7 @@ const LoginTextfield = (props: LoginTextfieldProps) => {
       <FontAwesomeIcon icon={props.icon} className="text-gray-400 m-2" />
 
       <input
-        // type={props.isPassword ? "password" : "text"}
-        type="text"
+        type="password"
         name={props.name}
         placeholder={props.name.charAt(0).toUpperCase() + props.name.slice(1)}
         className="text-sm bg-gray-100 outline-none flex-1"
@@ -46,15 +44,9 @@ const LoginTextfield = (props: LoginTextfieldProps) => {
         onClick={startListening}
       />
 
-      {/* {isListening ? ( */}
-      {/* <VoiceListenScreen
-        stopListening={stopListening}
-        isListening={isListening}
-      /> */}
-      {/* ) : null} */}
       {isListening && <VoiceListenScreen stopListening={stopListening} />}
     </div>
   );
 };
 
-export default LoginTextfield;
+export default PasswordTextfield;
