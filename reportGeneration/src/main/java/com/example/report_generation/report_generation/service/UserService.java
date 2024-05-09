@@ -71,7 +71,7 @@ public class UserService {
     public boolean hasUserTakenTest(String token, String filePath) {
         String userId = jwtService.extractUUID(token);
         User user = getUserById(userId, filePath);
-
+        
         return user != null && user.getData() != null;
     }
 

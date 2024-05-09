@@ -3,6 +3,7 @@ import LoggedInNavbar from "./navbars/loggedInNavbar";
 import NotLoggedInNavbar from "./navbars/notLoggedInNavbar";
 import LogoButton from "@/shared/components/buttons/logoButton";
 import NavbarLink from "./navbars/navbarLink";
+import { checkIsUserTested } from "@/services/report/userTest";
 
 type NavbarProps = {
   isLoggedIn: boolean;
@@ -10,6 +11,10 @@ type NavbarProps = {
 };
 
 const Navbar = (props: NavbarProps) => {
+  const handleclcik = async () => {
+    await checkIsUserTested();
+  };
+
   return (
     <div
       className="lg:fixed lg:justify-between w-full flex bg-[#3E4772] shadow-md items-center"
@@ -26,6 +31,7 @@ const Navbar = (props: NavbarProps) => {
           <div className="flex gap-10 font-medium py-4 text-[#CDEBC5]">
             <NavbarLink href="/tutoring/my-learning">My Learning</NavbarLink>
             <NavbarLink href="/screening/games/1">Test</NavbarLink>
+            <button onClick={handleclcik}>alo</button>
           </div>
         )}
       </div>

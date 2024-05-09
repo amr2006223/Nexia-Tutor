@@ -1,6 +1,9 @@
 package com.example.report_generation.report_generation.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,12 +64,23 @@ public class UserController {
                     HttpStatus.INTERNAL_SERVER_ERROR);
         if (validation.get("status").equals("invalid"))
             return new ResponseEntity<>("Token is not valid", HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(_userService.hasUserTakenTest(token, filePath), HttpStatus.OK);
+        boolean hasUserTakenTest = _userService.hasUserTakenTest(token, filePath);
+        Map<String, String> response = new HashMap<>();
+        response.put("hasUserTakenTest", String.valueOf(hasUserTakenTest));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/test")
     public ResponseEntity<String> getMethodName() {
         return new ResponseEntity<String>("test", HttpStatus.OK);
+    }
+
+    @PostMapping("/test")
+    public ResponseEntity<List<String>> getMetho() {
+        List<String> list = new ArrayList<String>();
+        list.add("test1");
+        list.add("test2");
+        return new ResponseEntity<List<String>>(list, HttpStatus.OK);
     }
 
 }
