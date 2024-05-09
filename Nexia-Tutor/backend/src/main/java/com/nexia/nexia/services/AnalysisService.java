@@ -1,9 +1,12 @@
 package com.nexia.nexia.services;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.hibernate.mapping.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.nexia.nexia.models.UserPerformance;
 import com.nexia.nexia.repositories.UserPerformanceRepository;
@@ -26,8 +29,9 @@ public class AnalysisService {
     }
 
     public Map<String, Double> calculateTotalMissesForUser(String userId, Date startDate, Date endDate) {
+        
         List<UserPerformance> userPerformances = userPerformanceRepository.findByUserIdAndPerformanceDateBetween(userId,
-                startDate, endDate);
+                startDate, endDate).orElse(Collections.emptyList());
         Map<String, Double> result = new HashMap<>();
 
         if (userPerformances.isEmpty()) {
@@ -46,7 +50,7 @@ public class AnalysisService {
 
     public Map<String, Double> calculateTotalTimeTakenForUser(String userId, Date startDate, Date endDate) {
         List<UserPerformance> userPerformances = userPerformanceRepository.findByUserIdAndPerformanceDateBetween(userId,
-                startDate, endDate);
+                startDate, endDate).orElse(Collections.emptyList());
         Map<String, Double> result = new HashMap<>();
 
         if (userPerformances.isEmpty()) {
@@ -65,7 +69,7 @@ public class AnalysisService {
 
     public Map<String, Double> calculateMaxMinMissesForUser(String userId, Date startDate, Date endDate) {
         List<UserPerformance> performances = userPerformanceRepository.findByUserIdAndPerformanceDateBetween(userId,
-                startDate, endDate);
+                startDate, endDate).orElse(Collections.emptyList());
 
         Map<String, Double> result = new HashMap<>();
         if (performances.isEmpty()) {
@@ -93,7 +97,7 @@ public class AnalysisService {
 
     public Map<String, Double> calculateMaxMinTimeTakenForUser(String userId, Date startDate, Date endDate) {
         List<UserPerformance> performances = userPerformanceRepository.findByUserIdAndPerformanceDateBetween(userId,
-                startDate, endDate);
+                startDate, endDate).orElse(Collections.emptyList());
 
         Map<String, Double> result = new HashMap<>();
         if (performances.isEmpty()) {
@@ -134,7 +138,7 @@ public class AnalysisService {
     }
 
     public Map<String, Double> getStatsByGame(String userId, String gameId) {
-        List<UserPerformance> userPerformances = userPerformanceRepository.findByGameAndUser(gameId, userId);
+        List<UserPerformance> userPerformances = userPerformanceRepository.findByGameIdAndUserId(Long.parseLong(gameId), userId).orElse(Collections.emptyList());
         Map<String, Double> result = new HashMap<>();
 
         if (userPerformances.isEmpty()) {
@@ -195,7 +199,7 @@ public class AnalysisService {
 
     // Analysis for game performance
     public Map<String, Double> analyzeGamePerformance(String gameId) {
-        List<UserPerformance> gamePerformances = userPerformanceRepository.findByGameId(gameId);
+        List<UserPerformance> gamePerformances = userPerformanceRepository.findByGameId(Long.parseLong(gameId)).orElse(Collections.emptyList());
         Map<String, Double> result = new HashMap<>();
 
         if (gamePerformances.isEmpty()) {
