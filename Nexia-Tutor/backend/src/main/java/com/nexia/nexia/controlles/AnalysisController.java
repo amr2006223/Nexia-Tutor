@@ -8,13 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nexia.nexia.models.UserPerformance;
-import com.nexia.nexia.repositories.UserPerformanceRepository;
 import com.nexia.nexia.services.AnalysisService;
-import com.nexia.nexia.services.GameService;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -25,64 +21,51 @@ public class AnalysisController {
 
     @Autowired
     private AnalysisService analysisService;
-    @Autowired
-    private UserPerformanceRepository userPerformanceRepository;
-    @Autowired
-    private GameService gameService;
 
-    @PostMapping("/user-performance/save")
-    public ResponseEntity save(@RequestBody Map<String, String> body) {
-        String dateString = body.get("enddate");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            // Parse the date string to a Date object and save it directly in your method
-            // call
-            analysisService.save(
-                    body.get("token"),
-                    body.get("gameID"),
-                    Short.parseShort(body.get("misses")),
-                    Long.parseLong(body.get("time")),
-                    dateFormat.parse(dateString) // Parse and convert the date string in one step
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("Error in saving data ", HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>("success", HttpStatus.CREATED);
+    @PostMapping("/save")
+    public ResponseEntity<?> save(@RequestBody Map<String, String> body) {
+        if (analysisService.save(
+                body.get("token"),
+                body.get("gameID"),
+                body.get("misses"),
+                body.get("time"),
+                body.get("enddate")) == null)
+            return new ResponseEntity<String>("Failed to add entity", HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<String>("Success", HttpStatus.OK);
     }
 
-    @GetMapping("/user/{userId}/performance")
-    public ResponseEntity analyzeUserPerformance(@PathVariable String userId,
-            @RequestParam String startDate, @RequestParam String endDate) {
+    @PostMapping()
+    public ResponseEntity<?> analyzeUserPerformance(@RequestBody Map<String,String> body) {
         try {
+            String userId = body.get("userId");
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date parsedStartDate = dateFormat.parse(startDate);
-            Date parsedEndDate = dateFormat.parse(endDate);
+            Date parsedStartDate = dateFormat.parse(body.get("startDate"));
+            Date parsedEndDate = dateFormat.parse(body.get("endDate"));
             Map<String, Double> analysisResult = analysisService.analyzeUserPerformance(userId, parsedStartDate,
                     parsedEndDate);
-            if (analysisResult.isEmpty()) {
-                return new ResponseEntity<>("No data found for the user with ID: " + userId, HttpStatus.NOT_FOUND);
+            if (analysisResult == null) {
+                return new ResponseEntity<String>("No data found for the user with ID: " + userId,
+                        HttpStatus.NOT_FOUND);
             } else {
-                return new ResponseEntity<>("Result: " + analysisResult, HttpStatus.OK);
+                return new ResponseEntity<Map<String,Double>>(analysisResult, HttpStatus.OK);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>("Invalid date format", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("Invalid date format", HttpStatus.BAD_REQUEST);
         }
     }
 
-    @GetMapping("/user/{userId}/game/{gameID}/performance")
-    public ResponseEntity userPerformaneceForGame(@PathVariable String userId, @PathVariable String gameId) {
+    @GetMapping("/{userId}/{gameId}")
+    public ResponseEntity<?> userPerformaneceForGame(@PathVariable String userId, @PathVariable String gameId) {
         Map<String, Double> analysisResult = analysisService.getStatsByGame(userId, gameId);
-        if (analysisResult.isEmpty()) {
-            return new ResponseEntity<>("No data found for the user with ID: " + userId, HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>("Result: " + analysisResult, HttpStatus.OK);
-        }
+        if(analysisResult == null) return new ResponseEntity<String>("No Records Found", HttpStatus.OK);;
+        return new ResponseEntity<Map<String,Double>>(analysisResult, HttpStatus.OK);
+        
     }
 
-    @GetMapping("/game/{gameId}/performance")
-    public ResponseEntity gamePerformance(@PathVariable String gameId) {
+    @GetMapping("/{gameId}")
+    public ResponseEntity<String> gamePerformance(@PathVariable String gameId) {
         Map<String, Double> result = analysisService.analyzeGamePerformance(gameId);
         if (result.isEmpty()) {
             return new ResponseEntity<>("No data found for the game with ID: " + gameId, HttpStatus.NOT_FOUND);

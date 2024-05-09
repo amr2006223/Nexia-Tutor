@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import java.util.*;
 
 @RestController
@@ -21,17 +20,6 @@ public class GameController {
     @Autowired
     private GameService gameService;
 
-    @PostMapping("/{lessonName}")
-    public ResponseEntity<?> getGamesForLesson(@PathVariable String lessonName,
-            @RequestBody Map<String, String> body) {
-        String token = body.get("token");
-        Object jsonResponse = gameService.getGamesForLesson(lessonName, token);
-        if (jsonResponse != null) {
-            return ResponseEntity.ok(jsonResponse);
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to retrieve data");
-        }
-    }
 
     @PostMapping("/token/{token}")
     public ResponseEntity<?> getGamesForUser(@PathVariable String token) {

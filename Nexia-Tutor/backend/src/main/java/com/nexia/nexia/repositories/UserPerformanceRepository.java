@@ -11,13 +11,13 @@ import com.nexia.nexia.models.UserPerformance;
 
 @Repository
 public interface UserPerformanceRepository extends JpaRepository<UserPerformance, String> {
-    Optional<List<UserPerformance>> findByUserId(String userId);
+    Optional<List<UserPerformance>> findAllByUserId(String userId);
 
-    Optional<List<UserPerformance>> findByGameId(long gameId);
+    Optional<List<UserPerformance>> findAllByGameId(long gameId);
 
-    Optional<List<UserPerformance>> findByGameIdAndUserId(long gameId, String userId);
+    Optional<List<UserPerformance>> findAllByGameIdAndUserId(long gameId, String userId);
 
-    Optional<List<UserPerformance>> findByUserIdAndPerformanceDateBetween(String userId, Date startDate, Date endDate);
+    Optional<List<UserPerformance>> findAllByUserIdAndPerformanceDateBetween(String userId, Date startDate, Date endDate);
 
-    Optional<List<UserPerformance>> findByPerformanceDateBetween(Date startDate, Date endDate);
+    Optional<List<UserPerformance>> findAllByPerformanceDateBetween(Date startDate, Date endDate);
 }

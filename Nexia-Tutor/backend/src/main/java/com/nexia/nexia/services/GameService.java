@@ -4,21 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.nexia.nexia.models.DyslexiaType;
 import com.nexia.nexia.models.Game;
-import com.nexia.nexia.models.Lesson;
 import com.nexia.nexia.models.User;
 import com.nexia.nexia.repositories.DyslexiaTypeRepository;
 import com.nexia.nexia.repositories.GameRepository;
-import com.nexia.nexia.services.iservices.IGameService;
+
 
 import java.util.*;
 
 @Service
-public class GameService extends CrudOperations<Game, Long, GameRepository> implements IGameService {
+public class GameService extends CrudOperations<Game, Long, GameRepository> {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private LessonService lessonJsonService;
     @Autowired
     private GameRepository gameRepository;
     @Autowired
@@ -28,36 +25,6 @@ public class GameService extends CrudOperations<Game, Long, GameRepository> impl
         super(repository);
     }
 
-    @Override
-    public Map<String, Object> getGamesForLesson(String lessonName, String token) {
-        try {
-            // Get user details and check if the user exists
-            User user = userService.getEntityById(token);
-            if (user == null) return null;
-
-            // Get lesson details and check if the lesson exists
-            Lesson lessonDetails = lessonJsonService.getEntityById(lessonName);
-            if (lessonDetails == null) return null;
-            
-            // Get a set of user dyslexia types
-            Set<DyslexiaType> dyslexiaTypes = user.getDyslexia_types();
-
-            // Get all games for the for dyslexia type
-            List<Game> gamesList = new ArrayList<>();
-            for (DyslexiaType dyslexiaType : dyslexiaTypes) {
-                List<Game> gamesForType = getGamesForDyslexiaType(dyslexiaType.getId());
-                gamesList.addAll(gamesForType);
-            }
-            Map<String, Object> jsonResponse = new HashMap<>();
-            jsonResponse.put("lesson_name", lessonDetails.getLessonName());
-            jsonResponse.put("keywords", lessonDetails.getKeywords());
-            jsonResponse.put("games", gamesList);
-            return jsonResponse;
-    
-        } catch (Exception e) {
-            return null;
-        }
-    }
 
     private List<Game> getGamesForDyslexiaType(String dyslexiaTypeId) {
         DyslexiaType dyslexiaType = dyslexiaTypeRepository.findById(dyslexiaTypeId).orElse(null);
