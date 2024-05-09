@@ -8,23 +8,26 @@ import { LoginData } from "@/types/auth";
 const useLogin = () => {
   const router = useRouter();
 
-  const [formData, setFormData] = useState<LoginData>({
-    username: "",
-    password: "",
-  });
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
 
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+    if (name === "username") {
+      setUsername(value);
+    } else if (name === "password") {
+      setPassword(value);
+    }
   };
 
   const handleSubmit = async () => {
+    const formData: LoginData = {
+      username,
+      password,
+    };
+    
     const response = await login(formData);
-
     if (response) {
       router.push("/");
     } else {
@@ -36,7 +39,26 @@ const useLogin = () => {
     }
   };
 
-  return { formData, handleInputChange, handleSubmit };
+  const handleSpeechRecognition = (
+    fieldToUpdate: string,
+    textValue: string
+  ) => {
+    // make textValue small case and remove spaces and dots
+    let value = textValue.toLowerCase().replace(/\s/g, "").replace(/\.$/, "");
+    if (fieldToUpdate === "username") {
+      setUsername(value);
+    } else if (fieldToUpdate === "password") {
+      setPassword(value);
+    }
+  };
+
+  return {
+    username,
+    password,
+    handleInputChange,
+    handleSubmit,
+    handleSpeechRecognition,
+  };
 };
 
 export default useLogin;
