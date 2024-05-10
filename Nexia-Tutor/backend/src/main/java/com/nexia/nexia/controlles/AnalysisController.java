@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/analysis")
+@RequestMapping("/nexia-tutor/analysis")
 public class AnalysisController {
 
     @Autowired
@@ -36,7 +36,7 @@ public class AnalysisController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> analyzeUserPerformance(@RequestBody Map<String,String> body) {
+    public ResponseEntity<?> analyzeUserPerformance(@RequestBody Map<String, String> body) {
         try {
             String userId = body.get("userId");
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -48,7 +48,7 @@ public class AnalysisController {
                 return new ResponseEntity<String>("No data found for the user with ID: " + userId,
                         HttpStatus.NOT_FOUND);
             } else {
-                return new ResponseEntity<Map<String,Double>>(analysisResult, HttpStatus.OK);
+                return new ResponseEntity<Map<String, Double>>(analysisResult, HttpStatus.OK);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,9 +59,10 @@ public class AnalysisController {
     @GetMapping("/{userId}/{gameId}")
     public ResponseEntity<?> userPerformaneceForGame(@PathVariable String userId, @PathVariable String gameId) {
         Map<String, Double> analysisResult = analysisService.getStatsByGame(userId, gameId);
-        if(analysisResult == null) return new ResponseEntity<String>("No Records Found", HttpStatus.OK);;
-        return new ResponseEntity<Map<String,Double>>(analysisResult, HttpStatus.OK);
-        
+        if (analysisResult == null)
+            return new ResponseEntity<String>("No Records Found", HttpStatus.OK);
+        ;
+        return new ResponseEntity<Map<String, Double>>(analysisResult, HttpStatus.OK);
     }
 
     @GetMapping("/{gameId}")
