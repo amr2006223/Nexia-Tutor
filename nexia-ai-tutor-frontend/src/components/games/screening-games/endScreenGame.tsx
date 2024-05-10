@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -57,14 +57,12 @@ const EndScreenGameComponent = (props: EndScreenGameComponentProps) => {
         />
         Good Job!
         <Box sx={{ marginBottom: "20px" }}>
-          <Button
-            variant="contained"
-            href="#contained-buttons"
-            sx={{ bgcolor: "#3E4772", color: "white" }} // Set background color to #3E4772 and text color to white
+          <button
+            className="bg-primary text-light rounded-md p-2 hover:bg-primaryLight"
             onClick={handleNextGameClick}
           >
             {"Go to Next Game"}
-          </Button>
+          </button>
         </Box>
       </div>
       {/* Define the keyframe animation */}
