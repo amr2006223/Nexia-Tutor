@@ -1,5 +1,6 @@
 "use client";
 import { logoutService } from "@/services/auth/auth";
+import { clearFilesFromLocalStorage } from "@/services/files/fileUpload";
 import { useRouter } from "next/navigation";
 
 type LoggedInNavbarProps = {
@@ -8,8 +9,9 @@ type LoggedInNavbarProps = {
 
 const LoggedInNavbar = (props: LoggedInNavbarProps) => {
   const router = useRouter();
-  const handleLogout = () => {
+  const handleLogout = async () => {
     logoutService();
+    await clearFilesFromLocalStorage();
     router.refresh();
     router.push("/auth/login");
   };
