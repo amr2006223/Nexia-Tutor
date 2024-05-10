@@ -20,3 +20,7 @@ export const removeFilesFromLocalStorage = async (index: number) => {
   const newFiles = files.filter((_, i) => i !== index);
   localStorage.setItem("files", JSON.stringify(newFiles));
 };
+
+export const clearFilesFromLocalStorage = async () => {
+  localStorage.removeItem("files");
+}

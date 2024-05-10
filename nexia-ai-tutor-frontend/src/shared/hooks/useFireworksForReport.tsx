@@ -5,10 +5,11 @@ import "animate.css";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import { getReport } from "@/services/report/downloadReport";
+import { useScreeningGamesStore } from "../state/screening-games";
 const useFireworksForReport = () => {
   const router = useRouter();
   const [conductor, setConductor] = useState<TConductorInstance>();
-
+  const gamesData = useScreeningGamesStore();
   const onInit = ({ conductor }: { conductor: TConductorInstance }) => {
     setConductor(conductor);
   };
@@ -49,6 +50,7 @@ const useFireworksForReport = () => {
       allowOutsideClick: false,
       allowEscapeKey: false,
     }).then(async (result) => {
+      gamesData.games_result = [];
       if (result.isConfirmed) {
         router.push("/tutoring/my-learning");
       } else {

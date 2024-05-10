@@ -44,7 +44,13 @@ const EndScreenGameComponent = (props: EndScreenGameComponentProps) => {
         borderRadius: "10px",
       }}
     >
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <img
           src="/assets/images/excited-blue-potato.png"
           alt="Hero"
@@ -52,7 +58,9 @@ const EndScreenGameComponent = (props: EndScreenGameComponentProps) => {
             width: "100px",
             height: "auto",
             marginBottom: "20px",
-            animation: showAnimation ? "stirAnimation 0.5s ease-in-out infinite" : "none",
+            animation: showAnimation
+              ? "stirAnimation 0.5s ease-in-out infinite"
+              : "none",
           }}
         />
         Good Job!

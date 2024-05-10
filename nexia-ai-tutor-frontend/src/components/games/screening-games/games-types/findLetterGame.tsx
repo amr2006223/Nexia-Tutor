@@ -101,8 +101,8 @@ const FindLetterGame = (props: FindLetterGameProps) => {
       </div>
 
       <div className="flex flex-col items-center justify-center h-screen">
-        <div className="text-3xl font-bold text-center mb-4">
-          Listen{" "}
+        <div className="flex items-center text-3xl font-bold text-center mb-4">
+          <div className="px-2">Listen</div>
           <SpeakerButtonComponent
             sound={props.goalLetterSound}
             from_google={true}

@@ -20,18 +20,16 @@ const SecondryWordRhymeComponent = ({
       key={index}
       className=" flex flex-col items-center justify-center m-2 bg-green-100 "
     >
-      {/* <h1 className="animate__animated animate__bounce">An animated element</h1> */}
-
       {secondaryWord.showImage && (
         <div
           className="animate__animated animate__zoomIn flex flex-col items-center justify-center"
-          style={{ width: "130px", height: "130px" }}
+          style={{ width: "250px", height: "250px" }}
         >
           <img
             className="rounded-md m-2 bg-blue-200"
             src={secondaryWord.data.image}
             alt={secondaryWord.data.word}
-            style={{ width: "90px", height: "90px" }}
+            style={{ width: "200px", height: "200px" }}
           />
           <div className="w-full px-2 flex justify-between items-center text-2xl font-bold">
             <SpeakerButtonComponent
