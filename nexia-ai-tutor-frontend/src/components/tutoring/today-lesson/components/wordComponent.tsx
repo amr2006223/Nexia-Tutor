@@ -15,7 +15,7 @@ const WordComponent = ({ word }: props) => {
   const router = useRouter();
   const [wordSound, setWordSound] = useState("");
   const gameState = useGameState();
-  const customActionsCell = () => {
+  const customActionsCell = (word: string) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -51,15 +51,17 @@ const WordComponent = ({ word }: props) => {
           onClose={handleMenuClose}
         >
           {/* firs  t item in menu */}
-          {gameState.games.map((game: GameModel) => (
-            <MenuItem
-              onClick={() => handlePlay(game.game_name)}
-              sx={menuItemStyle}
-            >
-              <FiPlay className="text-2xl" />
-              <span className="mx-2">{game.game_name}</span>
-            </MenuItem>
-          ))}
+          {gameState.games.map((game: GameModel) =>
+            game.game_name === "bingo" && word.length > 5 ? null : (
+              <MenuItem
+                onClick={() => handlePlay(game.game_name)}
+                sx={menuItemStyle}
+              >
+                <FiPlay className="text-2xl" />
+                <span className="mx-2">{game.game_name}</span>
+              </MenuItem>
+            )
+          )}
         </Menu>
       </div>
     );
@@ -88,7 +90,7 @@ const WordComponent = ({ word }: props) => {
         </div>
         <strong>{word}</strong>
       </div>
-      <div>{customActionsCell()}</div>
+      <div>{customActionsCell(word)}</div>
     </div>
   );
 };
