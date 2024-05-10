@@ -1,4 +1,4 @@
-// Utilities.tsx
+"use client";
 import React, { useState } from "react";
 import { Fab } from "@mui/material";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
@@ -60,7 +60,7 @@ const Utilities = () => {
         style={{
           backgroundColor: "#1976d2",
           color: "#fff",
-          zIndex: 9999999, 
+          zIndex: 9999999,
         }}
         aria-label="text-to-speech"
         onClick={handleClick}

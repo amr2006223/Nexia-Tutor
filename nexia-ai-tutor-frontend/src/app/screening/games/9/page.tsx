@@ -42,16 +42,16 @@ const NinthScreeningGamePage = async () => {
 
   return (
     <div>
-    <Utilities />
-    <button onClick={() => console.log("Button clicked!")}>My Button</button>
-    <FindLetterGame
-      goalLetterSound={goalLetterSound}
-      gameNumber={gameNumber}
-      goalLetter={goalLetter}
-      wordsList={wordsLists}
-      nextGameLink={nextGameLink}
-      isLastGame={true}
-    />
+      <Utilities />
+
+      <FindLetterGame
+        goalLetterSound={goalLetterSound}
+        gameNumber={gameNumber}
+        goalLetter={goalLetter}
+        wordsList={wordsLists}
+        nextGameLink={nextGameLink}
+        isLastGame={true}
+      />
     </div>
   );
 };

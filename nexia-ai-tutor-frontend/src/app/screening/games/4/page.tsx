@@ -46,23 +46,23 @@ const FourthScreeningGamePage = async () => {
   const goalLetter = "d";
 
   const nextGameLink = "5";
-  
+
   const gameNumber = 4;
 
   const goalLetterSound = await getTextSound(goalLetter);
 
   return (
     <div>
-    <Utilities />
-    <button onClick={() => console.log("Button clicked!")}>My Button</button>
-    <FindLetterGame
-      goalLetterSound={goalLetterSound}
-      gameNumber={gameNumber}
-      goalLetter={goalLetter}
-      wordsList={wordsLists}
-      nextGameLink={nextGameLink}
-      isLastGame={false}
-    />
+      <Utilities />
+
+      <FindLetterGame
+        goalLetterSound={goalLetterSound}
+        gameNumber={gameNumber}
+        goalLetter={goalLetter}
+        wordsList={wordsLists}
+        nextGameLink={nextGameLink}
+        isLastGame={false}
+      />
     </div>
   );
 };

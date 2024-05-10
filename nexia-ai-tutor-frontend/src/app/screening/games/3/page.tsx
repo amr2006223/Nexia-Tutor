@@ -41,16 +41,16 @@ const ThirdScreeningGamePage = async () => {
 
   return (
     <div>
-    <Utilities />
-    <button onClick={() => console.log("Button clicked!")}>My Button</button>
-    <FindLetterGame
-      goalLetterSound={goalLetterSound}
-      gameNumber={gameNumber}
-      goalLetter={goalLetter}
-      wordsList={wordsLists}
-      nextGameLink={nextGameLink}
-      isLastGame={false}
-    />
+      <Utilities />
+
+      <FindLetterGame
+        goalLetterSound={goalLetterSound}
+        gameNumber={gameNumber}
+        goalLetter={goalLetter}
+        wordsList={wordsLists}
+        nextGameLink={nextGameLink}
+        isLastGame={false}
+      />
     </div>
   );
 };

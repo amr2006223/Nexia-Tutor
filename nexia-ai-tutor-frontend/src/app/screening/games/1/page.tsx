@@ -20,7 +20,6 @@ const FirstScreeningGamePage = async () => {
   return (
     <div>
       <Utilities />
-      <button onClick={() => console.log("Button clicked!")}>My Button</button>
       <FindLetterGame
         goalLetterSound={goalLetterSound}
         gameNumber={gameNumber}
