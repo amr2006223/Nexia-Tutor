@@ -12,13 +12,9 @@ type Props = {
 
 const TodayLessonPage = (props: Props) => {
   return (
-    <div>
-      <BackButton />
-
-      <div className="bg-[#CDEBC5] flex flex-col items-center justify-center min-h-screen py-6 ">
-        <FileDetails fileName={props.fileName} />
-        <FileWords keywords={props.keywords} games={props.games} />
-      </div>
+    <div className="bg-[#CDEBC5] flex flex-col items-center justify-center min-h-screen py-6 ">
+      <FileDetails fileName={props.fileName} />
+      <FileWords keywords={props.keywords} games={props.games} />
     </div>
   );
 };

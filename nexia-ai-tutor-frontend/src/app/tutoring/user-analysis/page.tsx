@@ -12,8 +12,10 @@ const page = async () => {
     redirect("/");
   }
 
+  console.log("response", response);
   const gamesStas = await getGamesStats();
-  if (gamesStas.length == 0) {
+  console.log("gamesStas", gamesStas);
+  if (gamesStas.length === 0) {
     redirect("/");
   }
 

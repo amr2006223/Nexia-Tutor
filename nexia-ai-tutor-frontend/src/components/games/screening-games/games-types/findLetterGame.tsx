@@ -25,7 +25,9 @@ const FindLetterGame = (props: FindLetterGameProps) => {
   const [clicks, setClicks] = useState(0);
   const [hits, setHits] = useState(0);
   const [misses, setMisses] = useState(0);
-  const [currentWordsList, setCurrentWordsList] = useState<string[]>(props.wordsList);
+  const [currentWordsList, setCurrentWordsList] = useState<string[]>(
+    props.wordsList
+  );
   const [finished, setFinished] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
@@ -40,7 +42,7 @@ const FindLetterGame = (props: FindLetterGameProps) => {
   };
 
   const { time, start } = useTimer({
-    initialTime: 10,
+    initialTime: 8,
     endTime: 0,
     timerType: "DECREMENTAL",
     onTimeOver: handleOnTimeEnd,
@@ -92,7 +94,11 @@ const FindLetterGame = (props: FindLetterGameProps) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen" onClick={handleClicks} onMouseOverCapture={handleFirstPlay}>
+    <div
+      className="flex flex-col items-center justify-center h-screen"
+      onClick={handleClicks}
+      onMouseOverCapture={handleFirstPlay}
+    >
       <div className="flex flex-row items-center justify-between w-full my-3 px-5">
         <div className="text-3xl font-bold text-center">
           Game {props.gameNumber}: Listen & Find
@@ -120,7 +126,10 @@ const FindLetterGame = (props: FindLetterGameProps) => {
       <FooterCounter greenCounterNumber={hits} redCounterNumber={misses} />
 
       {showAlert && (
-        <CustomAlert message="You should submit an answer!" onClose={() => setShowAlert(false)} />
+        <CustomAlert
+          message="You should submit an answer!"
+          onClose={() => setShowAlert(false)}
+        />
       )}
 
       {finished && (
