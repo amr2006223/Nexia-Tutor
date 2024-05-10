@@ -27,7 +27,7 @@ const WordComponent = ({ word }: props) => {
     };
     const handlePlay = (game_name: String) => {
       handleMenuClose();
-      router.push(`tutoring/games/${game_name}?word=${word}`);
+      router.push(`games/${game_name}?word=${word}`);
     };
     return (
       <div>
