@@ -62,7 +62,6 @@ public class PDFGeneratorControllerTest {
         String id = "testId";
         UserData userData = new UserData();
         List<UserData> data = new ArrayList<>();
-        User user = new User(id, "testUserName", data);
         when(userService.getUserById(any(String.class), any(String.class))).thenReturn(null);
         when(userService.getLatestRecord(any(User.class))).thenReturn(userData);
         doNothing().when(pdfGeneratorService).downloadDocument(any(HttpServletResponse.class), any(User.class));

@@ -2,15 +2,12 @@ package com.example.identityservice.controllers;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import com.basedomain.basedomain.dto.UserDTO;
 import com.example.identityservice.dto.AuthRequest;
@@ -26,11 +23,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MockMvc;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -42,12 +36,10 @@ public class AuthControllerTest {
     @MockBean
     private AuthService authService;
 
-    private MockMvc mockMvc;
 
     @InjectMocks
     private AuthController authController;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     public void setUp() {
@@ -57,35 +49,33 @@ public class AuthControllerTest {
 
     @Test
     public void register_success() throws Exception {
-        // Create a UserDTO object for the request body
+        //Arrange
         Date date = new Date();
         UserDTO userDTO = new UserDTO("testId", "testuser", "testpassword", date, "Egyptian", false, "null", "1234",
                 "USER");
-        // Mock the authService.register method to return the userDTO as it is
         when(authService.register(any(UserDTO.class))).thenReturn(userDTO);
-
-        // Convert the userDTO object to JSON
-        String jsonRequest = objectMapper.writeValueAsString(userDTO);
-
-        // Perform a POST request to the /register endpoint
-        mockMvc.perform(post("/identity-service/auth/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonRequest))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value("testuser"))
-                .andExpect(jsonPath("$.password").value("testpassword"))
-                .andExpect(jsonPath("$.gender").value(false))
-                .andExpect(jsonPath("$.birthDate").value(date))
-                .andExpect(jsonPath("$.nationality").value("Egyptian"))
-                .andExpect(jsonPath("$.parentPin").value("1234"))
-                .andExpect(jsonPath("$.role").value("USER"))
-                .andExpect(jsonPath("$.token").value("null"));
-
-        // Verify that the register method was called
-        // Check if it got called 1 time no more or less
+        //Act
+        ResponseEntity<?> response = authController.register(userDTO);
+        //Assert
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isEqualTo(userDTO);
         verify(authService, times(1)).register(any(UserDTO.class));
     }
 
+    @Test
+    public void register_failed() throws Exception {
+        // Arrange
+        String expectedResult = "Error While Adding Users";
+        UserDTO userDTO = new UserDTO();
+        when(authService.register(any(UserDTO.class))).thenReturn(null);
+        // Act
+        ResponseEntity<?> response = authController.register(userDTO);
+        // Assert
+        
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isEqualTo(expectedResult);
+        verify(authService, times(1)).register(any(UserDTO.class));
+    }
     @Test
     public void login_success() throws Exception {
         // Arrange
