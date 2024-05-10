@@ -6,15 +6,11 @@ import { getUserDetailsService } from "../user/userDetails";
 
 export const register = async (data: RegisterData) => {
   try {
-    await axios.post(
-      `${process.env.IDENTITY_API}auth/register`,
-      data,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    await axios.post(`${process.env.IDENTITY_API}auth/register`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     return true;
   } catch (error) {
     console.error(error);
@@ -43,13 +39,7 @@ export const login = async (data: LoginData) => {
 };
 
 export const checkLoggedInService = async (): Promise<boolean> => {
-  const token = cookies().get("token");
-  // console.log(token);
-  if (token) {
-    return true;
-  } else {
-    return false;
-  }
+  return checkTokenExpiation();
 };
 
 export const logoutService = async () => {
@@ -66,5 +56,32 @@ export const checkLoginAndGetUserName = async () => {
     return { isLoggedIn: true, userName: user.username };
   } else {
     return { isLoggedIn: false, userName: "" };
+  }
+};
+
+export const checkTokenExpiation = async () => {
+  const token = await getTokenValue();
+  try {
+    if (token) {
+      const response = await fetch(`${process.env.IDENTITY_API}auth/validate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token: token }),
+      });
+      const responseData = await response.json();
+      console.log("response.data.status from function ", responseData.status);
+      if (responseData.status === "valid") {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error(error);
+    return false;
   }
 };
