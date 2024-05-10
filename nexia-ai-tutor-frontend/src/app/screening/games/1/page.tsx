@@ -3,7 +3,6 @@
 import React from 'react';
 import FindLetterGame from "@/components/games/screening-games/games-types/findLetterGame";
 import { getTextSound } from "@/services/text-to-speech/textSound";
-import Utilities from "@/components/home/utilities/utilities";
 
 // Define the FirstScreeningGamePage component
 const FirstScreeningGamePage = async () => {
@@ -19,7 +18,6 @@ const FirstScreeningGamePage = async () => {
   // Return the JSX including Utilities component and FindLetterGame component
   return (
     <div>
-      <Utilities />
       <FindLetterGame
         goalLetterSound={goalLetterSound}
         gameNumber={gameNumber}

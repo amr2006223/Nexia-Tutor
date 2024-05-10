@@ -1,6 +1,5 @@
 "use client";
 import FindLetterGame from "@/components/games/screening-games/games-types/findLetterGame";
-import Utilities from "@/components/home/utilities/utilities";
 import { getTextSound } from "@/services/text-to-speech/textSound";
 
 const SecondScreeningGamePage = async () => {
@@ -32,8 +31,6 @@ const SecondScreeningGamePage = async () => {
 
   return (
     <div>
-      <Utilities />
-
       <FindLetterGame
         goalLetterSound={goalLetterSound}
         gameNumber={gameNumber}

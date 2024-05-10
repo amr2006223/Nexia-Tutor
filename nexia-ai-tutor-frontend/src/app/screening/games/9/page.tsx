@@ -42,8 +42,6 @@ const NinthScreeningGamePage = async () => {
 
   return (
     <div>
-      <Utilities />
-
       <FindLetterGame
         goalLetterSound={goalLetterSound}
         gameNumber={gameNumber}

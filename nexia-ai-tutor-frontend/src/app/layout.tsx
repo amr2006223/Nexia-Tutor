@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Utilities from "@/components/home/utilities/utilities";
 
 export const metadata: Metadata = {
   title: "Nexia AI Tutor",
@@ -13,7 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Utilities />
+        {children}
+      </body>
     </html>
   );
 }
