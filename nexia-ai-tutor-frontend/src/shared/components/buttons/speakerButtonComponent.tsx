@@ -1,5 +1,6 @@
 import React from "react";
-import VolumeUpRoundedIcon from "@mui/icons-material/VolumeUpRounded";
+// import VolumeUpRoundedIcon from "@mui/icons-material/VolumeUpRounded";
+import { GiSpeaker } from "react-icons/gi";
 import { playMp3Sound, playSoundFromGoogle } from "@/shared/utils/play-sounds";
 
 type SpeakerButtonComponentProps = {
@@ -28,8 +29,8 @@ const SpeakerButtonComponent = ({
   const iconColor = theme === "dark" ? "#3e4772" : "#cdebc5";
 
   return (
-    <VolumeUpRoundedIcon
-      className="cursor-pointer "
+    <GiSpeaker
+      className="cursor-pointer hover:text-gray-500 transition-all duration-300 ease-in-out"
       onClick={() => playSound()}
       style={{ color: iconColor, fontSize: "2rem" }}
     />

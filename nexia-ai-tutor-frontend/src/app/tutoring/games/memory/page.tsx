@@ -3,6 +3,8 @@ import { getMemoryGameData } from "@/services/games/memory/getMemoryGameData";
 import ProgressBarComponent from "@/shared/components/progress/progressBar";
 import React, { useEffect, useState } from "react";
 import useWordSearchParams from "@/shared/hooks/useWordSearchParams";
+import { useRouter } from "next/navigation";
+import { Button } from "@mui/material";
 type Boxes = {
   id: number;
   image: string;
@@ -16,6 +18,7 @@ type selectedImage = {
 };
 
 const page = () => {
+  const router = useRouter();
   const { keywordParams } = useWordSearchParams();
   const [loading, setLoading] = useState<boolean>(true);
   const [progress, setProgress] = useState<number>(0);
@@ -133,6 +136,22 @@ const page = () => {
         <ProgressBarComponent />
       ) : (
         <div className="flex flex-col items-center justify-center h-screen">
+          <div>
+            <Button
+              onClick={() => router.back()}
+              className="font-bold text-base"
+              variant="contained"
+              style={{
+                backgroundColor: "#3E4772",
+                color: "#CDEBC5",
+                position: "absolute",
+                top: "10px",
+                left: "10px",
+              }}
+            >
+              Back
+            </Button>
+          </div>
           <div>
             <progress className="w-60" value={progress} max="100"></progress>
           </div>

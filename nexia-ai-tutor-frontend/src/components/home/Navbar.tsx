@@ -10,6 +10,7 @@ type NavbarProps = {
 };
 
 const Navbar = (props: NavbarProps) => {
+
   return (
     <div
       className="lg:fixed lg:justify-between w-full flex bg-[#3E4772] shadow-md items-center"
