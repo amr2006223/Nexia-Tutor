@@ -58,7 +58,11 @@ cd ..
 
 REM Change directory back to parent, Open new Terminal, start python ScreeningServiceAPI\app.py
 cd ScreeningServiceAPI
-start cmd /k call python app.py
+start cmd /k call python main.py
+timeout /t 10
+
+REM Change directory back to parent, Open new Terminal, start python ScreeningServiceAPI\app.py
+start cmd /k call pytest tests/
 timeout /t 10
 cd ..
 

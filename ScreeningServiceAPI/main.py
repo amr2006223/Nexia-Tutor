@@ -33,7 +33,6 @@ with app.app_context():
     # Train Data
     randomForestModelTrainer.trainData()
     
-    
 @app.route("/screening/average")
 def getAverage():
     # data_filterd_for_user = dataManipulator.filter_data_by_age(3,30)

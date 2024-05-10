@@ -34,6 +34,7 @@ public class AuthConfig {
     public UserDetailsService userDetailsService(){
         return new CustomUserDetailsService();
     }
+    
     @Bean // notation => that this function will return an instance of SecurityFilterChain
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.cors(cors -> cors.disable())
@@ -52,10 +53,12 @@ public class AuthConfig {
 
         return httpSecurity.build();
     }
+    
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception{
         return config.getAuthenticationManager();

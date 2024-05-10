@@ -10,10 +10,13 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
+
     @Autowired
     private RouteValidator routeValidator;
+
     @Autowired
     private RestTemplate restTemplate;
+ 
 
     public AuthenticationFilter() {
         super(Config.class);
