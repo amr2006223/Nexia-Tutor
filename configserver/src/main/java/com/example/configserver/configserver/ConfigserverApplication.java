@@ -5,6 +5,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.config.server.EnableConfigServer;
 
 @SpringBootApplication
+/**
+ * Indicates that config server application is serving as a configuration
+ * server.
+ * This annotation enables the configuration server functionality,
+ * allowing the application to serve externalized configuration properties to
+ * client applications.
+ */
 @EnableConfigServer
 public class ConfigserverApplication {
 
