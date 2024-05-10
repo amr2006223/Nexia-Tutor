@@ -55,9 +55,8 @@ public class UserController {
         return new ResponseEntity<User>(_userService.deleteUserById(userId, filePath), HttpStatus.OK);
     }
 
-    @PostMapping("/isTested")
-    public ResponseEntity<?> isTested(@RequestBody Map<String, String> body) {
-        String token = body.get("token");
+    @GetMapping("/isTested/{token}")
+    public ResponseEntity<?> isTested(@PathVariable String token) {
         Map<String, String> validation = _JwtService.validate(token);
         if (validation.containsKey("error"))
             return new ResponseEntity<>("Error while converting json" + validation.get("error"),
@@ -70,6 +69,20 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PostMapping("/isTested")
+    public ResponseEntity<?> isUserTested(@RequestBody Map<String,String> body) {
+        String token = body.get("token");
+        Map<String, String> validation = _JwtService.validate(token);
+        if (validation.containsKey("error"))
+            return new ResponseEntity<>("Error while converting json" + validation.get("error"),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        if (validation.get("status").equals("invalid"))
+            return new ResponseEntity<>("Token is not valid", HttpStatus.BAD_REQUEST);
+        boolean hasUserTakenTest = _userService.hasUserTakenTest(token, filePath);
+        Map<String, String> response = new HashMap<>();
+        response.put("hasUserTakenTest", String.valueOf(hasUserTakenTest));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
     @GetMapping("/test")
     public ResponseEntity<String> getMethodName() {
         return new ResponseEntity<String>("test", HttpStatus.OK);
