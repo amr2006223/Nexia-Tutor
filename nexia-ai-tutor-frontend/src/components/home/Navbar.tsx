@@ -26,6 +26,7 @@ const Navbar = (props: NavbarProps) => {
           <div className="flex gap-10 font-medium py-4 text-[#CDEBC5]">
             <NavbarLink href="/tutoring/my-learning">My Learning</NavbarLink>
             <NavbarLink href="/screening/games/1">Test</NavbarLink>
+            <NavbarLink href="/tutoring/user-analysis">My Data</NavbarLink>
           </div>
         )}
       </div>

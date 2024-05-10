@@ -18,7 +18,7 @@ import com.example.report_generation.report_generation.models.User;
 public class UserConsumer {
      private static final Logger LOGGER = LoggerFactory.getLogger(UserConsumer.class);
      @Autowired
-     UserRepository userRepository;
+     private UserRepository userRepository;
      @KafkaListener(topics = "${topics.user}")
      public void Consume(UserEvent userEvent){
         LOGGER.info(String.format("User event recieved => %s" , userEvent.toString()));

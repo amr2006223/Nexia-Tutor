@@ -4,21 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.nexia.nexia.models.DyslexiaType;
 import com.nexia.nexia.models.Game;
-import com.nexia.nexia.models.Lesson;
 import com.nexia.nexia.models.User;
 import com.nexia.nexia.repositories.DyslexiaTypeRepository;
 import com.nexia.nexia.repositories.GameRepository;
-import com.nexia.nexia.services.iservices.IGameService;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
-public class GameService extends CrudOperations<Game, Long, GameRepository> implements IGameService {
+public class GameService extends CrudOperations<Game, Long, GameRepository> {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private LessonService lessonJsonService;
     @Autowired
     private GameRepository gameRepository;
     @Autowired
@@ -26,37 +23,6 @@ public class GameService extends CrudOperations<Game, Long, GameRepository> impl
 
     public GameService(GameRepository repository) {
         super(repository);
-    }
-
-    @Override
-    public Map<String, Object> getGamesForLesson(String lessonName, String token) {
-        try {
-            // Get user details and check if the user exists
-            User user = userService.getEntityById(token);
-            if (user == null) return null;
-
-            // Get lesson details and check if the lesson exists
-            Lesson lessonDetails = lessonJsonService.getEntityById(lessonName);
-            if (lessonDetails == null) return null;
-            
-            // Get a set of user dyslexia types
-            Set<DyslexiaType> dyslexiaTypes = user.getDyslexia_types();
-
-            // Get all games for the for dyslexia type
-            List<Game> gamesList = new ArrayList<>();
-            for (DyslexiaType dyslexiaType : dyslexiaTypes) {
-                List<Game> gamesForType = getGamesForDyslexiaType(dyslexiaType.getId());
-                gamesList.addAll(gamesForType);
-            }
-            Map<String, Object> jsonResponse = new HashMap<>();
-            jsonResponse.put("lesson_name", lessonDetails.getLessonName());
-            jsonResponse.put("keywords", lessonDetails.getKeywords());
-            jsonResponse.put("games", gamesList);
-            return jsonResponse;
-    
-        } catch (Exception e) {
-            return null;
-        }
     }
 
     private List<Game> getGamesForDyslexiaType(String dyslexiaTypeId) {
@@ -67,15 +33,28 @@ public class GameService extends CrudOperations<Game, Long, GameRepository> impl
             return gameRepository.findByDyslexiaType(dyslexiaType);
         }
     }
-    
-    public List<Game> getGamesForUser(String token){
+
+    public List<Game> getGamesForUser(String token) {
         User user = userService.getEntityById(token);
-        if(user == null) return null;
+        if (user == null)
+            return null;
         List<Game> userGames = new ArrayList<Game>();
         for (DyslexiaType dyslexiaType : user.getDyslexia_types()) {
             userGames.addAll(getGamesForDyslexiaType(dyslexiaType.getId()));
         }
         return userGames;
+    }
+
+    public List<Long> getAllGamesIds() {
+        List<Game> games = gameRepository.findAll();
+        List<Long> gamesIds = games.stream().map(Game::getId).collect(Collectors.toList());
+        return gamesIds;
+    }
+
+    public List<Game> getAllGames() {
+        List<Game> games = gameRepository.findAll();
+        // return only id, game_name of games
+        return games;
     }
 
 }

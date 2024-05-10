@@ -36,6 +36,7 @@ public class AuthController {
         if(userDTO == null) return new ResponseEntity<>("Error While Adding Users",HttpStatus.OK);
         return new ResponseEntity<>(userDTO,HttpStatus.OK);
     }
+    
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
         String token = authService.login(authRequest);
@@ -44,10 +45,12 @@ public class AuthController {
         responseBody.put("token", token);
         return new ResponseEntity<>(responseBody,HttpStatus.OK);
     }
+
     @PostMapping("/generate")
     public ResponseEntity<String> getToken(@RequestBody String uuid) {
         return new ResponseEntity<String>(authService.generateToken(uuid),HttpStatus.OK);
     }
+
     @PostMapping("/validate")
     public ResponseEntity<Map<String, String>> validate(@RequestBody Map<String,String> body) {
         Map<String, String> response = new HashMap<>();
@@ -58,6 +61,7 @@ public class AuthController {
         response.put("status", "invalid");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
     @PostMapping("/token/getPayload")
     public String getPayload(@RequestBody Map<String,String> body) {
         String token = body.get("token");

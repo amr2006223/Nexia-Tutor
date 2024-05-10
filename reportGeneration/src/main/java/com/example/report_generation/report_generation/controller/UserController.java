@@ -1,9 +1,9 @@
 package com.example.report_generation.report_generation.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.http.protocol.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.report_generation.report_generation.models.User;
@@ -54,21 +53,17 @@ public class UserController {
         return new ResponseEntity<User>(_userService.deleteUserById(userId, filePath), HttpStatus.OK);
     }
 
-    @PostMapping("/isTested")
-    public ResponseEntity<?> isTested(@RequestBody Map<String, String> body) {
-        String token = body.get("token");
+    @GetMapping("/isTested/{token}")
+    public ResponseEntity<?> isTested(@PathVariable String token) {
         Map<String, String> validation = _JwtService.validate(token);
         if (validation.containsKey("error"))
             return new ResponseEntity<>("Error while converting json" + validation.get("error"),
                     HttpStatus.INTERNAL_SERVER_ERROR);
         if (validation.get("status").equals("invalid"))
             return new ResponseEntity<>("Token is not valid", HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(_userService.hasUserTakenTest(token, filePath), HttpStatus.OK);
+        boolean hasUserTakenTest = _userService.hasUserTakenTest(token, filePath);
+        Map<String, String> response = new HashMap<>();
+        response.put("hasUserTakenTest", String.valueOf(hasUserTakenTest));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-    @GetMapping("/test")
-    public ResponseEntity<String> getMethodName() {
-        return new ResponseEntity<String>("test", HttpStatus.OK);
-    }
-
 }

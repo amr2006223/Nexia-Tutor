@@ -9,6 +9,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
+import com.basedomain.basedomain.dto.Constants;
 import com.basedomain.basedomain.dto.UserDTO;
 import com.basedomain.basedomain.dto.UserEvent;
 
@@ -35,7 +36,7 @@ public class UserProducer {
         kafkaTemplate.send(message);
     }
 
-    public boolean broadcastUser(UserDTO user, UserEvent.Status status, String message) {
+    public boolean broadcastUser(UserDTO user, Constants.Status status, String message) {
         try {
             UserEvent userEvent = new UserEvent();
             userEvent.setStatus(status);

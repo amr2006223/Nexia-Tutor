@@ -36,7 +36,10 @@ public class JwtService {
 
         // Send a POST request and retrieve the response
         ResponseEntity<String> response = restTemplate.postForEntity(microserviceUrl, requestEntity, String.class);
-
+        // Check if the response is null
+        if (response == null) {
+            throw new RuntimeException("Token is null"); // Handle the null case appropriately in your code
+        }
         // Return the UUID from the response body
         return response.getBody();
     }

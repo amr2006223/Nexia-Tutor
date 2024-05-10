@@ -1,7 +1,12 @@
-import { useLessonStore } from "@/shared/state/uploadedLessons";
 import { lessonFileData } from "@/types/lessons/fileData";
 import { FiFileText, FiTrash2 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
+import { getGamesForUser, setGamesInCookies } from "@/services/games/getGamesForUser";
+import { GameModel } from "@/types/game";
+import { useState } from "react";
+import ProgressBarComponent from "@/shared/components/progress/progressBar";
+import { saveFileNameServerSide } from "@/services/files/fileName";
+
 type FileRowProps = {
   index: number;
   file: lessonFileData;
@@ -10,28 +15,42 @@ type FileRowProps = {
 
 const FileRow = (props: FileRowProps) => {
   const router = useRouter();
-  const lessonState = useLessonStore();
+  const [loading, setLoading] = useState(false);
+
   const handleContinue = async () => {
     try {
-      await lessonState.setLessonDetails(props.file.name, props.file.keywords);
-
+      setLoading(true);
+      await saveFileNameServerSide(props.file.name, props.file.keywords);
+      await handleSetGames();
       router.push("/tutoring/today-lesson");
     } catch (error) {
       console.error("Error set keywords on local state: ", error);
     }
   };
 
+  const handleSetGames = async () => {
+    const gamesData = await getGamesForUser();
+    const games: GameModel[] = gamesData.map((game: any) => ({
+      game_id: game.id,
+      game_name: game.game_name,
+    }));
+    setGamesInCookies(games);
+  };
+
   return (
-    <div
-      key={props.file.name}
-      className="flex items-center mt-4 bg-[#CDEBC5] rounded-lg p-4 drop-shadow-lg"
-    >
-      <p className="ml-2">{props.file.name}</p>
-      {buildContinueButton()}
+    <div>
+      <div
+        key={props.file.name}
+        className="flex items-center mt-4 bg-[#CDEBC5] rounded-lg p-4 drop-shadow-lg"
+      >
+        <p className="ml-2">{props.file.name}</p>
+        {buildContinueButton()}
 
-      <FiFileText className="ml-2 h-6 w-6" fill="#3182CE" />
+        <FiFileText className="ml-2 h-6 w-6" fill="#3182CE" />
 
-      {buildRemoveButton()}
+        {buildRemoveButton()}
+      </div>
+      {loading && <ProgressBarComponent />}
     </div>
   );
 
