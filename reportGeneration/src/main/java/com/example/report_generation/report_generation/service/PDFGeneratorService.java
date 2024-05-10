@@ -73,7 +73,7 @@ public class PDFGeneratorService {
 
     private void writeDocument(User user) throws DocumentException, FileNotFoundException {
         String currentDate = pdfUtils.formatUserDate(user);
-        String result = pdfUtils.determineUserResult(user);
+        // String result = pdfUtils.determineUserResult(user);
 
         Document document = pdfUtils.createDocument();
         PdfWriter writer = openPDFWriter(document, user.getId(), currentDate);
@@ -82,7 +82,7 @@ public class PDFGeneratorService {
         pdfUtils.addTitle(document);
         pdfUtils.addDate(document, currentDate);
         pdfUtils.addReportFor(document, user.getUsername());
-        pdfUtils.addResult(document, result);
+        // pdfUtils.addResult(document, result);
         pdfUtils.addMainParagraph(document);
         pdfUtils.addCategoryDiv(document, user);
         pdfUtils.addResultAndRecommendation(document);

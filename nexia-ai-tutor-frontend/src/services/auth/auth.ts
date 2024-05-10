@@ -3,6 +3,7 @@ import { RegisterData, LoginData } from "@/types/auth";
 import axios from "axios";
 import { cookies } from "next/headers";
 import { getUserDetailsService } from "../user/userDetails";
+import { clearFilesFromLocalStorage } from "../files/fileUpload";
 
 export const register = async (data: RegisterData) => {
   try {
@@ -44,6 +45,9 @@ export const checkLoggedInService = async (): Promise<boolean> => {
 
 export const logoutService = async () => {
   cookies().delete("token");
+  cookies().delete("fileName");
+  cookies().delete("games");
+  cookies().delete("keywords");
 };
 export const getTokenValue = async () => {
   return cookies().get("token")?.value;
