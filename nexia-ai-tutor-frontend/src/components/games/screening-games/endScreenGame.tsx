@@ -44,7 +44,13 @@ const EndScreenGameComponent = (props: EndScreenGameComponentProps) => {
         borderRadius: "10px",
       }}
     >
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <img
           src="/assets/images/excited-blue-potato.png"
           alt="Hero"
@@ -52,18 +58,18 @@ const EndScreenGameComponent = (props: EndScreenGameComponentProps) => {
             width: "100px",
             height: "auto",
             marginBottom: "20px",
-            animation: showAnimation ? "stirAnimation 0.5s ease-in-out infinite" : "none",
+            animation: showAnimation
+              ? "stirAnimation 0.5s ease-in-out infinite"
+              : "none",
           }}
         />
         Good Job!
         <Box sx={{ marginBottom: "20px" }}>
           <Button
-            variant="contained"
-            href="#contained-buttons"
-            sx={{ bgcolor: "#3E4772", color: "white" }} // Set background color to #3E4772 and text color to white
+            className="bg-primary font-bold text-light hover:bg-primaryLight"
             onClick={handleNextGameClick}
           >
-            {"Go to Next Game"}
+            Go to Next Game
           </Button>
         </Box>
       </div>
