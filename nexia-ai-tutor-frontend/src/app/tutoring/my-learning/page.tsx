@@ -6,8 +6,6 @@ import { checkIsUserTested } from "@/services/report/userTest";
 const page = async () => {
   const response = await checkIsUserTested();
 
-  console.log("response", response);
-
   // if user did not take the test, redirect to home page
   if (response == "false") {
     redirect("/");
