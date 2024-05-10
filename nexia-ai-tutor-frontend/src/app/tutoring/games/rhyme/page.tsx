@@ -12,7 +12,7 @@ import CounterComponent from "@/shared/components/counter/CounterComponent";
 import FlagIcon from "@mui/icons-material/Flag";
 import { getKeywordDataForRhymeGame } from "@/services/games/rhyme/getKeywordData";
 import useWordSearchParams from "@/shared/hooks/useWordSearchParams";
-
+import { useRouter } from "next/navigation";
 type RhymingGameProps = {
   keyword: RhymingWord;
   otherWords: RhymingWord[];
@@ -20,6 +20,7 @@ type RhymingGameProps = {
 };
 
 const RhymingGamePage = () => {
+  const router = useRouter();
   const { keywordParams } = useWordSearchParams();
   const [response, setResponse] = React.useState<RhymingGameProps | null>(null);
   const [loading, setLoading] = React.useState(true);
@@ -133,6 +134,22 @@ const RhymingGamePage = () => {
             <div style={{ paddingBottom: "60px" }}>
               {response && (
                 <div className="flex flex-col justify-center items-center mt-3">
+                  <div>
+                    <Button
+                      onClick={() => router.back()}
+                      className="font-bold text-base"
+                      variant="contained"
+                      style={{
+                        backgroundColor: "#3E4772",
+                        color: "#CDEBC5",
+                        position: "absolute",
+                        top: "10px",
+                        left: "10px",
+                      }}
+                    >
+                      Back
+                    </Button>
+                  </div>
                   <div className="flex flex-row items-center">
                     <div className="flex text-3xl font-bold ">
                       What word rhymes with
