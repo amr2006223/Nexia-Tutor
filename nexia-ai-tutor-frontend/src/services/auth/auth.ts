@@ -71,7 +71,6 @@ export const checkTokenExpiation = async () => {
         body: JSON.stringify({ token: token }),
       });
       const responseData = await response.json();
-      console.log("response.data.status from function ", responseData.status);
       if (responseData.status === "valid") {
         return true;
       } else {

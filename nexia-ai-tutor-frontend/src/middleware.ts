@@ -4,7 +4,6 @@ import { checkTokenExpiation } from "./services/auth/auth";
 
 export async function middleware(request: NextRequest) {
   const tokenIsvalid = await checkTokenExpiation();
-  console.log("tokenIsvalid from middleware: ", tokenIsvalid);
 
   if (tokenIsvalid) {
     return NextResponse.next();
