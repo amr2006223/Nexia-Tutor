@@ -7,13 +7,11 @@ REM Change directory to "kafka", Open new Terminal, start zookeeper
 cd kafka
 start cmd /k call .\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
 timeout /t 25
-timeout /t 25
+
 REM Open new Terminal, start kafka
 start cmd /k call .\bin\windows\kafka-server-start.bat .\config\server.properties
 timeout /t 5
 cd ..
-
-REM Change directory to configserver, Open new Terminal, start spring boot application
 
 cd configserver
 start cmd /k call mvn spring-boot:run

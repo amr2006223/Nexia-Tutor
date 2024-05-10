@@ -50,7 +50,7 @@ public class DyslexiaTypeProducer {
             dyslexiaTypeEvent.setUserId(userId);
             for (DyslexiaCategory dyslexiaCategory : userCategories) {
                 System.out.println("added category to broadcast");
-                dyslexiaTypesDTOs.add(new DyslexiaTypesDTO(dyslexiaCategory.getName(), dyslexiaCategory.getId()));
+                dyslexiaTypesDTOs.add(new DyslexiaTypesDTO(dyslexiaCategory.getId(), dyslexiaCategory.getName()));
             }
             dyslexiaTypeEvent.setDylsexiaTypes(dyslexiaTypesDTOs);
             sendMessage(dyslexiaTypeEvent);

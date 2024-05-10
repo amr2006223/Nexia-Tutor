@@ -1,13 +1,17 @@
-import useGetFileKeywords from "../hooks/useGetFileKeywords";
+import { GameModel } from "@/types/game";
 import WordComponent from "./wordComponent";
 
-const FileWords = () => {
-  const keywords = useGetFileKeywords();
+type Props = {
+  keywords: string[];
+  games: GameModel[];
+};
+
+const FileWords = async (props: Props) => {
   return (
     <div className="w-full max-w-xl mt-8 p-8 bg-[#E3FFDC] rounded-lg">
       <div className="mt-4 h-96 overflow-y-auto">
-        {keywords.map((word) => (
-          <WordComponent key={word} word={word} />
+        {props.keywords.map((word, index) => (
+          <WordComponent key={index} word={word} games={props.games} />
         ))}
       </div>
     </div>
