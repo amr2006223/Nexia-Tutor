@@ -46,7 +46,7 @@ public class PDFGeneratorController {
         //need to handle this error
         if(user == null){
             System.out.println("user is null");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<String>("User Not Found",HttpStatus.BAD_REQUEST);
         }
         //category detection and get the latest record
         UserData data = _userService.getLatestRecord(user);
@@ -58,7 +58,7 @@ public class PDFGeneratorController {
         response.setHeader(headerKey, headerValue);
         response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
         this._pdfGeneratorService.downloadDocument(response,user);
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/pdf/gen")
@@ -67,10 +67,8 @@ public class PDFGeneratorController {
         String id = _JwtService.extractUUID(token);
         User user = _userService.getUserById(id, userFilePath);
         boolean generated = _pdfGeneratorService.generateDocumentInServer(user);
-        if(!generated) return new ResponseEntity<String>("Falied to generate PDF", HttpStatus.BAD_REQUEST);
+        if(!generated) return new ResponseEntity<String>("Failed to generate PDF", HttpStatus.BAD_REQUEST);
         return new ResponseEntity<String>("Pdf Generated Successfully", HttpStatus.OK);
-
-        
     }
 
 }
