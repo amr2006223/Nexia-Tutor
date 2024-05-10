@@ -9,44 +9,52 @@ import org.springframework.context.annotation.Configuration;
 import com.example.gateway.gateway.filter.AuthenticationFilter;
 
 @Configuration
+/**
+ * Configuration class for defining routes in the gateway.
+ */
 public class RoutingConfig {
-    @Autowired
-    private AuthenticationFilter authenticationFilter;
+        @Autowired
+        private AuthenticationFilter authenticationFilter;
 
-    @Bean
-    public RouteLocator configureRoute(RouteLocatorBuilder builder) {
-        return builder.routes()
-                .route("report-generation", r -> r
-                        .path("/report-generation/**")
-                        // .filters(f -> f.filter(authenticationFilter.apply(new AuthenticationFilter.Config())))
-                        .uri("lb://report-generation"))
+        @Bean
+        public RouteLocator configureRoute(RouteLocatorBuilder builder) {
+                return builder.routes()
+                                .route("report-generation", r -> r
+                                                .path("/report-generation/**")
+                                                // .filters(f -> f.filter(authenticationFilter.apply(new
+                                                // AuthenticationFilter.Config())))
+                                                .uri("lb://report-generation"))
 
-                .route("nexia-tutor", r -> r
-                        .path("/nexia-tutor/**")
-                        // .filters(f -> f.filter(authenticationFilter.apply(new AuthenticationFilter.Config())))
-                        .uri("lb://nexia-tutor"))
+                                .route("nexia-tutor", r -> r
+                                                .path("/nexia-tutor/**")
+                                                // .filters(f -> f.filter(authenticationFilter.apply(new
+                                                // AuthenticationFilter.Config())))
+                                                .uri("lb://nexia-tutor"))
 
-                .route("identity-service", r -> r
-                        .path("/identity-service/**")
-                        // .filters(f -> f.filter(authenticationFilter.apply(new
-                                        // AuthenticationFilter.Config())))
-                        .uri("lb://identity-service"))
+                                .route("identity-service", r -> r
+                                                .path("/identity-service/**")
+                                                // .filters(f -> f.filter(authenticationFilter.apply(new
+                                                // AuthenticationFilter.Config())))
+                                                .uri("lb://identity-service"))
 
-                .route("screening", r -> r
-                        .path("/screening/**")
-                        // .filters(f -> f.filter(authenticationFilter.apply(new AuthenticationFilter.Config())))
-                        .uri("http://localhost:5002"))
+                                .route("screening", r -> r
+                                                .path("/screening/**")
+                                                // .filters(f -> f.filter(authenticationFilter.apply(new
+                                                // AuthenticationFilter.Config())))
+                                                .uri("http://localhost:5002"))
 
-                .route("scraping", r -> r
-                        .path("/scraping/**")
-                        // .filters(f -> f.filter(authenticationFilter.apply(new AuthenticationFilter.Config())))
-                        .uri("http://localhost:5001"))
+                                .route("scraping", r -> r
+                                                .path("/scraping/**")
+                                                // .filters(f -> f.filter(authenticationFilter.apply(new
+                                                // AuthenticationFilter.Config())))
+                                                .uri("http://localhost:5001"))
 
-                .route("extracting", r -> r
-                        .path("/extracting/**")
-                        // .filters(f -> f.filter(authenticationFilter.apply(new AuthenticationFilter.Config())))
-                        .uri("http://localhost:5000"))
+                                .route("extracting", r -> r
+                                                .path("/extracting/**")
+                                                // .filters(f -> f.filter(authenticationFilter.apply(new
+                                                // AuthenticationFilter.Config())))
+                                                .uri("http://localhost:5000"))
 
-                .build();
-    }
+                                .build();
+        }
 }

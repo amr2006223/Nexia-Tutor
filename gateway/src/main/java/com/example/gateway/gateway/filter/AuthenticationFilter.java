@@ -10,6 +10,8 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
+
+    // Autowiring RouteValidator and RestTemplate beans
     @Autowired
     private RouteValidator routeValidator;
     @Autowired
@@ -22,25 +24,29 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     @Override
     public GatewayFilter apply(Config config) {
         return ((exchange, chain) -> {
-            // Checks if the endpoint in the request is one of the open endpoints
+            // Checks if the requested endpoint is secured
+            // Uses the RouteValidator bean to determine if the endpoint is open or secured
             if (routeValidator.isSecured.test(exchange.getRequest())) {
-                // Checks if there is an Authorization Header
+                // Checks if the request contains an Authorization Header
+                // Throws an exception if the header is missing
                 if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
                     System.out.println("Missing Authorization Header");
                     throw new RuntimeException("Missing Authorization Header");
                 }
-                // Checks if the authorization header is a jwt token by checking if it starts
-                // with bearer
+                // Extracts the JWT token from the Authorization Header
+                // Throws an exception if the authentication header is malformed
                 String authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
                 if (authHeader != null && authHeader.startsWith("Bearer "))
                     authHeader = authHeader.substring(7);
                 else
                     throw new RuntimeException("Wrong Authentication Header");
-                // Validate the token from identity Service microservice
+                // Validates the JWT token by making a request to the identity Service
+                // microservice
+                // Throws an exception if the token is invalid
+                // Continues with the filter chain if the token is valid
                 try {
                     restTemplate.postForObject("http://localhost:8080/identity-service/auth/validate", authHeader,
                             String.class);
-                    // Throw error if not validated
                 } catch (HttpClientErrorException e) {
                     throw e;
                 }
@@ -49,6 +55,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
         });
     }
 
+    // Configuration class for the AuthenticationFilter
     public static class Config {
     }
 }
