@@ -5,7 +5,10 @@ class RhymeScraper:
     def fetch_rhymes(self,word):
         # The website we're using to find rhymes
         base_url = "https://www.rhymezone.com"
-
+        
+        # lower case the word
+        word = word.lower()
+        
         # Construct the URL to search for rhymes for the provided word
         search_url = f"{base_url}/r/rhyme.cgi?Word={word}&org1=syl&org2=l&org3=y&typeofrhyme=perfect"
 
@@ -18,7 +21,12 @@ class RhymeScraper:
             soup = BeautifulSoup(response.text, 'html.parser')
 
             # Find all the words on the website that are rhymes
+            # rhyme_elements = soup.find_all('a', class_='r')
+            # Find all the <a> tags with 'r' class
             rhyme_elements = soup.find_all('a', class_='r')
+
+            # Filter out the elements with 'r' class
+            rhyme_elements = [element for element in rhyme_elements if 'r' in element.get('class', [])]
 
             # Try to get specific rhymes, or just take the first three if those don't exist
             specific_indices = [3, 10, 15]
