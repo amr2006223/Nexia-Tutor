@@ -39,14 +39,16 @@ const ThirdScreeningGamePage = async () => {
   const goalLetterSound = await getTextSound(goalLetter);
 
   return (
-    <FindLetterGame
-      goalLetterSound={goalLetterSound}
-      gameNumber={gameNumber}
-      goalLetter={goalLetter}
-      wordsList={wordsLists}
-      nextGameLink={nextGameLink}
-      isLastGame={false}
-    />
+    <div>
+      <FindLetterGame
+        goalLetterSound={goalLetterSound}
+        gameNumber={gameNumber}
+        goalLetter={goalLetter}
+        wordsList={wordsLists}
+        nextGameLink={nextGameLink}
+        isLastGame={false}
+      />
+    </div>
   );
 };
 

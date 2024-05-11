@@ -45,20 +45,22 @@ const FourthScreeningGamePage = async () => {
   const goalLetter = "d";
 
   const nextGameLink = "5";
-  
+
   const gameNumber = 4;
 
   const goalLetterSound = await getTextSound(goalLetter);
 
   return (
-    <FindLetterGame
-      goalLetterSound={goalLetterSound}
-      gameNumber={gameNumber}
-      goalLetter={goalLetter}
-      wordsList={wordsLists}
-      nextGameLink={nextGameLink}
-      isLastGame={false}
-    />
+    <div>
+      <FindLetterGame
+        goalLetterSound={goalLetterSound}
+        gameNumber={gameNumber}
+        goalLetter={goalLetter}
+        wordsList={wordsLists}
+        nextGameLink={nextGameLink}
+        isLastGame={false}
+      />
+    </div>
   );
 };
 

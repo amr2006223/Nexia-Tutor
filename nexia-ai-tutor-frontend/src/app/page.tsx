@@ -1,7 +1,7 @@
-import Footer from "@/components/home/Footer";
+import Navbar from "@/components/home/Navbar";
 import Hero from "@/components/home/Hero";
 import Map from "@/components/home/map";
-import Navbar from "@/components/home/Navbar";
+import Footer from "@/components/home/Footer";
 import { checkLoginAndGetUserName } from "@/services/auth/auth";
 
 const HomePage = async () => {

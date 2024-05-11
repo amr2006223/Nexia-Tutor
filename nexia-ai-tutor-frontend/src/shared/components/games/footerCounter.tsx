@@ -18,7 +18,7 @@ const FooterCounter = (props: FooterCounterProps) => {
         position: "fixed",
         alignItems: "center",
         marginTop: "3px",
-        padding: "0.75rem",
+        padding: "0.5rem",
         backgroundColor: "white",
         width: "100%",
         bottom: "0",

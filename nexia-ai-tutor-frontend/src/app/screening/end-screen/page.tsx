@@ -10,7 +10,6 @@ const ScreeningEndScreenPage = async () => {
   return (
     <div>
       <Navbar isLoggedIn={isLoggedIn} userName={userName} />
-
       <Container component="main" maxWidth="xs" className="pt-14">
         <FinishScreeningTest />
         <GamesDataReport />

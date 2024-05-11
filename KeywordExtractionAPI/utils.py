@@ -47,7 +47,7 @@ def preprocess_text(text):
     text = re.sub(r'^[•●∙‣⁃◦⦿⦾◯◉⚫⚬⚪◼◻⬤⚆⚇✴️⦁⚈]+|\d+\.\s+', '', text)
     # Remove stop words
     punctuation = set(string.punctuation)
-    text = ' '.join([word.lower() for word in tokenize_words(text) if word.lower() not in stop_words and word.lower() not in punctuation])
+    text = ' '.join([word.lower() for word in text.split() if word.lower() not in stop_words and word.lower() not in punctuation])
     # Remove code-related content using regex
     text = re.sub(r'\b\S+\.py\S*\b', '', text)
     text = re.sub(r'\b\S+\.html?\S*\b', '', text)
