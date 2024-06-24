@@ -33,3 +33,10 @@ class DataPreProcessing:
             # Drop rows based on the mask
             dataframe = dataframe[~mask]
         return dataframe
+    
+    def handle_missing_data(self, dataframe):
+        stateOfNUll = dataframe.isnull().any()
+        for i, state in enumerate(stateOfNUll):
+            if state:
+                dataframe[stateOfNUll.index[i]].fillna(round(dataframe[stateOfNUll.index[i]].mean(), 4), inplace=True)
+        return dataframe 
