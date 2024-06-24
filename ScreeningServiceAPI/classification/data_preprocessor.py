@@ -1,17 +1,16 @@
 import csv
+import pandas as pd
 from collections import defaultdict
 
 class DataPreProcessing:
-    def SeparateColumns(self,data):
+    def SeparateColumns(self, data):
         columns = defaultdict(list)
         with open(data, 'r') as f:
             reader = csv.reader(f, delimiter=';')
             headers = next(reader)
-            column_nums = range(len(headers))
-
             for row in reader:
-                for i in column_nums:
-                    columns[headers[i]].append(row[i])
+                for h, v in zip(headers, row):
+                    columns[h].append(v)
         return dict(columns)
 
     def cleanData(self,data):
