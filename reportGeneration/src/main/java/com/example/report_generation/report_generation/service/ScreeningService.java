@@ -14,8 +14,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class ScreeningService {
-   private static final String AVERAGE_URL = "http://127.0.0.1:5000/average";
-    
+    private static final String AVERAGE_URL = "http://localhost:8080/screening/average";
+
     @Autowired
     private RestTemplate restTemplate;
 
@@ -46,7 +46,8 @@ public class ScreeningService {
 
     private List<DyslexiaCategory> parseResponseToCategories(String responseBody) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        TypeReference<List<DyslexiaCategory>> typeReference = new TypeReference<List<DyslexiaCategory>>() {};
+        TypeReference<List<DyslexiaCategory>> typeReference = new TypeReference<List<DyslexiaCategory>>() {
+        };
         return objectMapper.readValue(responseBody, typeReference);
     }
 
