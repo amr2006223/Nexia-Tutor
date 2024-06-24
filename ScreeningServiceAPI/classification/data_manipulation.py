@@ -23,6 +23,7 @@ class DataManipulator:
     def get_average(self,start, end, data):
         average = 0.0
         count = 0
+        data = data[data["Dyslexia"] == 0]
         for i in range(start,end+1):
             average += data[["Accuracy"+str(i)]].mean()["Accuracy"+str(i)]
             count +=1
