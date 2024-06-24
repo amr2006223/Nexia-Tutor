@@ -1,6 +1,7 @@
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from classification.data_preprocessor import DataPreProcessing
+from imblearn.over_sampling import SMOTE
 class RandomForestModelTrainer:
     model = ""
     X_train = ""
@@ -18,6 +19,7 @@ class RandomForestModelTrainer:
         desktopData = dataManipulator.DictToDataframe(columns)
         dataPreProcessing.cleanData(desktopData)
         desktopData = dataPreProcessing.removeErroredAccuracy(desktopData)
+        desktopData = dataPreProcessing.handle_missing_data(desktopData)
         cleanedDesktopData = desktopData
         # Split and Train Data
         self.splitData(desktopData)
