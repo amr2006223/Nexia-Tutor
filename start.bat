@@ -3,15 +3,15 @@
 REM Change directory to the directory containing this batch file
 cd /d "%~dp0"
 
-REM Change directory to "kafka", Open new Terminal, start zookeeper
-cd kafka
-start cmd /k call .\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
-timeout /t 25
+@REM REM Change directory to "kafka", Open new Terminal, start zookeeper
+@REM cd kafka
+@REM start cmd /k call .\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
+@REM timeout /t 25
 
-REM Open new Terminal, start kafka
-start cmd /k call .\bin\windows\kafka-server-start.bat .\config\server.properties
-timeout /t 5
-cd ..
+@REM REM Open new Terminal, start kafka
+@REM start cmd /k call .\bin\windows\kafka-server-start.bat .\config\server.properties
+@REM timeout /t 5
+@REM cd ..
 
 cd configserver
 start cmd /k call mvn spring-boot:run
