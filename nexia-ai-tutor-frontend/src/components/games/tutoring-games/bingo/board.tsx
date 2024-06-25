@@ -12,6 +12,8 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { useRouter } from "next/navigation";
 import { playSoundFromGoogle } from "@/shared/utils/play-sounds";
 import Swal from "sweetalert2";
+import StepsCard from "@/shared/components/card/stepsCard";
+import BackButtonComponent from "@/shared/components/buttons/backButton";
 
 type Props = {
   size: number;
@@ -248,61 +250,50 @@ const BingoBoard = ({ size, letters, keyword }: Props) => {
   };
 
   return (
-    <div>
-      <div>
-        <Button
-          onClick={() => router.back()}
-          className="font-bold text-base"
-          variant="contained"
-          style={{
-            backgroundColor: "#3E4772",
-            color: "#CDEBC5",
-            position: "absolute",
-            top: "10px",
-            left: "10px",
-          }}
-        >
-          Back
-        </Button>
+    <div className="flex flex-col h-screen">
+      {/* Header */}
+      <div className="flex justify-between items-center p-2 relative">
+        <BackButtonComponent />
+        <div>
+          <StepsCard
+            title="Bingo Game"
+            steps={[
+              "Click on the letter that you hear",
+              "Collect the words to complete BINGO",
+            ]}
+          />
+        </div>
+        <div></div>
       </div>
-      {/* if  gridContent not loaded load progress bar*/}
-      {gridContent.length > 0 ? (
-        <div className="container mx-auto">
-          <br />
-          <div
-            className="text-center font-bold text-2xl"
-            style={{
-              color: "#3E4772",
-            }}
-          >
-            BINGO
-          </div>
-          <br />
-          <div
-            className="p-6 mx-4 flex flex-col items-center justify-center"
-            style={{ backgroundColor: "#E3FFDC" }}
-          >
-            <div className="text-center">
-              <Button
-                startIcon={
-                  <VolumeUpIcon
-                    style={{ color: "#CDEBC5", fontSize: "2rem" }}
-                  />
-                }
-                className="font-bold text-2xl"
-                variant="contained"
-                style={{ backgroundColor: "#3E4772", color: "#CDEBC5" }}
-                onClick={async () => {
-                  await playSoundFromGoogle(spelledLetter!.sound);
-                }}
-              >
-                Letter sound
-              </Button>
-            </div>
-            <br />
-            <Grid container spacing={6}>
-              {gridContent &&
-                gridContent.map((index) => (
+
+      {/* Body */}
+      <div className="flex-grow flex flex-col justify-center items-center p-4">
+        {/* If gridContent is not loaded, show ProgressBarComponent */}
+        {gridContent.length > 0 ? (
+          <div className="container mx-auto">
+            <div
+              className="p-6 mx-4 flex flex-col items-center justify-center rounded-2xl"
+              style={{ backgroundColor: "#E3FFDC" }}
+            >
+              <div className="text-center mb-4">
+                <Button
+                  startIcon={
+                    <VolumeUpIcon
+                      style={{ color: "#CDEBC5", fontSize: "2rem" }}
+                    />
+                  }
+                  className="font-bold text-2xl"
+                  variant="contained"
+                  style={{ backgroundColor: "#3E4772", color: "#CDEBC5" }}
+                  onClick={async () => {
+                    await playSoundFromGoogle(spelledLetter!.sound);
+                  }}
+                >
+                  Letter sound
+                </Button>
+              </div>
+              <Grid container spacing={6}>
+                {gridContent.map((index) => (
                   <Grid item xs={12 / size} key={index.index}>
                     <LetterComponentBingo
                       letter={index}
@@ -310,12 +301,13 @@ const BingoBoard = ({ size, letters, keyword }: Props) => {
                     />
                   </Grid>
                 ))}
-            </Grid>
+              </Grid>
+            </div>
           </div>
-        </div>
-      ) : (
-        <ProgressBarComponent />
-      )}
+        ) : (
+          <ProgressBarComponent />
+        )}
+      </div>
     </div>
   );
 };

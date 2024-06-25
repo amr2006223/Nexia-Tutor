@@ -5,6 +5,8 @@ import React, { useEffect, useState } from "react";
 import useWordSearchParams from "@/shared/hooks/useWordSearchParams";
 import { useRouter } from "next/navigation";
 import { Button } from "@mui/material";
+import BackButtonComponent from "@/shared/components/buttons/backButton";
+import StepsCard from "@/shared/components/card/stepsCard";
 type Boxes = {
   id: number;
   image: string;
@@ -135,69 +137,71 @@ const page = () => {
       {loading ? (
         <ProgressBarComponent />
       ) : (
-        <div className="flex flex-col items-center justify-center h-screen">
-          <div>
-            <Button
-              onClick={() => router.back()}
-              className="font-bold text-base"
-              variant="contained"
-              style={{
-                backgroundColor: "#3E4772",
-                color: "#CDEBC5",
-                position: "absolute",
-                top: "10px",
-                left: "10px",
-              }}
-            >
-              Back
-            </Button>
-          </div>
-          <div>
-            <progress className="w-60" value={progress} max="100"></progress>
-          </div>
-
-          <div className="flex flex-row items-center justify-between">
-            <div className="px-2">{infoText}</div>
+        <div className="flex flex-col h-screen relative">
+          {/* Header */}
+          <div className="flex justify-between items-center p-4">
+            <BackButtonComponent />
             <div>
-              {selectedImage?.show && (
-                <img
-                  src={selectedImage.image}
-                  alt="selected"
-                  width={75}
-                  height={75}
-                />
-              )}
+              <StepsCard
+                title="Memory Game"
+                steps={[
+                  "Memorize the Pictures",
+                  "Choose the correct box with the image",
+                ]}
+              />
             </div>
+            <div></div>
           </div>
 
-          <div className="bg-white shadow-lg border-2 border-black rounded-lg m-4 p-4">
-            <div className={`grid grid-cols-2 gap-4`}>
-              {selectedImage?.show ? (
-                <>
-                  {boxes.map((box, index) => (
-                    <div
-                      key={box.id}
-                      onClick={() => checkAnswer(box.id)}
-                      className={`flex items-center justify-center rounded-lg h-24 w-24 text-2xl cursor-pointer font-bold border-2 border-black ${box.color} hover:text-white transition duration-300 ease-in-out`}
-                    >
-                      {box.id}
-                    </div>
-                  ))}
-                </>
-              ) : (
-                <>
-                  {boxes.map((box, index) => (
-                    <img
-                      key={index}
-                      src={box.image}
-                      style={{
-                        width: "100px",
-                        height: "100px",
-                      }}
-                    />
-                  ))}
-                </>
-              )}
+          {/* Body */}
+          <div className="flex flex-col items-center justify-center flex-grow">
+            <div className="mb-4">
+              <progress className="w-60" value={progress} max="100"></progress>
+            </div>
+
+            <div className="flex flex-col items-center justify-between mb-4 w-full px-4">
+              <div className="px-2">{infoText}</div>
+              <div>
+                {selectedImage?.show && (
+                  <img
+                    src={selectedImage.image}
+                    alt="selected"
+                    width={75}
+                    height={75}
+                  />
+                )}
+              </div>
+            </div>
+
+            <div className="bg-white shadow-lg border-2 border-black rounded-lg m-4 p-4">
+              <div className="grid grid-cols-2 gap-4">
+                {selectedImage?.show ? (
+                  <>
+                    {boxes.map((box, index) => (
+                      <div
+                        key={box.id}
+                        onClick={() => checkAnswer(box.id)}
+                        className={`flex items-center justify-center rounded-lg h-24 w-24 text-2xl cursor-pointer font-bold border-2 border-black ${box.color} hover:text-white transition duration-300 ease-in-out`}
+                      >
+                        {box.id}
+                      </div>
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    {boxes.map((box, index) => (
+                      <img
+                        key={index}
+                        src={box.image}
+                        style={{
+                          width: "100px",
+                          height: "100px",
+                        }}
+                      />
+                    ))}
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>

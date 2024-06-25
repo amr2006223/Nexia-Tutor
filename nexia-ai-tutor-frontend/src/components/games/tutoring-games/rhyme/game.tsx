@@ -13,6 +13,8 @@ import FlagIcon from "@mui/icons-material/Flag";
 import { getKeywordDataForRhymeGame } from "@/services/games/rhyme/getKeywordData";
 import useWordSearchParams from "@/shared/hooks/useWordSearchParams";
 import { useRouter } from "next/navigation";
+import BackButtonComponent from "@/shared/components/buttons/backButton";
+import StepsCard from "@/shared/components/card/stepsCard";
 
 type RhymeGamePageComponentProps = {
   keyword: RhymingWord;
@@ -140,27 +142,25 @@ const RhymeGamePageComponent = () => {
           onMouseOverCapture={handleFirstPlay}
           style={{ minHeight: "100vh", position: "relative" }}
         >
-          <div style={{ paddingBottom: "60px" }}>
+          {/* Header */}
+          <div className="flex justify-between items-center p-2 relative">
+            <BackButtonComponent />
+            <StepsCard
+              title="Rhyme Game"
+              steps={["Choose the words that rhyme with the keyword you hear"]}
+            />
+            <div></div>
+          </div>
+
+          {/* Body */}
+          <div
+            className="flex flex-col justify-center items-center p-4"
+            style={{ paddingBottom: "60px" }}
+          >
             {response && (
-              <div className="flex flex-col justify-center items-center mt-3">
-                <div>
-                  <Button
-                    onClick={() => router.back()}
-                    className="font-bold text-base"
-                    variant="contained"
-                    style={{
-                      backgroundColor: "#3E4772",
-                      color: "#CDEBC5",
-                      position: "absolute",
-                      top: "10px",
-                      left: "10px",
-                    }}
-                  >
-                    Back
-                  </Button>
-                </div>
-                <div className="flex flex-row items-center">
-                  <div className="flex text-3xl font-bold ">
+              <>
+                <div className="flex flex-row items-center mt-3">
+                  <div className="text-3xl font-bold">
                     What word rhymes with
                   </div>
                   <img
@@ -176,7 +176,7 @@ const RhymeGamePageComponent = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-3 grid-flow-row gap-4">
+                <div className="grid grid-cols-3 gap-4 mt-4">
                   {response.otherWords.map((word, index) => (
                     <SecondryWordRhymeComponent
                       key={index}
@@ -186,6 +186,7 @@ const RhymeGamePageComponent = () => {
                     />
                   ))}
                 </div>
+
                 <div
                   style={{
                     position: "fixed",
@@ -213,7 +214,7 @@ const RhymeGamePageComponent = () => {
                     icon={FlagIcon}
                   />
                 </div>
-              </div>
+              </>
             )}
           </div>
         </div>
