@@ -146,7 +146,7 @@ const BingoBoard = ({ size, letters, keyword }: Props) => {
     try {
       Swal.fire({
         title: "Congratulations!",
-        text: "You you compelete Bingo",
+        text: "You compelete Bingo",
         icon: "success",
       });
       await playSoundFromGoogle(congratsSound);

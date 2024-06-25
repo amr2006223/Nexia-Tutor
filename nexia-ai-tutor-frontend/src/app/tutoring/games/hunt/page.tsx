@@ -7,13 +7,13 @@ import {
 } from "@/services/text-to-speech/textSound";
 import { Box, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { getWordImage } from "@/services/images/getWordImage";
 import Swal from "sweetalert2";
 import useWordSearchParams from "@/shared/hooks/useWordSearchParams";
+import BackButtonComponent from "@/shared/components/buttons/backButton";
+import StepsCard from "@/shared/components/card/stepsCard";
 
 const LetterHuntPage = () => {
-  const router = useRouter();
   const { keywordParams } = useWordSearchParams();
   const [keywordSound, setKeywordSound] = useState("");
   const [keywordImage, setKeywordImage] = useState("");
@@ -77,52 +77,53 @@ const LetterHuntPage = () => {
   return (
     <div>
       {open ? (
-        <div className="flex flex-col items-center justify-center h-screen">
-          <div>
-            <Button
-              onClick={() => router.back()}
-              className="font-bold text-base"
-              variant="contained"
-              style={{
-                backgroundColor: "#3E4772",
-                color: "#CDEBC5",
-                position: "absolute",
-                top: "10px",
-                left: "10px",
-              }}
-            >
-              Back
-            </Button>
+        <div className="flex flex-col h-screen">
+          {/* Header */}
+          <div className="flex justify-between items-center p-3">
+            <div>
+              <BackButtonComponent />
+            </div>
+            <div>
+              <StepsCard
+                title="Hunt Game"
+                steps={[
+                  "Listen to the word",
+                  "Click on the letter that the word starts with",
+                ]}
+              />
+            </div>
+            <div></div>
           </div>
 
-          <div className="text-center font-bold text-3xl">Hunt Game</div>
-          <Box
-            component="img"
-            sx={{
-              maxHeight: { xs: 250, md: 250 },
-              maxWidth: { xs: 250, md: 250 },
-            }}
-            alt={keywordParams}
-            src={keywordImage}
-          />
-
-          <br />
-          <div
-            className="flex flex-col items-center ustify-center p-5 rounded-2xl"
-            style={{
-              backgroundColor: "#E3FFDC",
-            }}
-          >
-            <Button
-              className="font-bold text-2xl"
-              variant="contained"
-              style={{ backgroundColor: "#3E4772", color: "#CDEBC5" }}
-              onClick={handleListen}
+          {/* Body */}
+          <div className="flex flex-col items-center justify-center">
+            <Box
+              component="img"
+              sx={{
+                maxHeight: { xs: 500, md: 500 },
+                maxWidth: { xs: 500, md: 500 },
+                padding: 2,
+              }}
+              alt={keywordParams}
+              src={keywordImage}
+            />
+            <div
+              className="flex flex-col items-center justify-center p-5 rounded-2xl"
+              style={{
+                backgroundColor: "#E3FFDC",
+              }}
             >
-              Listen
-            </Button>
-            <br />
-            <LettersGrid onClickLetter={handleOnClickLetter} />
+              <Button
+                className="font-bold text-2xl mb-4"
+                variant="contained"
+                style={{ backgroundColor: "#3E4772", color: "#CDEBC5" }}
+                onClick={handleListen}
+              >
+                Listen
+              </Button>
+
+              <LettersGrid onClickLetter={handleOnClickLetter} />
+            </div>
           </div>
         </div>
       ) : (
