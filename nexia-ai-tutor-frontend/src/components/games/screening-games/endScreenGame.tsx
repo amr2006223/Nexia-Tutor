@@ -1,6 +1,8 @@
 import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import LoadingButton from "@mui/lab/LoadingButton";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 
 type EndScreenGameComponentProps = {
   nextGameLink: string;
@@ -10,6 +12,7 @@ type EndScreenGameComponentProps = {
 const EndScreenGameComponent = (props: EndScreenGameComponentProps) => {
   const router = useRouter();
   const [showAnimation, setShowAnimation] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     // Trigger animation after component is mounted
@@ -17,6 +20,7 @@ const EndScreenGameComponent = (props: EndScreenGameComponentProps) => {
   }, []);
 
   const handleNextGameClick = () => {
+    setIsLoading(true);
     if (props.lastGame) {
       router.push(`/screening/end-screen`);
     } else {
@@ -65,12 +69,22 @@ const EndScreenGameComponent = (props: EndScreenGameComponentProps) => {
         />
         Good Job!
         <Box sx={{ marginBottom: "20px" }}>
-          <button
+          <LoadingButton
+            loading={isLoading}
+            disabled={isLoading}
+            loadingPosition="start"
+            startIcon={<ArrowRightIcon />}
+            className="bg-primary text-light rounded-md p-2 hover:bg-primaryLight"
+            onClick={handleNextGameClick}
+          >
+            Go to Next Game
+          </LoadingButton>
+          {/* <button
             className="bg-primary text-light rounded-md p-2 hover:bg-primaryLight"
             onClick={handleNextGameClick}
           >
             {"Go to Next Game"}
-          </button>
+          </button> */}
         </Box>
       </div>
       {/* Define the keyframe animation */}
