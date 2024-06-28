@@ -2,6 +2,7 @@ import json
 import uuid
 from flask_cors import CORS, cross_origin
 from flask import Flask, jsonify, request
+import numpy as np
 from classification.model_evaluator import ModelEvaluator
 from classification.data_manipulation import DataManipulator
 from classification.data_preprocessor import DataPreProcessing
@@ -31,12 +32,7 @@ with app.app_context():
     #Preprocess Data
     cleanedDekstopData = randomForestModelTrainer.prepareDataForTraining(dataset,dataManipulator)
     # Train Data
-    randomForestModelTrainer.trainData()
-    
-    
-    
-
-    
+    randomForestModelTrainer.trainData()   
 @app.route("/screening/average")
 def getAverage():
     allAverages = [
@@ -77,6 +73,19 @@ def getAccuracy():
         return jsonify({"accuracy": accuracy})
     except Exception as e:
         errorMessage = f"Error evaluating accuracy: {str(e)}"
+        return jsonify({"error": errorMessage}), 500
+    
+@app.route("/screening/cross-validation", methods=["GET"])
+def performCrossValidation():
+    try:
+        cv_scores = randomForestModelTrainer.crossValidate()
+        mean_cv_score = np.mean(cv_scores)
+        return jsonify({
+            "cross_validation_scores": cv_scores.tolist(),
+            "mean_cross_validation_score": mean_cv_score
+        })
+    except Exception as e:
+        errorMessage = f"Error performing cross-validation: {str(e)}"
         return jsonify({"error": errorMessage}), 500
 
 if __name__ == "__main__":
